@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="GasMixer">
+    <include>userland/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+    <include>userland/events</include>
+
+    <command name="get-mode" id="1000">
+        <descr>mixer mode:| 0 - absolute| 1 - percentual</descr>
+        <return>110</return>
+    </command>
+
+    <command name="set-mode" id="1001">
+        <param name="mode" type="UINT8"><descr>0 - absolute, 1 - percentual</descr></param>
+    </command>
+    
+    <command name="get-valve-info" id="1020">
+        <descr>Info o ventilech. Gas types:| 0 - CO2| 1 - Air| 2 - N2| 3 - Ar| 4 - H2| 5 - CH4| 6 - HE| 7 - O2| 8 - N/A</descr>
+        <param name="valve" type="UINT8"/>
+        <return>2020</return>
+        <return>302</return>
+    </command>
+    <answer name="valve-info" id="2020">
+        <descr>Gas types:| 0 - CO2| 1 - Air| 2 - N2| 3 - Ar| 4 - H2| 5 - CH4| 6 - He| 7 - O2| 8 - N/A</descr>
+        <param name="maximal-flow" type="FLOAT"/>
+        <param name="gas-type" type="UINT8"><descr>valve factory setting</descr></param>
+        <param name="user-gas-type" type="UINT8"><descr>user gas type</descr></param>
+    </answer>
+        
+    <command name="set-valve-gas-type" id="1021">
+        <param name="valve" type="UINT8"/>
+        <param name="gas-type" type="UINT8">
+            <descr>Gas types:| 0 - CO2| 1 - Air| 2 - N2| 3 - Ar| 4 - H2| 5 - CH4| 6 - He| 7 - O2| 8 - N/A</descr>
+        </param>
+        <return>100</return>
+        <return>302</return>
+        <return>130</return>
+    </command>
+    
+    <command name="get-valve-flow" id="1010">
+        <descr>return last measured flow (L/min or percents), target flow (L/min or percents) and warning flag. Mode independent</descr>
+        <param name="valve" type="UINT8"/>
+        <return>2010</return>
+        <return>302</return>
+    </command>
+    <answer name="valve-flows" id="2010">    
+        <param name="actual-flow" type="FLOAT"><descr>L/min or percents</descr></param>
+        <param name="target-flow" type="FLOAT"><descr>L/min or percents</descr></param>
+        <param name="warning" type="BOOL"><descr>if true valve is under 5% of its range - the regulation might not be precise</descr></param>
+    </answer>
+    
+    <command name="get-valve-flow-prc" id="1011">
+        <descr>return flow in percents, works in percent mode only</descr>
+        <param name="valve" type="UINT8"/>
+        <return>2010</return>
+        <return>302</return>
+        <return>701</return>
+    </command>
+    
+    <command name="get-valve-flow-s" id="1012">
+        <descr>return absolute flow in L/min, measure the flow on the valve</descr>
+        <param name="valve" type="UINT8"/>
+        <param name="repeats" type="UINT8"/>
+        <return>2010</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-valve-flow" id="1013">
+        <descr>Set valve flow</descr>
+        <param name="valve" type="UINT8"/>
+        <param name="target-flow" type="FLOAT"><descr>in percent mode %, in absolute mode L/min</descr></param>
+        <return>100</return>
+        <return>302</return>
+        <return>307</return>
+    </command>
+    
+    <command name="get-valve-init" id="1031">
+        <descr>
+        valve init mode - valves behavior after device restart.
+        true - set last flow
+        false - close valve
+        </descr>
+        <return>102</return>
+    </command>    
+    
+    <command name="set-valve-init" id="1030">
+        <descr>valves behavior after device restart</descr>
+        <param name="mode" type="BOOL"><descr>true - set last flow, false - close valve</descr></param>
+    </command>
+    
+    <command name="get-flow-warn" id="1050">
+        <descr>maximum allowed current/target flow difference in percent, if exceeded warning on device display</descr>
+        <return>116</return>
+    </command>
+    
+    <command name="set-flow-warn" id="1051">
+        <descr>set maximum allowed current/target flow difference in percent, if exceeded warning on device display</descr>
+        <param name="flow-warn" type="FLOAT"><descr>flow difference in percents</descr></param>
+        <return>100</return>
+    </command>
+
+    <command name="get-total-flow" id="1040">
+        <descr>return current total flow and target total flow</descr>
+        <return>2040</return>
+    </command>
+    <answer name="total-flow" id="2040">
+        <param name="flow" type="FLOAT"><descr>sum of current valve flows [L/min]</descr></param>
+        <param name="target-flow" type="FLOAT"><descr>sum of valve target flows in absolute mode or configured total flow in percent mode [L/min]</descr></param>
+    </answer>    
+    <command name="set-total-flow" id="1041">
+        <descr>set total flow in L/min. only in percent mode. returns ok-warning if some valve is set under 2% of its range</descr>
+        <param name="total-flow" type="FLOAT"><descr>L/min</descr></param>
+        <return>100</return>
+        <return>700</return>
+        <return>701</return>
+    </command>
+    
+    <command name="get-co2-in-air-mode" id="1070">
+        <descr>CO2 in air mode: true - ON, false - OFF</descr>
+        <return>102</return>
+    </command>
+    <command name="set-co2-in-air-mode" id="1071">
+        <param name="mode" type="BOOL"><descr>true - ON, false - OFF</descr></param>
+    </command>
+        
+    <command name="get-co2-in-air-ppm" id="1072">
+        <descr>0-5000ppm</descr>
+        <return>111</return>
+    </command>    
+    <command name="set-co2-in-air-ppm" id="1073">
+        <descr>only when 2 valves available: #0=CO2 + #1=(N2 nebo Air)</descr>
+        <param name="ppm" type="UINT16"><descr>0-5000ppm</descr></param>
+        <return>100</return>
+        <return>307</return>
+    </command>
+        
+    <answer name="ok-warning" id="700"/>
+    <answer name="abs-mode-selected" id="701"/>
+    <answer name="mode-change" id="11403"/>
+    
+    <answer name="gas-type-change" id="11402">
+        <param name="valve" type="UINT8"/>
+    </answer>
+    
+    <answer name="valve-init-change" id="11401"/>
+    
+    <answer name="flow-change" id="11400">
+        <param name="valve" type="UINT8"/>
+    </answer>    
+</set>

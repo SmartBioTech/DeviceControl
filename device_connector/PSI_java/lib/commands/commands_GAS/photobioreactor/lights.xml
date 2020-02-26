@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="photobioreactor/lights">
+
+    <command name="get-actinic-light-settings" id="1001">
+        <param name="channel" type="UINT8"/>
+        <return>2001</return>
+        <return>302</return>
+    </command>
+    <answer name="actinic-light-settings" id="2001">
+        <param name="uE-intensity" type="FLOAT"/>
+        <param name="uE-max" type="FLOAT"/>
+        <param name="is-on" type="BOOL"/>
+    </answer>
+        
+    <command name="set-actinic-light-state" id="1003">
+        <param name="channel" type="UINT8"/>
+        <param name="is-on" type="BOOL"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-actinic-light-intensity" id="1002">
+        <param name="channel" type="UINT8"/>
+        <param name="uE-intensity" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-actinic-light-dac-perc" id="1005">
+        <param name="channel" type="UINT8"/>
+        <return>116</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-actinic-light-dac-perc" id="1004">
+        <param name="channel" type="UINT8"/>
+        <param name="dac-percentage" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-actinic-light-calibration" id="1007">
+        <param name="channel" type="UINT8"/>
+        <param name="a" type="FLOAT"/>
+        <param name="b" type="FLOAT"/>
+        <param name="c" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-actinic-light-calibration" id="1006">
+        <descr>calibration formula is ax^2+bx+c=0 (x in DAC)</descr>
+        <param name="channel" type="UINT8"/>
+        <return>2006</return>
+        <return>302</return>
+    </command>
+    <answer name="light-calibration" id="2006">
+        <descr>calibration curve is ax^2+bx+c=0 (x = DAC)</descr>
+        <param name="a" type="FLOAT"/>
+        <param name="b" type="FLOAT"/>
+        <param name="c" type="FLOAT"/>
+    </answer>
+         
+    <command name="get-actinic-pulse-settings" id="1010">
+        <param name="channel" type="UINT8"/>
+        <return>302</return>
+    </command>    
+    <answer name="actinic-pulse-settings" id="2010">
+        <param name="pulse-time" type="INT32"/>
+        <param name="pause-time" type="INT32"/>
+        <param name="delay" type="INT32"/>
+        <param name="enabled" type="BOOL"/>
+    </answer>
+    
+    <command name="set-actinic-pulse-settings" id="1011">
+        <param name="channel" type="UINT8"/>
+        <param name="pulse-time" type="INT32"/>
+        <param name="pause-time" type="INT32"/>
+        <param name="delay" type="INT32"/>
+        <param name="enabled" type="BOOL"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-actinic-pulse-state" id="1012">
+        <return>102</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-actinic-pulse-state" id="1013">
+        <param name="is-on" type="BOOL"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+        
+    <answer name="actinic-pulse-state-change" id="11203">
+        <param name="channel" type="UINT8"/>
+    </answer>
+    
+        
+    <command name="get-ext-light-calibration" id="1033">
+        <param name="channel" type="UINT8"/>
+        <return>2006</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-ext-light-calibration" id="1034">
+        <param name="channel" type="UINT8"/>
+        <param name="a" type="FLOAT"/>
+        <param name="b" type="FLOAT"/>
+        <param name="c" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+        <return>300</return>
+    </command>
+    
+    <command name="set-ext-light-dac-perc" id="1035">
+        <param name="channel" type="UINT8"/>
+        <param name="dac-percentage" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-ext-light-intensity" id="1036">
+        <param name="channel" type="UINT8"/>
+        <param name="uE-intensity" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-ext-light-state" id="1037">
+        <param name="channel" type="UINT8"/>
+        <param name="is-on" type="BOOL"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-ext-light-settings" id="1038">
+        <param name="channel" type="UINT8"/>
+        <return>2038</return>
+        <return>302</return>
+    </command>
+    <answer name="ext-light-settings" id="2038">
+        <param name="dac-abs" type="UINT16"/>
+        <param name="intensity-ue" type="UINT16"/>
+        <param name="is-on" type="BOOL"/>
+        <param name="conn-state" type="UINT8"><descr>1 - connected, 2 - calibrated, 3 - unable to calibrate</descr></param>
+        <param name="name" type="STRING"/>
+    </answer>
+    
+    <command name="set-ext-light-name" id="1039">
+        <param name="channel" type="UINT8"/>
+        <param name="name" type="STRING"/>
+        <return>100</return>
+        <return>302</return>
+        <return>300</return>
+    </command>
+        
+    <answer name="ext-light-change" id="11202">
+        <param name="channel" type="UINT8"/>
+    </answer>
+</set>

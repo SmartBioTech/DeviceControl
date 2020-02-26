@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="common/system">
+    <command name="get-serial-nr" id="17">
+        <descr>serial number</descr>
+        <return>112</return>
+    </command>
+    <command name="get-fw-version" id="4">
+        <descr>firmware version</descr>
+        <return>101</return>
+    </command>
+    <command name="set-serial-speed" id="20">
+    	<descr>set device serial speed</descr>
+        <param name="speed" type="UINT32">
+        	<descr>baud rate: 9600, 19200, 115200</descr>
+        </param>
+        <param name="timeout" type="UINT16">
+	        <descr>speed is revert back to 9600 if no next message received within next timeout * 100ms</descr>
+        </param>
+        <return>100</return>
+        <return>301</return>
+    </command>
+    <command name="get-cfiles-sha" id="25">
+        <descr>SHA1 of Common C Files sources</descr>
+        <return>101</return>
+    </command>
+    <command name="get-program-sha" id="24">
+        <descr>SHA1 of program sources</descr>
+        <return>101</return>
+    </command>
+    <command name="get-fw-id" id="27">
+        <descr>unique firmware tag, that defines the firmware</descr>
+        <return>101</return>
+    </command>
+    <command name="get-commit-bit" id="26">
+        <return>102</return>
+    </command>
+    <command name="get-hw-config" id="29">
+        <descr>device configuration loaded with the bootloader</descr>
+        <return>101</return>
+    </command>
+    <command name="get-build-nr" id="28">
+        <descr>build number</descr>
+        <return>111</return>
+    </command>
+    
+    <answer name="unsupported-serial-speed" id="301"/>
+</set>

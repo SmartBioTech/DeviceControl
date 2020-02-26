@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="Photobioreactor-041">
+    <include>GasMixer</include>
+
+<!-- System ==================================== -->        
+    <command name="get-adc-reinit-cnt" id="1310">
+        <descr>number of ADC converter recalibrations</descr>
+        <return>111</return>
+    </command>    
+<!-- ============================================ -->    
+    
+<!-- CO2 ======================================== -->
+    <command name="get-co2" id="1250">
+        <param name="repeats" type="UINT16"/>
+        <param name="raw" type="BOOL"/>
+
+        <return>116</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-co2-temp" id="1253">
+        <descr>temperature for CO2 calibration</descr>
+        <param name="repeats" type="UINT16"/>
+        <param name="raw" type="BOOL"/>
+        
+        <return>116</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-co2-calibration" id="1251">
+        <return>400</return>
+    </command>
+    <command name="set-co2-calibration" id="1252">
+        <param name="calA" type="FLOAT"/>
+        <param name="calB" type="FLOAT"/>
+
+        <return>100</return>
+    </command>
+<!-- ============================================ -->    
+    
+<!-- OD ============================================ -->    
+    <command name="get-od-led-types" id="1128">
+        <descr>OD LED wave lengths</descr>
+    </command>
+    <answer name="od-led-types" id="2128">
+        <param name="led0-nm" type="UINT16"/>
+        <param name="led1-nm" type="UINT16"/>
+    </answer>
+                  
+    <command name="measure-od" id="1123">
+        <param name="channel" type="UINT8"/>
+        <param name="repeats" type="UINT16"/>
+        
+        <return>2123</return>
+        <return>302</return>
+        <return>305</return>
+    </command>
+    <answer name="od" id="2123">
+        <param name="flash" type="INT32"/>
+        <param name="background" type="INT32"/>
+    </answer>
+    
+    <command name="!calibrate-od" id="1121">
+        <descr>calibrate all OD channels</descr>
+        <return>100</return>
+        <return>130</return>
+    </command>
+   
+    <command name="get-od-calibration" id="1122">
+        <descr>magic OD calibration constant</descr>
+        <param name="channel" type="UINT8"/>        
+        <return>115</return>
+    </command>    
+    
+    <command name="get-od-cal-consts" id="1124">
+        <descr>
+        mult = calibration const
+        offset = calibration intensity
+        </descr>
+        <param name="channel" type="UINT8"/>        
+        <return>400</return>
+        <return>302</return>
+        <return>305</return> 
+    </command>
+        
+    <command name="set-od-cal-consts" id="1125">
+        <param name="channel" type="UINT8"/>
+        <param name="cal-const" type="FLOAT"/>
+        <param name="cal-int" type="UINT16"/>        
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-od-temp-cal-consts" id="1126">
+        <descr>calibration of filter shift correction</descr>
+        <param name="channel" type="UINT8"/>
+        <return>400</return>
+        <return>302</return>
+        <return>305</return>
+    </command>
+    
+    <command name="set-od-temp-cal-consts" id="1127">
+        <param name="channel" type="UINT8"/>
+        <param name="a" type="FLOAT"/>
+        <param name="b" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+        
+    <command name="!measure-with-led" id="1303">
+        <descr>turn on OD LED and measure</descr>
+        <param name="led-nr" type="UINT8"/>
+        <param name="intensity" type="UINT16"><descr>0-1023</descr></param>
+        <param name="avg" type="UINT8"/>
+        <param name="range" type="UINT8"><descr>1-3</descr></param>
+        <param name="calibrated" type="UINT8"/>
+        <return>116</return>
+        <return>307</return>
+    </command>
+    
+    <command name="set-od-led" id="1302">
+        <descr>turn OD LED on/off</descr>
+        <param name="led-nr" type="UINT8"><descr>0-1</descr></param>
+        <param name="state" type="BOOL"/>
+        <param name="intensity" type="UINT16"><descr>0-1023</descr></param>
+        <return>100</return>
+        <return>302</return>
+        <return>307</return>
+    </command>
+    
+    <command name="get-detector-temperature" id="1091">
+        <return>116</return>
+        <return>304</return>
+    </command>
+    
+    <command name="get-detector-value-r" id="1301">
+        <descr>detector value on given range, output in digits</descr>
+        <param name="avg" type="UINT8"/>
+        <param name="range" type="UINT8"><descr>1-3</descr></param>
+        <return>116</return>
+        <return>307</return>
+    </command>
+    
+    <command name="get-opt-det-value" id="1300">
+        <descr>detector value</descr>
+        <param name="intensity" type="UINT16"/>
+        <return>2300</return>        
+    </command>
+    <answer name="opt-det-value" id="2300">
+        <descr>detector value</descr>
+        <param name="value" type="FLOAT"/>
+        <param name="range" type="UINT8"/>
+    </answer>
+    
+    <command name="get-opt-det-value-rm" id="1304">
+        <descr>detector value on given range, output calibrated</descr>
+        <param name="avg" type="UINT8"/>
+        <param name="range" type="UINT8"><descr>1-3</descr></param>
+        <return>116</return>
+        <return>307</return>
+    </command>
+    
+    <command name="read-det-cal-corr-byte" id="1287">
+        <param name="index" type="UINT8"/>
+        <return>110</return>
+        <return>300</return> <!-- strange -->
+    </command>
+    
+    <command name="!write-det-cal-corr-byte" id="1288">
+        <param name="index" type="UINT8"><descr>ENABLED_ADDR</descr></param>
+        <param name="val" type="UINT8"><descr>0 - old, 1 - new</descr></param>
+        <return>100</return>
+        <return>300</return>
+    </command>
+        
+    <command name="get-opt-det-consts" id="1280">
+        <descr>
+        set detector constants
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <return>2280</return>
+    </command>
+    <answer name="opt-det-consts" id="2280">
+        <descr>
+        set detector constants/offsets
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <param name="r0" type="FLOAT"/>
+        <param name="r1" type="FLOAT"/>
+        <param name="r2" type="FLOAT"/>
+        <param name="r3" type="FLOAT"/>
+    </answer>
+    
+    <command name="set-opt-det-consts" id="1281">
+        <descr>
+        set detector constants
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <param name="r0" type="FLOAT"/>
+        <param name="r1" type="FLOAT"/>
+        <param name="r2" type="FLOAT"/>
+        <param name="r3" type="FLOAT"/>
+    </command>
+    
+    <command name="get-opt-det-offsets" id="1282">
+        <descr>
+        set detector offsets
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <return>2280</return>
+    </command>
+    
+    <command name="set-opt-det-offsets" id="1283">
+        <descr>
+        set detector offsets
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <param name="r0" type="FLOAT"/>
+        <param name="r1" type="FLOAT"/>
+        <param name="r2" type="FLOAT"/>
+        <param name="r3" type="FLOAT"/>
+    </command>
+            
+    <command name="get-opt-det-noise" id="1284">
+        <descr>
+new detector calibration.
+every range is recomputed using linear interpolation to intensity of calibration light.
+this defines ration of maximum calibration intensity and digit
+        </descr>
+        <param name="range" type="UINT8"/>
+        <return>116</return>
+    </command>
+    
+    <command name="set-opt-det-noise" id="1285">
+        <descr>
+new detector calibration.
+every range is recomputed using linear interpolation to intensity of calibration light.
+this defines ration of maximum calibration intensity and digit
+        </descr>    
+        <param name="range" type="UINT8"/>
+        <param name="noise" type="FLOAT"/>
+        <return>100</return>
+    </command>
+<!-- ============================================ -->    
+    
+<!-- pH ========================================= -->
+    <command name="get-ph" id="1150">
+        <param name="repeats" type="UINT16"/>
+        <param name="wait" type="UINT16"><descr>delay = wait * 7 + 4 [us]</descr></param>
+        <return>116</return>
+        <return>305</return>
+    </command>
+    
+    <command name="get-ph-raw" id="1151">
+        <param name="repeats" type="UINT16"/>
+        <param name="wait" type="UINT16"><descr>delay = wait * 7 + 4 [us]</descr></param>
+        <return>116</return>
+    </command>
+        
+    <command name="set-ph-calibration" id="1153">
+        <param name="ph-mult" type="FLOAT"/>
+        <param name="ph-offset" type="FLOAT"/>
+        <return>100</return>
+    </command>
+    
+    <command name="get-ph-calibration" id="1152">
+        <return>400</return>
+    </command>
+    
+    <command name="set-ph-adc-calibration" id="1155">
+        <param name="adc-mult" type="FLOAT"/>
+        <param name="adc-offset" type="FLOAT"/>
+        <return>100</return>
+    </command>
+    
+    <command name="get-ph-adc-calibration" id="1154">
+        <return>400</return>
+    </command>
+    
+<!-- ============================================ -->    
+    
+<!-- O2/H2======================================= -->
+    <command name="get-o2/h2-mode" id="1050">
+        <descr>0 - O2, 1 - H2</descr>
+        <return>110</return>
+        <return>302</return>
+    </command>
+    <command name="set-o2-h2-mode" id="1051">
+        <param name="mode" type="UINT8"><descr>0 - O2, 1 - H2</descr></param>
+        <return>100</return>
+        <return>307</return>
+    </command>
+    
+    <command name="get-o2/h2" id="1140">
+        <descr>float value, O2 or H2 depending on mode</descr>
+        <param name="repeats" type="UINT16"/>
+        <param name="wait" type="UINT16"><descr>delay = wait * 7 + 4 [us]</descr></param>
+        <param name="raw" type="BOOL"><descr>return raw value (true) or calibrated value (false)</descr></param>        
+        <return>116</return>
+        <return>305</return>
+    </command>           
+
+    <command name="get-o2h2-calibration" id="1143">
+        <return>2143</return>
+    </command>
+    <answer name="o2h2-calibration" id="2143">
+        <param name="o2_val0" type="FLOAT"/>
+        <param name="o2_val21" type="FLOAT"/>
+        <param name="o2_cal_lv1" type="FLOAT"/>
+    </answer>
+    
+    <command name="set-o2h2-calibration" id="1144">
+        <descr>set calibration constants</descr>
+        <param name="o2_val0" type="FLOAT"/>
+        <param name="o2_val21" type="FLOAT"/>
+        <param name="o2_cal_lv1" type="FLOAT"/>
+        
+        <return>100</return>
+    </command>
+
+    <command name="get-o2h2-temp-calibration" id="1141">
+        <descr>temperature calibration</descr>
+        <return>400</return>
+    </command>
+            
+    <command name="set-o2h2-temp-calibration" id="1142">
+        <descr>set temperature calibration</descr>
+        <param name="mult" type="FLOAT"/>
+        <param name="offset" type="FLOAT"/>
+        <return>100</return>
+    </command>
+    
+    <answer name="h202-polarity-change" id="11201">
+        <param name="mode" type="UINT8"><descr>0 - O2, 1 - H2</descr></param>
+    </answer>        
+<!-- ============================================ -->    
+
+<!-- Saturation lights ========================== -->
+    <command name="get-flm-saturation" id="1020">
+        <descr>values in uE</descr>
+        <param name="channel" type="UINT8"/>
+        <return>2020</return>
+        <return>302</return>
+    </command>
+    <answer name="flm-saturation" id="2020">
+        <param name="intensity" type="UINT16"><descr>uE</descr></param>
+        <param name="min" type="UINT16"><descr>uE</descr></param>
+        <param name="max" type="UINT16"><descr>uE</descr></param>
+    </answer>
+
+    <command name="set-flm-saturation" id="1021">        
+        <param name="channel" type="UINT8"/>
+        <param name="intensity" type="UINT16"><descr>uE</descr></param>
+        <return>100</return>
+        <return>302</return>
+    </command>
+
+    <command name="set-flm-saturation-prc" id="1022">
+        <param name="channel" type="UINT8"/>
+        <param name="intensity-perc" type="UINT8"><descr>%</descr></param>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <answer name="flm-saturation-change" id="11204">
+        <param name="channel" type="UINT8"/>
+    </answer>
+<!-- ============================================ -->    
+
+<!-- Measuring lights =========================== -->
+    <command name="get-flm-measuring" id="1041">
+        <descr>set measuring lights for Ft and QY</descr>
+        <param name="channel" type="UINT8"/>
+        <return>2041</return>
+        <return>302</return>
+    </command>
+    <answer name="flm-measuring" id="2041">
+        <param name="intensity-dac" type="UINT16"/>
+        <param name="min-dac" type="UINT16"/>
+        <param name="max-dac" type="UINT16"/>
+    </answer>
+    
+    <command name="set-flm-measuring" id="1042">
+        <param name="channel" type="UINT8"/>
+        <param name="intensity-dac" type="UINT16"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <answer name="flm-measuring-change" id="11205">
+        <param name="channel" type="UINT8"/>
+    </answer>
+<!-- ============================================ -->
+
+<!-- Ft ========================================= -->
+    <command name="measure-ft" id="1110">
+        <param name="channel" type="UINT8"><descr>255 - measure with all lights</descr></param>
+        <return>2110</return>
+        <return>303</return>
+    </command>
+    <answer name="ft" id="2110">
+        <param name="flash" type="INT32"/>
+        <param name="background" type="INT32"/>
+    </answer>
+<!-- ============================================ -->
+
+<!-- QY ========================================= -->
+    <command name="measure-qy" id="1130">
+        <param name="channel" type="UINT8"/>
+        <return>2130</return>
+        <return>303</return>
+    </command>
+    <answer name="qy" id="2130">
+        <param name="ft-flash" type="INT32"/>
+        <param name="ft-background" type="INT32"/>
+        <param name="fm-flash" type="INT32"/>
+        <param name="fm-background" type="INT32"/>
+        <param name="sp-delay-cycles" type="UINT16"/>
+    </answer>
+    
+    <command name="measure-qy-s" id="1131">
+        <param name="channel" type="UINT8"/>
+        <param name="delay-ms" type="UINT16"/>
+        <return>2130</return>
+        <return>303</return>
+    </command>    
+<!-- ============================================ -->
+
+<!-- PWM ======================================== -->    
+    <command name="get-pwm-settings" id="1060">
+    </command>
+    <answer name="pwm-settings" id="2060">
+        <param name="pulse" type="UINT8"/>
+        <param name="pulse-min" type="UINT8"/>
+        <param name="pulse-max" type="UINT8"/>
+        <param name="is-on" type="BOOL"/>
+    </answer>
+    
+    <command name="set-pwm" id="1061">
+        <param name="pulse" type="UINT8"/>
+        <param name="is-on" type="BOOL"/>
+        <return>100</return>
+        <return>307</return>
+    </command>
+    
+    <answer name="pwm-change" id="11206">
+    </answer>
+<!-- ============================================ -->
+
+<!-- Commandy pro TR jen v PBR041 =============== -->    
+    <command name="set-tr-enable-boot" id="1230">        
+        <param name="value" type="UINT8"><descr>default 1, if set to 0, TR stays in boot mode</descr></param>
+        <return>100</return>
+        <return>300</return>
+    </command>
+    
+    <command name="tr-get-reg-info" id="1194">
+        <descr>PID regulator configuration</descr>
+    </command>
+    <answer name="tr-reg-info" id="2194">
+        <descr>PID regulator configuration</descr>
+        <param name="k" type="FLOAT"/>
+        <param name="ti" type="FLOAT"/>
+        <param name="td" type="FLOAT"/>
+        <param name="k_cor" type="FLOAT"/>
+    </answer>
+    
+    <command name="!tr-set-reg-info" id="1195">
+        <descr>PID regulator configuration</descr>
+        <param name="k" type="FLOAT"/>
+        <param name="ti" type="FLOAT"/>
+        <param name="td" type="FLOAT"/>
+        <param name="k_cor" type="FLOAT"/>
+        <return>100</return>
+        <return>130</return>
+    </command>
+            
+    <command name="tr-get-output" id="1196">    
+        <return>2196</return>
+    </command>
+    <answer name="tr-output" id="2196">
+        <param name="reg_out" type="FLOAT"/>
+        <param name="ti_out" type="FLOAT"/>
+    </answer>
+    
+    <command name="!tr-set-output" id="1197">
+        <param name="output" type="FLOAT"/>
+        <return>100</return>
+        <return>130</return>
+    </command>
+    
+    <command name="tr-get-hwid" id="1198">
+        <return>110</return>
+    </command>
+<!-- ============================================ -->
+
+<!-- Stav periferii ============================= -->    
+    <command name="detect-i2c-device" id="1261">
+        <param name="address" type="UINT8"/>
+        <return>102</return>
+    </command>
+    
+    <command name="get-periphery-state" id="1260">
+        <param name="periphery" type="UINT8"/>
+        <return>102</return>
+    </command>
+        
+    <answer name="i2c-error" id="11200">        
+        <param name="src" type="UINT8"><descr>switches - 0, level sensor = 1</descr></param>
+    </answer>    
+<!-- ============================================ -->
+    
+</set>

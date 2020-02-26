@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="Photobioreactor-100">
+    <include>Photobioreactor-25</include>
+    
+    <command name="profuk" id="1074">
+        <descr>set profuk bit, time in ms</descr>
+        <param name="time" type="UINT16"><descr>ms</descr></param>
+    </command>
+</set>

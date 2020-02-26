@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="fluorpen-base">
+    <include>userland/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+
+    <command name="get-flm-saturation" id="1000">
+        <descr>intensity in %</descr>
+        <param name="channel" type="UINT8"/>
+        <return>2000</return>
+        <return>302</return>
+    </command>
+    <answer name="flm-saturation" id="2000">
+        <param name="intensity" type="UINT8"><descr>%</descr></param>
+        <param name="min" type="UINT8"/>
+        <param name="max" type="UINT8"/>
+    </answer>
+    
+    <command name="set-flm-saturation" id="1001">
+        <param name="channel" type="UINT8"/>
+        <param name="intensity" type="UINT8"><descr>%</descr></param>
+        <return>100</return>
+        <return>302</return>
+        <return>307</return>
+    </command>    
+
+    <command name="get-flm-measuring" id="1010">
+        <descr>values in %</descr>
+        <param name="channel" type="UINT8"/>
+        <return>2010</return>
+        <return>302</return>
+    </command>
+    <answer name="flm-measuring" id="2010">
+        <param name="intensity" type="UINT8"><descr>%</descr></param>
+        <param name="min" type="UINT8"><descr>%</descr></param>
+        <param name="max" type="UINT8"><descr>%</descr></param>
+    </answer>    
+
+    <command name="set-flm-measuring" id="1011">
+        <param name="channel" type="UINT8"/>
+        <param name="intensity" type="UINT8"><descr>%</descr></param>
+        <return>100</return>
+        <return>302</return>
+        <return>307</return>
+    </command>
+    
+    <command name="measure-ft" id="1020">
+        <param name="channel" type="UINT8"/>
+        <param name="repeats" type="UINT8"/>
+        <return>2020</return>
+        <return>302</return>
+    </command>
+    <answer name="ft" id="2020">
+        <param name="flash" type="INT32"/>
+        <param name="background" type="INT32"/>
+    </answer>
+    
+    <command name="measure-qy" id="1030">
+        <param name="channel" type="UINT8"/>
+        <return>2030</return>
+        <return>302</return>
+    </command>
+    <answer name="qy" id="2030">
+        <param name="ft-flash" type="INT32"/>
+        <param name="ft-background" type="INT32"/>
+        <param name="fm-flash" type="INT32"/>
+        <param name="fm-background" type="INT32"/>
+    </answer>
+</set>
