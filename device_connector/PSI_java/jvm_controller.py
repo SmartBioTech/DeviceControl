@@ -17,14 +17,14 @@ class JVMController:
         pass
 
     @staticmethod
-    def startJVM():
+    def start_jvm():
         jpype.startJVM(jvmpath=jpype.getDefaultJVMPath(), convertStrings=False,
                        classpath="device_connector/PSI_java/lib/jar/bioreactor-commander-0.8.7.jar")
 
     @staticmethod
-    def shutdownJVM():
+    def shutdown_jvm():
         jpype.shutdownJVM()
 
     @staticmethod
-    def isJVMStarted():
+    def is_jvm_started():
         return jpype.isJVMStarted()
