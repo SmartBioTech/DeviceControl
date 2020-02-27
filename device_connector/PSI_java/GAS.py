@@ -1,9 +1,12 @@
 from device_connector.PSI_java.java_device import JavaDevice
+from device_module.configuration import DeviceConfig
 
 
 class GAS(JavaDevice):
-    def __init__(self, device_id, address):
-        super(GAS, self).__init__(device_id, address, "device_connector/PSI_java/lib/config/device_GAS.config")
+    def __init__(self, config: DeviceConfig):
+        super(GAS, self).__init__(config.device_id,
+                                  config.host_address,
+                                  "device_connector/PSI_java/lib/config/device_GAS.config")
         self.interpreter = {
             1: self.get_flow,
             2: self.get_flow_target,

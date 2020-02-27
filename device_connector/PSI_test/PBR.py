@@ -1,14 +1,15 @@
 from random import random
 from device_connector.abstract.device import Device
+from device_module.configuration import DeviceConfig
 
 
 class PBR(Device):
-    def __init__(self, device_id, address):
+    def __init__(self, config: DeviceConfig):
         super(PBR, self).__init__()
         self._last_value = 0.45
         self._increasing = False
-        self.id = device_id
-        self.address = address
+        self.id = config.device_id
+        self.address = config.host_address
         self.interpreter = {
             1: self.get_temp_settings,
             2: self.get_temp,

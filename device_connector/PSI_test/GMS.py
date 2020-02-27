@@ -1,12 +1,13 @@
 from device_connector.abstract.device import Device
+from device_module.configuration import DeviceConfig
 
 
 class GMS(Device):
-    def __init__(self, device_id, address):
+    def __init__(self, config: DeviceConfig):
         super(GMS, self).__init__()
         self._GAS_TYPES = ["CO2", "Air", "N2"]
-        self.id = device_id
-        self.address = address
+        self.id = config.device_id
+        self.address = config.host_address
         self.interpreter = {
             1: self.get_valve_info,
             2: self.get_valve_flow,

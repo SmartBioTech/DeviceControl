@@ -3,15 +3,16 @@ from device_connector.PSI_scheme.scheme.command import Command
 from device_connector.PSI_scheme.scheme.scheme_manager import SchemeManager
 
 from device_connector.abstract.device import Device
+from device_module.configuration import DeviceConfig
 
 
 class GAS(Device):
-    def __init__(self, device_id, address):
+    def __init__(self, config: DeviceConfig):
         super(GAS, self).__init__()
-        self._scheme_manager = SchemeManager(device_id, address)
         self._parser = Parser()
-        self.id = device_id
-        self.address = address
+        self.id = config.device_id
+        self.address = config.host_address
+        self._scheme_manager = SchemeManager(self.id, self.address)
         self.interpreter = {
             1: self.get_flow,
             2: self.get_flow_target,

@@ -18,17 +18,20 @@ class JavaDevice(Device):
             jpype.addClassPath('device_connector/PSI_java/lib/jar/bioreactor-commander-0.8.7.jar')
             jvm_controller.startJVM()
 
-        CommanderConnector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
-        device = CommanderConnector(device_config, self.address, 115200)
+        commanderConnector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
+        device = commanderConnector(device_config, self.address, 115200)
 
-        ServerPluginManager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
-        ServerPluginManager.getInstance().loadPlugins()
+        serverPluginManager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
+        serverPluginManager.getInstance().loadPlugins()
         device.connect(0)
 
         return device
 
     def disconnect(self):
         self.device.disconnect()
+
+    def test_connection(self) -> bool:
+        pass
 
     def __str__(self):
         return self.id + " @ " + str(self.address)

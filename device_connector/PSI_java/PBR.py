@@ -1,10 +1,14 @@
 from device_connector.PSI_java.java_device import JavaDevice
 from math import log10
 
+from device_module.configuration import DeviceConfig
+
 
 class PBR(JavaDevice):
-    def __init__(self, device_id, address):
-        super(PBR, self).__init__(device_id, address, "device_connector/PSI_java/lib/config/device_PBR.config")
+    def __init__(self, config: DeviceConfig):
+        super(PBR, self).__init__(config.device_id,
+                                  config.host_address,
+                                  "device_connector/PSI_java/lib/config/device_PBR.config")
         self.interpreter = {
             1: self.get_temp_settings,
             2: self.get_temp,
