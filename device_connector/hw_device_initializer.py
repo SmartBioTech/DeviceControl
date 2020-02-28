@@ -35,9 +35,11 @@ classes = {
 }
 
 
-def get_class(class_name: str, device_type: str) -> Device.__class__:
-    result = classes.get(class_name).get(device_type)
-
-    if result is None:
-        raise ModuleNotFoundError("Invalid device_module class or type")
-    return result
+def get_device_type_from_class(class_name: str, device_type: str) -> Device.__class__:
+    result = None
+    try:
+        result = classes.get(class_name).get(device_type)
+    finally:
+        if result is None:
+            raise ModuleNotFoundError("Invalid device_module class or type")
+        return result

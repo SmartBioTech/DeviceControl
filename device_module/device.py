@@ -1,7 +1,7 @@
 from queue import PriorityQueue
 from threading import Thread, Event
 
-from device_connector.hw_device_initializer import get_class
+from device_connector.hw_device_initializer import get_device_type_from_class
 from device_module.command import Command
 from device_module.configuration import DeviceConfig
 
@@ -18,8 +18,8 @@ class Device:
         except AttributeError:
             raise AttributeError("Invalid configuration")
 
-        self.physicalDevice = get_class(self.device_class_name,
-                                        self.device_type_name)(self.config)
+        self.physicalDevice = get_device_type_from_class(self.device_class_name,
+                                                         self.device_type_name)(self.config)
 
         self.is_alive = True
         self.queue = QueueOfCommands(self)
