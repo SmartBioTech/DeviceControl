@@ -37,24 +37,10 @@ class Device(metaclass=Interface):
             raise AttributeError("Requested command ID is not defined in the device_module's Interpreter")
         return command_reference
 
-
-class TestDevice(Device):
-
-    def __init__(self):
-        super(TestDevice, self).__init__()
-        self.id = 9
-        self.address = "home"
-        self.interpreter = {1: self.hello,
-                            2: self.hi}
-
-    def hello(self):
-        print("Device {} says hello".format(self.id))
-
-    def hi(self):
-        pass
-
-    def test_connection(self) -> bool:
-        return True
-
-    def disconnect(self) -> None:
-        return
+    def get_capabilities(self):
+        result = {}
+        for key, func in self.interpreter.items():
+            arguments = list(func.__code__.co_varnames)
+            arguments.remove("self")
+            result[key] = func.__name__, arguments
+        return result
