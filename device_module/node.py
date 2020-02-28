@@ -38,3 +38,6 @@ class Node:
                                      self.get_all_of_type(requested_type,
                                                           target_dict)
                                      )
+
+    def add_device(self, device: Device):
+        self._devices.update({device.device_id, device})
