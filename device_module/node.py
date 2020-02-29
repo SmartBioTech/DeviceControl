@@ -17,7 +17,7 @@ class Node:
 
         result = {}
         for key, device in target_dict.items():
-            if device.device_type_name == requested_type:
+            if device.device_type == requested_type:
                 result.update({key: device})
         return result
 
@@ -27,7 +27,7 @@ class Node:
 
         result = {}
         for key, device in target_dict.items():
-            if device.device_class_name == requested_class:
+            if device.device_class == requested_class:
                 result.update({key: device})
 
     def get_all_of_class_and_type(self, requested_class, requested_type, target_dict=None):
