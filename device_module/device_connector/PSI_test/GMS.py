@@ -1,4 +1,4 @@
-from device_connector.abstract.device import Device
+from device_module.device_connector.abstract.device import Device
 from device_module.configuration import DeviceConfig
 
 

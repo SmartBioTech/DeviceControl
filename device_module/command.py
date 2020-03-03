@@ -17,5 +17,13 @@ class Command:
         self.time_executed = None
         self.response = None
 
+    def __str__(self):
+        return "SOURCE:{} ID: {},  IS VALID: {}  RESPONSE: {}".format(
+            self.source,
+            self.command_id,
+            self.is_valid,
+            self.response
+        )
+
 
 

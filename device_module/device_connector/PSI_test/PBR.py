@@ -1,15 +1,13 @@
 from random import random
-from device_connector.abstract.device import Device
+from device_module.device_connector.abstract.device import Device
 from device_module.configuration import DeviceConfig
 
 
 class PBR(Device):
-    def __init__(self, config: DeviceConfig):
-        super(PBR, self).__init__()
+    def __init__(self, config):
+        super(PBR, self).__init__(config)
         self._last_value = 0.45
         self._increasing = False
-        self.id = config.device_id
-        self.address = config.host_address
         self.interpreter = {
             1: self.get_temp_settings,
             2: self.get_temp,
@@ -297,4 +295,4 @@ class PBR(Device):
         return True
 
     def disconnect(self) -> None:
-        print("Test PBR {} on {} is disconnecting".format(self.id, self.address))
+        print("Test PBR {} on {} is disconnecting".format(self.device_id, self.address))

@@ -1,14 +1,8 @@
-from device_connector.PSI_test import PBR as testPBR
-from device_connector.PSI_test import GAS as testGAS
-from device_connector.PSI_test import GMS as testGMS
-from device_connector.PSI_scheme import PBR as schemePBR
-from device_connector.PSI_scheme import GAS as schemeGAS
-from device_connector.PSI_scheme import GMS as schemeGMS
-from device_connector.PSI_java import PBR as javaPBR
-from device_connector.PSI_java import GAS as javaGAS
-from device_connector.PSI_java import GMS as javaGMS
-from device_connector.Phenometrics import PBR as phPBR
-from device_connector.abstract.device import Device
+from device_module.device_connector.PSI_test import GAS as testGAS, GMS as testGMS, PBR as testPBR
+from device_module.device_connector.PSI_scheme import GAS as schemeGAS, GMS as schemeGMS, PBR as schemePBR
+from device_module.device_connector.PSI_java import GMS as javaGMS, PBR as javaPBR, GAS as javaGAS
+from device_module.device_connector.Phenometrics import PBR as phPBR
+from device_module.device_connector.abstract.device import Device
 
 classes = {
     "test": {
