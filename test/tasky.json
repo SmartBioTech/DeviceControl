@@ -1,0 +1,15 @@
+{
+  "task_id": "taskPBR_2",
+  "task_type": "PBR_MEASURE_ALL",
+  "device_id": "test_PBR",
+  "sleep_period": 6,
+  "max_od": 20,
+  "min_od": 10,
+  "lower_tol": 5,
+  "upper_tol": 5,
+  "od_channel": 1,
+  "tolerance": 5,
+  "ft_channel": 1,
+  "pump_id": 1,
+  "max_outliers": 5
+}

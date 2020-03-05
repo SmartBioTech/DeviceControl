@@ -1,4 +1,7 @@
-from task_module.tasks import PBRMeasureAll
+from typing import Dict
+
+from task_module.abstract import BaseTask
+from task_module.tasks import PBRMeasureAll, PBRGeneralPump
 from utils.errors import IdError
 from utils.singleton import singleton
 
@@ -10,7 +13,8 @@ class TaskManager:
         self.tasks = {}
 
         self.task_types = {
-            "PBR_MEASURE_ALL": PBRMeasureAll
+            "PBR_MEASURE_ALL": PBRMeasureAll,
+            "PBR_GENERAL_PUMP": PBRGeneralPump
         }
 
     def create_task(self, config: dict):

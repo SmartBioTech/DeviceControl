@@ -1,4 +1,4 @@
-from device_connector.PSI_java.java_device import JavaDevice
+from device_module.device_connector.PSI_java.java_device import JavaDevice
 from device_module.configuration import DeviceConfig
 
 

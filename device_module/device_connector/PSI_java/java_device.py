@@ -1,9 +1,9 @@
 import jpype
-from device_connector.PSI_java import jvm_controller
+from device_module.device_connector.PSI_java import jvm_controller
 
 import jpype.imports
 
-from device_connector.abstract.device import Device
+from device_module.device_connector.abstract.device import Device
 
 
 class JavaDevice(Device):

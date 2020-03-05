@@ -7,6 +7,7 @@ import numpy as np
 from device_module.command import Command
 from device_module.device import Device, DeviceManager
 from task_module.abstract import BaseTask
+from task_module.task_manager import TaskManager
 
 
 class PBRMeasureAll(BaseTask):
@@ -27,10 +28,12 @@ class PBRMeasureAll(BaseTask):
         self.pump_id = None
         self.latest_values = deque(maxlen=2)
         self.device_id: str = ""
+        self.pump_task: dict = {}
 
         self.__dict__.update(config)
         self.device: Device = DeviceManager().get_device(self.device_id)
         self.average_od = self.measure_initial_od_average()
+        self.pump = TaskManager().create_task(self.pump_task)
 
         try:
             assert self.sleep_period is not None
@@ -50,10 +53,12 @@ class PBRMeasureAll(BaseTask):
 
         super(PBRMeasureAll, self).__init__()
 
+
+
     def get_od_for_init(self):
         cmd = Command(5,
                       [self.od_channel],
-                      "internal")
+                      self.task_id)
 
         self.device.post_command(cmd)
         cmd.resolved.wait()
@@ -132,31 +137,93 @@ class PBRMeasureAll(BaseTask):
     def start(self):
         t = Thread(target=self._run)
         t.start()
-        print("XXXXXXXXXXXXXXXXXXXX")
 
     def _run(self):
         self.average_od = self.measure_initial_od_average()
 
         while self.is_active:
             command = Command(19, [self.ft_channel, self.pump_id], self.task_id)
-            self.device.post_command(command)
+            self.device.post_command(command, 1)
 
             command.resolved.wait()
+            od_variant = 'od_1' if self.od_channel == 1 else 'od_0'
 
             if command.is_valid:
-                od_variant = 'od_1' if self.od_channel == 1 else 'od_0'
                 od_is_valid, od = command.response.get(od_variant)
                 if od_is_valid:
                     self.latest_values.appendleft(od)
                     od_is_outlier = self.handle_outlier(od)
+                    if not od_is_outlier:
+                        self.pump.stabilize(od)
                 else:
                     od_is_outlier = False
-                command.response['od_variant'] = od_is_valid, od, od_is_outlier
+
+                command.response[od_variant] = od_is_valid, od, od_is_outlier
 
             print(command)
 
             sleep(self.sleep_period)
 
-
     def end(self):
         self.is_active = False
+
+
+class PBRGeneralPump(BaseTask):
+
+    def __init__(self, config):
+        super(PBRGeneralPump, self).__init__()
+        self.min_od = None
+        self.max_od = None
+        self.pump_id = None
+        self.device_id: str = ""
+        self.__dict__.update(config)
+        self.is_pump_on = False
+        self.device = DeviceManager().get_device(self.device_id)
+
+        try:
+            assert self.min_od is not None
+            assert self.max_od is not None
+            assert self.device_id is not ""
+            assert self.device is not None
+            assert self.pump_id is not None
+        except AssertionError:
+            raise AttributeError("Configuration of PBRGeneralPump task must contain all required attributes")
+
+    def start(self):
+        pass
+
+    def end(self):
+        pass
+
+    def is_od_value_too_high(self, od):
+        return od > self.max_od
+
+    def is_od_value_too_low(self, od):
+        return od < self.min_od
+
+    def turn_pump_on(self):
+        self.change_pump_state(True)
+
+    def turn_pump_off(self):
+        self.change_pump_state(False)
+
+    def change_pump_state(self, state: bool):
+        for try_n in range(5):
+            command = Command(8, [self.pump_id, state], self.task_id)
+            self.device.post_command(command, 1)
+            command.resolved.wait()
+
+            print(command)
+
+            if isinstance(command.response, bool) and command.response:
+                self.is_pump_on = state
+                return
+        raise ConnectionError
+
+    def stabilize(self, od):
+        if self.is_od_value_too_high(od):
+            if not self.is_pump_on:
+                self.turn_pump_on()
+        elif self.is_od_value_too_low(od):
+            if self.is_pump_on:
+                self.turn_pump_off()
