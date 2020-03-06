@@ -8,6 +8,7 @@ from device_module.command import Command
 from device_module.device import Device, DeviceManager
 from task_module.abstract import BaseTask
 from task_module.task_manager import TaskManager
+from utils.errors import IdError
 
 
 class PBRMeasureAll(BaseTask):
@@ -52,8 +53,6 @@ class PBRMeasureAll(BaseTask):
             raise AttributeError("Configuration of PBRMeasureAll task must contain all required attributes")
 
         super(PBRMeasureAll, self).__init__()
-
-
 
     def get_od_for_init(self):
         cmd = Command(5,
@@ -179,6 +178,10 @@ class PBRGeneralPump(BaseTask):
         self.__dict__.update(config)
         self.is_pump_on = False
         self.device = DeviceManager().get_device(self.device_id)
+        try:
+            assert self.device is not None
+        except AssertionError:
+            raise IdError("Device with requested ID is not initiated")
 
         try:
             assert self.min_od is not None

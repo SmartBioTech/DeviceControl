@@ -15,6 +15,8 @@ class DeviceManager:
         self._devices: Dict[str, Device] = {}
 
     def new_device(self, config: dict) -> Device:
+        if self.get_device(config.get("device_id")) is not None:
+            raise IdError("Device with given ID already exists")
         device = get_device_type_from_class(config.get("device_class"), config.get("device_type"))(config)
         self._devices[device.device_id] = device
         return device
