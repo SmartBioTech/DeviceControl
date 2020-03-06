@@ -1,8 +1,6 @@
 from device_module.device_connector.Phenometrics.libs.communication import Connection
 from device_module.device_connector.abstract.device import Device
 
-from device_module.configuration import DeviceConfig
-
 
 class PBR(Device):
     def __init__(self, config: dict):
@@ -13,7 +11,6 @@ class PBR(Device):
         self.connection = Connection(self.host_address,
                                      self.host_port,
                                      self.encryption_key)
-
 
     def get_temp_settings(self):
         """
