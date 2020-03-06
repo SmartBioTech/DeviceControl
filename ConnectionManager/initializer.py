@@ -1,10 +1,7 @@
-from typing import List
-
-from task_module.abstract import Task
-from task_module.task_manager import TaskManager
 from device_module.command import Command
-from device_module.device import Device
+from device_module.device import Device, DeviceManager
 from device_module.node import Node
+from task_module.task_manager import TaskManager
 
 
 class Manager:
@@ -12,6 +9,7 @@ class Manager:
         self.nodes = {}
         self.devices = {}
         self.taskManager = TaskManager()
+        self.deviceManager = DeviceManager()
 
     def node_exists(self, node_id: str):
         return self.nodes.get(node_id) is not None
@@ -22,6 +20,9 @@ class Manager:
             return True
         else:
             return False
+
+    def register_device(self, config: dict):
+        return self.deviceManager.new_device(config)
 
     def add_device_to_node(self, node_id: str, device: Device):
         if self.node_exists(node_id):
@@ -44,6 +45,12 @@ class Manager:
             node = self.nodes.get(node_id)
             if node.device_type_exists(device_type):
                 node.devices.get(device_type).post_command(cmd)
+
+    def register_task(self, config):
+        self.taskManager.create_task(config)
+
+    def remove_task(self, task_id):
+        self.taskManager.remove_task(task_id)
 
     def ping(self) -> dict:
         result = {}

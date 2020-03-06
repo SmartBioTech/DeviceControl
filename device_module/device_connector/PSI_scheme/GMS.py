@@ -1,8 +1,8 @@
-from device_connector.PSI_scheme.scheme.command import Command
-from device_connector.PSI_scheme.scheme.scheme_manager import SchemeManager
+from device_module.device_connector.PSI_scheme.scheme.command import Command
+from device_module.device_connector.PSI_scheme.scheme.scheme_manager import SchemeManager
 
 
-from device_connector.abstract.device import Device
+from device_module.device_connector.abstract.device import Device
 from device_module.configuration import DeviceConfig
 
 

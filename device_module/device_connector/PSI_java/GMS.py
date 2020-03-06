@@ -1,12 +1,9 @@
-from device_connector.PSI_java.java_device import JavaDevice
-from device_module.configuration import DeviceConfig
+from device_module.device_connector.PSI_java.abstract.java_device import JavaDevice
 
 
 class GMS(JavaDevice):
-    def __init__(self, config: DeviceConfig):
-        super(GMS, self).__init__(config.device_id,
-                                  config.host_address,
-                                  "device_connector/PSI_java/lib/config/device_GMS.config")
+    def __init__(self, config: dict):
+        super(GMS, self).__init__(config)
         self.interpreter = {
             1: self.get_valve_info,
             2: self.get_valve_flow,

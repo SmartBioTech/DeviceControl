@@ -1,22 +1,23 @@
+from abc import abstractmethod
+
 import jpype
-from device_connector.PSI_java import jvm_controller
+from device_module.device_connector.PSI_java.utils.jvm_controller import is_jvm_started, start_jvm
 
 import jpype.imports
 
-from device_connector.abstract.device import Device
+from device_module.device_connector.abstract.device import Device
 
 
 class JavaDevice(Device):
-    def __init__(self, device_id, address, path):
-        self.id = device_id
-        self.address = address
-        self.device = self.connect(path)
+    def __init__(self, config):
+        super(JavaDevice, self).__init__(config)
+        self.device = self.connect(self.address)
         self.interpreter = {}
 
     def connect(self, device_config):
-        if not jvm_controller.isJVMStarted():
+        if not is_jvm_started():
             jpype.addClassPath('device_connector/PSI_java/lib/jar/bioreactor-commander-0.8.7.jar')
-            jvm_controller.startJVM()
+            start_jvm()
 
         commanderConnector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
         device = commanderConnector(device_config, self.address, 115200)
@@ -30,11 +31,11 @@ class JavaDevice(Device):
     def disconnect(self):
         self.device.disconnect()
 
+    @abstractmethod
     def test_connection(self) -> bool:
         pass
 
-    def __str__(self):
-        return self.id + " @ " + str(self.address)
-
-    def __repr__(self):
-        return "Device(" + self.id + ", " + str(self.address) + ")"
+    def get_command_reference(self, cmd_id):
+        if not jpype.isThreadAttachedToJVM():
+            jpype.attachThreadToJVM()
+        return super(JavaDevice, self).get_command_reference(cmd_id)
