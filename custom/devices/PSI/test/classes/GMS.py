@@ -1,13 +1,10 @@
 from core.device_module.device_connector.abstract.device import Device
-from core.device_module.configuration import DeviceConfig
 
 
 class GMS(Device):
-    def __init__(self, config: DeviceConfig):
-        super(GMS, self).__init__()
+    def __init__(self, config):
+        super(GMS, self).__init__(config)
         self._GAS_TYPES = ["CO2", "Air", "N2"]
-        self.id = config.device_id
-        self.address = config.host_address
         self.interpreter = {
             1: self.get_valve_info,
             2: self.get_valve_flow,
@@ -40,10 +37,10 @@ class GMS(Device):
         :param valve: ID of the valve (0 for CO2, 1 for Air)
         :return: A dictionary with gas type and maximal allowed flow.
         """
-        return True, {"valve_max_flow": 10, "valve_gas_type": self.GAS_TYPES[0]}
+        return True, {"valve_max_flow": 10, "valve_gas_type": self._GAS_TYPES[0]}
 
     def test_connection(self) -> bool:
         return True
 
     def disconnect(self) -> None:
-        print("Test GMS {} on {} is disconnecting".format(self.id, self.address))
+        print("Test GMS {} on {} is disconnecting".format(self.device_id, self.address))

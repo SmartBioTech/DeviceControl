@@ -1,12 +1,10 @@
 from core.device_module.device_connector.abstract.device import Device
-from core.device_module.configuration import DeviceConfig
 
 
 class GAS(Device):
-    def __init__(self, config: DeviceConfig):
-        super(GAS, self).__init__()
-        self.id = config.device_id
-        self.address = config.host_address
+    def __init__(self, config):
+        super(GAS, self).__init__(config)
+
         self.interpreter = {
             1: self.get_flow,
             2: self.get_flow_target,
@@ -113,9 +111,9 @@ class GAS(Device):
         result["pressure"] = True, self.get_pressure(1)
 
         return result
-    
+
     def test_connection(self) -> bool:
         return True
 
     def disconnect(self) -> None:
-        print("Test GAS {} on {} is disconnecting".format(self.id, self.address))
+        print("Test GAS {} on {} is disconnecting".format(self.device_id, self.address))

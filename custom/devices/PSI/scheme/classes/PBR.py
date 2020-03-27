@@ -6,12 +6,11 @@ from custom.devices.PSI.scheme.scheme.scheme_manager import SchemeManager
 
 
 class PBR(Device):
-    def __init__(self, config: DeviceConfig):
-        super(PBR, self).__init__()
+    def __init__(self, config):
+        super(PBR, self).__init__(config)
         self._parser = Parser()
-        self.id = config.device_id
-        self.address = config.host_address
-        self._scheme_manager = SchemeManager(self.id, self.address)
+
+        self._scheme_manager = SchemeManager(self.device_id, self.address)
         self.interpreter = {
             1: self.get_temp_settings,
             2: self.get_temp,

@@ -1,18 +1,14 @@
+from core.device_module.device_connector.abstract.device import Device
 from custom.devices.PSI.scheme.libs.parsing import Parser
 from custom.devices.PSI.scheme.scheme.command import Command
 from custom.devices.PSI.scheme.scheme.scheme_manager import SchemeManager
 
-from core.device_module.device_connector.abstract.device import Device
-from core.device_module.configuration import DeviceConfig
-
 
 class GAS(Device):
-    def __init__(self, config: DeviceConfig):
-        super(GAS, self).__init__()
+    def __init__(self, config):
+        super(GAS, self).__init__(config)
         self._parser = Parser()
-        self.id = config.device_id
-        self.address = config.host_address
-        self._scheme_manager = SchemeManager(self.id, self.address)
+        self._scheme_manager = SchemeManager(self.device_id, self.address)
         self.interpreter = {
             1: self.get_flow,
             2: self.get_flow_target,

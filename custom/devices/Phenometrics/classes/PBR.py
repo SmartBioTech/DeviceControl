@@ -1,5 +1,5 @@
-from custom.devices.Phenometrics.libs.communication import Connection
 from core.device_module.device_connector.abstract.device import Device
+from custom.devices.Phenometrics.libs.communication import Connection
 
 
 class PBR(Device):
@@ -27,7 +27,7 @@ class PBR(Device):
 
         :return: The current temperature.
         """
-        success, result = self.connection.send_command(self.ID, 'measureTemperature', [])
+        success, result = self.connection.send_command(self.device_id, 'measureTemperature', [])
         if not success:
             raise Exception(result)
         return float(result)
@@ -39,7 +39,7 @@ class PBR(Device):
         :param temp: The temperature.
         :return: True if was successful, False otherwise.
         """
-        success, result = self.connection.send_command(self.ID, 'setTemperature', [temp])
+        success, result = self.connection.send_command(self.device_id, 'setTemperature', [temp])
         if not success:
             raise Exception(result)
         return float(result) == temp
@@ -49,10 +49,10 @@ class PBR(Device):
         Get current pH (dimensionless.)
 
         :param repeats: the number of measurement repeats
-        :param wait: waiting time between individual repeats
+        :param wait: waiting time between indivdevice_idual repeats
         :return: The current pH.
         """
-        success, result = self.connection.send_command(self.ID, 'measurePH', [])
+        success, result = self.connection.send_command(self.device_id, 'measurePH', [])
         if not success:
             raise Exception(result)
         return float(result)
@@ -65,7 +65,7 @@ class PBR(Device):
         :return: Measured OD
         """
         variant = ["measureOD1", "measureOD2"]
-        success, result = self.connection.send_command(self.ID, variant[channel], [])
+        success, result = self.connection.send_command(self.device_id, variant[channel], [])
         if not success:
             raise Exception(result)
         return float(result)
@@ -94,11 +94,11 @@ class PBR(Device):
         """
         Turns on/off given pump.
 
-        :param pump: ID of a pump
+        :param pump: device_id of a pump
         :param on: True to turn on, False to turn off
         :return: True if was successful, False otherwise.
         """
-        success, result = self.connection.send_command(self.ID, 'setAux2', [int(on)])
+        success, result = self.connection.send_command(self.device_id, 'setAux2', [int(on)])
         if not success:
             raise Exception(result)
         return int(result) == int(on)
@@ -111,7 +111,7 @@ class PBR(Device):
                "max": maximal intensity (float) in μE,
                "on": True if light is turned on (bool)
 
-        :param channel: Given channel ID
+        :param channel: Given channel device_id
         :return: The current settings structured in a dictionary.
         """
         raise NotImplementedError("The method not implemented")
@@ -124,7 +124,7 @@ class PBR(Device):
         :param intensity: Desired intensity
         :return: True if was successful, False otherwise.
         """
-        success, result = self.connection.send_command(self.ID, 'setSolarLED', [intensity])
+        success, result = self.connection.send_command(self.device_id, 'setSolarLED', [intensity])
         if not success:
             raise Exception(result)
         return float(result) == float(intensity)
@@ -161,7 +161,7 @@ class PBR(Device):
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
         """
-        success, result = self.connection.send_command(self.ID, 'setStir', [value])
+        success, result = self.connection.send_command(self.device_id, 'setStir', [value])
         if not success:
             raise Exception(result)
         return float(result) == float(value)
@@ -177,7 +177,7 @@ class PBR(Device):
 
         :param raw: True for raw data, False for data calculated according to temperature calibration
         :param repeats: the number of measurement repeats
-        :param wait: waiting time between individual repeats
+        :param wait: waiting time between indivdevice_idual repeats
         :return: The current settings structured in a dictionary.
         """
         raise NotImplementedError("The method not implemented")
@@ -202,7 +202,7 @@ class PBR(Device):
         :param on: 1 -> on, 0 -> freeze, -1 -> off
         :return: True if was successful, False otherwise.
         """
-        success, result = self.connection.send_command(self.ID, 'stopTemperatureControl', [])
+        success, result = self.connection.send_command(self.device_id, 'stopTemperatureControl', [])
         if not success:
             raise Exception(result)
         return result == "stopTemperatureControl"
@@ -274,7 +274,7 @@ class PBR(Device):
         :return: ???
         """
         variant = ["measureAux1", "measureAux2"]
-        success, result = self.connection.send_command(self.ID, variant[channel], [])
+        success, result = self.connection.send_command(self.device_id, variant[channel], [])
         if not success:
             raise Exception(result)
         return float(result)
@@ -287,7 +287,7 @@ class PBR(Device):
 
         :return: True if was successful, False otherwise
         """
-        success, result = self.connection.send_command(self.ID, "flashLED", [])
+        success, result = self.connection.send_command(self.device_id, "flashLED", [])
         if not success:
             raise Exception(result)
         return result.lstrip() == "flashLED"
@@ -298,7 +298,7 @@ class PBR(Device):
 
         :return: the MAC address
         """
-        success, result = self.connection.send_command(self.ID, "getHardwareAddress", [])
+        success, result = self.connection.send_command(self.device_id, "getHardwareAddress", [])
         if not success:
             raise Exception(result)
         return result.lstrip()
@@ -309,7 +309,7 @@ class PBR(Device):
 
         :return: the cluster name
         """
-        success, result = self.connection.send_command(self.ID, "getMatrixName", [])
+        success, result = self.connection.send_command(self.device_id, "getMatrixName", [])
         if not success:
             raise Exception(result)
         return result.lstrip()
