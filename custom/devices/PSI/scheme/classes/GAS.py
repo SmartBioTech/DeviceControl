@@ -8,6 +8,7 @@ class GAS(Device):
     def __init__(self, config):
         super(GAS, self).__init__(config)
         self._parser = Parser()
+
         self._scheme_manager = SchemeManager(self.device_id, self.address)
         self.interpreter = {
             1: self.get_flow,

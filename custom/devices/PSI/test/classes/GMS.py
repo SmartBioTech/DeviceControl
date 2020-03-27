@@ -5,6 +5,7 @@ class GMS(Device):
     def __init__(self, config):
         super(GMS, self).__init__(config)
         self._GAS_TYPES = ["CO2", "Air", "N2"]
+
         self.interpreter = {
             1: self.get_valve_info,
             2: self.get_valve_flow,

@@ -1,14 +1,18 @@
-from core.device_module.device_connector.abstract.device import Device
 from custom.devices.PSI.scheme.scheme.command import Command
 from custom.devices.PSI.scheme.scheme.scheme_manager import SchemeManager
 
 
-class GMS(Device):
-    def __init__(self, config):
-        super(GMS, self).__init__(config)
-        self._GAS_TYPES = ["CO2", "Air", "N2"]
+from core.device_module.device_connector.abstract.device import Device
+from core.device_module.configuration import DeviceConfig
 
-        self._scheme_manager = SchemeManager(self.device_id, self.address)
+
+class GMS(Device):
+    def __init__(self, config: DeviceConfig):
+        super(GMS, self).__init__()
+        self._GAS_TYPES = ["CO2", "Air", "N2"]
+        self.id = config.device_id
+        self.address = config.host_address
+        self._scheme_manager = SchemeManager(self.id, self.address)
 
         self.interpreter = {
             1: self.get_valve_info,
