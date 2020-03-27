@@ -29,8 +29,8 @@ class Command:
             self.response
         )
 
-    def await_cmd(self):
-        self._resolved.wait()
+    def await_cmd(self, timeout=None) -> bool:
+        return self._resolved.wait(timeout=timeout)
 
     def resolve(self):
         self._resolved.set()

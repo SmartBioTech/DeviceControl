@@ -41,3 +41,10 @@ class TaskManager:
     def end(self):
         for name, task in self.tasks.items():
             task.end()
+
+    def ping(self) -> Dict[str, bool]:
+        result = {}
+        for key, task in self.tasks.items():
+            result[key] = task.is_active
+
+        return result

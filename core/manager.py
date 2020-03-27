@@ -5,7 +5,7 @@ from core.task_module.task_manager import TaskManager
 from core.utils.errors import IdError
 
 
-class Manager:
+class AppManager:
     def __init__(self):
         self.taskManager = TaskManager()
         self.deviceManager = DeviceManager()
@@ -54,7 +54,10 @@ class Manager:
             return False
 
     def ping(self) -> dict:
-        pass
+        return {
+            "devices": self.deviceManager.ping(),
+            "tasks": self.taskManager.ping()
+        }
 
     def end(self):
         self.deviceManager.end()

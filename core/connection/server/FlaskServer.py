@@ -1,11 +1,9 @@
-import json
+from flask import Flask, request, Response
 
-from flask import Flask, request, Response, make_response
-
-from core.connection.initializer import Manager
+from core.manager import AppManager
 
 app = Flask(__name__)
-manager = Manager()
+manager = AppManager()
 
 SUCCESS = Response(status=200)
 BAD_REQUEST = Response(status=400)

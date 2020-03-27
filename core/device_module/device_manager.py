@@ -33,6 +33,14 @@ class DeviceManager:
         for name, device in self._devices.items():
             device.end()
 
+    def ping(self) -> Dict[str, bool]:
+        result = {}
+
+        for key, device in self._devices.items():
+            result[key] = device.ping()
+
+        return result
+
     @staticmethod
     def load_class(class_id: str) -> Device.__class__:
         return classes.get(class_id)
