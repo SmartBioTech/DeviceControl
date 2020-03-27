@@ -1,4 +1,3 @@
-from core.device_module.configuration import DeviceConfig
 from core.device_module.device_connector.abstract.device import Device
 from custom.devices.PSI.scheme.libs.parsing import Parser
 from custom.devices.PSI.scheme.scheme.command import Command
