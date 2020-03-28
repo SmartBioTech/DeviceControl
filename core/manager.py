@@ -29,11 +29,11 @@ class AppManager:
 
     def command(self, device_id, command_id, args, source):
         try:
-            cmd = Command(command_id, args, source)
+            cmd = Command(device_id, int(command_id), eval(args), source)
             self.deviceManager.get_device(device_id).post_command(cmd)
             return True
-        except IdError as e:
-            Logger.error(e)
+        except (IdError, AttributeError) as e:
+            Logger().error(e)
             return False
 
     def register_task(self, config):

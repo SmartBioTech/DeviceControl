@@ -97,12 +97,6 @@ class Device(metaclass=Interface):
 
         return command
 
-    def ping(self) -> bool:
-        cmd = Command(1, [], 'ping')
-        self.post_command(cmd, priority=1)
-        cmd.await_cmd(timeout=5)
-        return cmd.is_valid is not None and cmd.is_valid
-
     def end(self):
         self.is_alive = False
         self.disconnect()

@@ -48,11 +48,10 @@ def ping():
 def command():
     data: dict = request.get_json()
     device_id = data.get("device_id")
-    cmd = data.get("command")
-    cmd_id = cmd.get("id")
-    args = cmd.get("arguments", [])
-    source = cmd.get("source", "external")
-    if manager.command(cmd_id, device_id, args, source):
+    cmd_id = data.get("command_id")
+    args = data.get("arguments", "[]")
+    source = data.get("source", "external")
+    if manager.command(device_id, cmd_id, args, source):
         return SUCCESS
     else:
         return BAD_REQUEST

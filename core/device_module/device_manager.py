@@ -37,7 +37,7 @@ class DeviceManager:
         result = {}
 
         for key, device in self._devices.items():
-            result[key] = device.ping()
+            result[key] = device.test_connection()
 
         return result
 

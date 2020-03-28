@@ -6,7 +6,7 @@ from core.utils.TimeStamper import now
 
 class Command:
 
-    def __init__(self, command_id: int, args: list, source: str, is_awaited=False):
+    def __init__(self, device_id, command_id: int, args: list, source: str, is_awaited=False):
         self.command_id = command_id
         self.args = args
         self.source = source
@@ -22,8 +22,9 @@ class Command:
         self._saved = False
 
     def __str__(self):
-        return "SOURCE:{} ID: {},  IS VALID: {}  RESPONSE: {}".format(
+        return "SOURCE:{} DEVICE: {} ID: {},  IS VALID: {}  RESPONSE: {}".format(
             self.source,
+            self.device_id,
             self.command_id,
             self.is_valid,
             self.response

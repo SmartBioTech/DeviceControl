@@ -1,0 +1,9 @@
+POST http://localhost:5000/command
+Content-Type: application/json
+
+{
+  "device_id": "007",
+  "command_id": "1"
+}
+
+###
