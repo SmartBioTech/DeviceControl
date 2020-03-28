@@ -1,70 +1,71 @@
 from flask import Flask, request, Response
 
-from core.manager import AppManager
-
-app = Flask(__name__)
-manager = AppManager()
-
-SUCCESS = Response(status=200)
-BAD_REQUEST = Response(status=400)
-UNAUTHORIZED = Response(status=401)
-ERROR = Response(status=500)
+from core.utils.singleton import singleton
 
 
-@app.route('/device', methods=["POST"])
-def initiate():
-    device_config = request.get_json()
-    if manager.register_device(device_config):
-        return SUCCESS
-    return BAD_REQUEST
+@singleton
+class Server:
 
+    def __init__(self, app_manager):
 
-@app.route('/end', methods=["POST"])
-def end():
-    data = request.get_json()
-    _type = data.get("type")
-    target_id = data.get("target_id")
-    if _type == "device":
-        if manager.end_device(target_id):
-            return SUCCESS
-        else:
-            return BAD_REQUEST
-    elif _type == "task":
-        if manager.end_task(target_id):
-            return SUCCESS
-        else:
-            return BAD_REQUEST
-    elif _type == "all":
-        manager.end()
-        return SUCCESS
+        self.app_manager = app_manager
+        self.server = Flask(__name__)
 
+        self.SUCCESS = Response(status=200)
+        self.BAD_REQUEST = Response(status=400)
+        self.UNAUTHORIZED = Response(status=401)
+        self.ERROR = Response(status=500)
 
-@app.route('/ping')
-def ping():
-    return manager.ping()
+    def run(self):
 
+        @self.server.route('/device', methods=["POST"])
+        def initiate():
+            device_config = request.get_json()
+            if self.app_manager.register_device(device_config):
+                return self.SUCCESS
+            return self.BAD_REQUEST
 
-@app.route('/command', methods=["POST"])
-def command():
-    data: dict = request.get_json()
-    device_id = data.get("device_id")
-    cmd_id = data.get("command_id")
-    args = data.get("arguments", "[]")
-    source = data.get("source", "external")
-    if manager.command(device_id, cmd_id, args, source):
-        return SUCCESS
-    else:
-        return BAD_REQUEST
+        @self.server.route('/end', methods=["POST"])
+        def end():
+            data = request.get_json()
+            _type = data.get("type")
+            target_id = data.get("target_id")
+            if _type == "device":
+                if self.app_manager.end_device(target_id):
+                    return self.SUCCESS
+                else:
+                    return self.BAD_REQUEST
+            elif _type == "task":
+                if self.app_manager.end_task(target_id):
+                    return self.SUCCESS
+                else:
+                    return self.BAD_REQUEST
+            elif _type == "all":
+                self.app_manager.end()
+                return self.SUCCESS
 
+        @self.server.route('/ping')
+        def ping():
+            return self.app_manager.ping()
 
-@app.route('/task', methods=["POST"])
-def task():
-    data: dict = request.get_json()
-    if manager.register_task(data):
-        return SUCCESS
-    else:
-        return BAD_REQUEST
+        @self.server.route('/command', methods=["POST"])
+        def command():
+            data: dict = request.get_json()
+            device_id = data.get("device_id")
+            cmd_id = data.get("command_id")
+            args = data.get("arguments", "[]")
+            source = data.get("source", "external")
+            if self.app_manager.command(device_id, cmd_id, args, source):
+                return self.SUCCESS
+            else:
+                return self.BAD_REQUEST
 
+        @self.server.route('/task', methods=["POST"])
+        def task():
+            data: dict = request.get_json()
+            if self.manager.register_task(data):
+                return self.SUCCESS
+            else:
+                return self.BAD_REQUEST
 
-if __name__ == '__main__':
-    app.run()
+        self.server.run()

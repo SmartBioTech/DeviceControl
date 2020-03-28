@@ -6,9 +6,9 @@ from core.utils.errors import IdError
 
 
 class AppManager:
-    def __init__(self):
-        self.taskManager = TaskManager()
-        self.deviceManager = DeviceManager()
+    def __init__(self, taskManager: TaskManager, deviceManager: DeviceManager):
+        self.taskManager = taskManager
+        self.deviceManager = deviceManager
 
     def register_device(self, config: dict) -> (bool, str):
         try:
