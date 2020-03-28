@@ -52,7 +52,7 @@ class PBRMeasureAll(BaseTask):
         super(PBRMeasureAll, self).__init__()
 
     def get_od_for_init(self):
-        cmd = Command(self.device_id, 5,
+        cmd = Command(self.device_id, "5",
                       [self.od_channel],
                       self.task_id)
 
@@ -138,7 +138,7 @@ class PBRMeasureAll(BaseTask):
         self.average_od = self.measure_initial_od_average()
 
         while self.is_active:
-            command = Command(self.device_id, 19, [self.ft_channel, self.pump_id], self.task_id, is_awaited=True)
+            command = Command(self.device_id, "19", [self.ft_channel, self.pump_id], self.task_id, is_awaited=True)
             self.device.post_command(command, 1)
 
             od_variant = 'od_1' if self.od_channel == 1 else 'od_0'
@@ -208,7 +208,7 @@ class PBRGeneralPump(BaseTask):
 
     def change_pump_state(self, state: bool):
         for try_n in range(5):
-            command = Command(self.device_id, 8, [self.pump_id, state], self.task_id)
+            command = Command(self.device_id, "8", [self.pump_id, state], self.task_id)
             self.device.post_command(command, 1)
             command.await_cmd()
 

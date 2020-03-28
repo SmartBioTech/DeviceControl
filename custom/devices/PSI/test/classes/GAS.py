@@ -6,15 +6,15 @@ class GAS(Connector):
         super(GAS, self).__init__(config)
 
         self.interpreter = {
-            1: self.get_flow,
-            2: self.get_flow_target,
-            3: self.set_flow_target,
-            4: self.get_flow_max,
-            5: self.get_pressure,
-            6: self.measure_all,
-            7: self.get_co2_air,
-            8: self.get_small_valves,
-            9: self.set_small_valves,
+            "1": self.get_flow,
+            "2": self.get_flow_target,
+            "3": self.set_flow_target,
+            "4": self.get_flow_max,
+            "5": self.get_pressure,
+            "6": self.measure_all,
+            "7": self.get_co2_air,
+            "8": self.get_small_valves,
+            "9": self.set_small_valves,
         }
 
     def get_co2_air(self):

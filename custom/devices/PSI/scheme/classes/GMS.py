@@ -10,9 +10,9 @@ class GMS(Connector):
         self._scheme_manager = SchemeManager(self.device_id, self.address)
 
         self.interpreter = {
-            1: self.get_valve_info,
-            2: self.get_valve_flow,
-            3: self.set_valve_flow,
+            "1": self.get_valve_info,
+            "2": self.get_valve_flow,
+            "3": self.set_valve_flow,
         }
 
     def get_valve_flow(self, valve: int) -> dict:

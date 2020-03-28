@@ -11,6 +11,31 @@ class PBR(Connector):
         self.connection = Connection(self.host_address,
                                      self.host_port,
                                      self.encryption_key)
+        self.interpreter = {
+            "1": self.get_temp_settings,
+            "2": self.get_temp,
+            "3": self.set_temp,
+            "4": self.get_ph,
+            "5": self.measure_od,
+            "6": self.get_pump_params,
+            "7": self.set_pump_params,
+            "8": self.set_pump_state,
+            "9": self.get_light_intensity,
+            "10": self.set_light_intensity,
+            "11": self.turn_on_light,
+            "12": self.get_pwm_settings,
+            "13": self.set_pwm,
+            "14": self.get_o2,
+            "15": self.get_thermoregulator_settings,
+            "16": self.set_thermoregulator_state,
+            "17": self.measure_ft,
+            "18": self.get_co2,
+            "19": self.measure_all,
+            "20": self.measure_AUX,
+            "21": self.flash_LED,
+            "22": self.get_hardware_address,
+            "23": self.get_cluster_name
+        }
 
     def get_temp_settings(self):
         """
@@ -322,4 +347,4 @@ class PBR(Connector):
             return False
 
     def disconnect(self):
-        pass
+        pass    # TODO
