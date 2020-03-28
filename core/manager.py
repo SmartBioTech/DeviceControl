@@ -29,7 +29,7 @@ class AppManager:
 
     def command(self, device_id, command_id, args, source, priority=False):
         try:
-            cmd = Command(device_id, int(command_id), eval(args), source)
+            cmd = Command(device_id, command_id, eval(args), source)
             if priority:
                 self.deviceManager.get_device(device_id).post_command(cmd, priority=1)
             else:

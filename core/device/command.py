@@ -6,11 +6,11 @@ from core.utils.TimeStamper import now
 
 class Command:
 
-    def __init__(self, device_id, command_id: int, args: list, source: str, is_awaited=False):
+    def __init__(self, device_id, command_id: str, args: list, source: str, is_awaited=False):
         self.command_id = command_id
         self.args = args
         self.source = source
-        self.device_id = None
+        self.device_id = device_id
         self.time_issued = now()
         self.database = DatabaseManager()
 
