@@ -56,8 +56,8 @@ class DatabaseManager:
 
     def get_for_system(self, device_id, time):
         """
-        Getter - retrieves data from save_to_database and remembers which data have been shown in the current session. Already seen
-        data will not be loaded in the next get.
+        Getter - retrieves db from save_to_database and remembers which db have been shown in the current session. Already seen
+        db will not be loaded in the next get.
         :param device_id: device_id to search for
         :param time: time from which to begin the search
         :return: list of the table's rows
@@ -88,7 +88,7 @@ class DatabaseManager:
 
     def update_log(self, cmd):
         """
-        Is called by executioner - saves data(responses) to the save_to_database table.
+        Is called by executioner - saves db(responses) to the save_to_database table.
         :param cmd:
         :return: None
         """

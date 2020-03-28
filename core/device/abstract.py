@@ -1,12 +1,12 @@
 from abc import abstractmethod
 from threading import Thread
 
-from core.data.log import Logger
-from core.device_module.command import Command
+from core.log import Log
+from core.device.command import Command
 from core.utils.AbstractClass import abstractattribute, Interface
 
 
-class Device(metaclass=Interface):
+class Connector(metaclass=Interface):
 
     def __init__(self, config: dict):
         self.device_id = None
@@ -40,7 +40,7 @@ class Device(metaclass=Interface):
         return "{} @ {}".format(self.device_id, self.address)
 
     def __repr__(self):
-        return "Device({}, {})".format(self.device_id, self.address)
+        return "Connector({}, {})".format(self.device_id, self.address)
 
     @abstractmethod
     def disconnect(self) -> None:
@@ -50,10 +50,10 @@ class Device(metaclass=Interface):
     def test_connection(self) -> bool:
         pass
 
-    def _get_command_reference(self, cmd_id):
+    def get_command_reference(self, cmd_id):
         command_reference = self.interpreter.get(cmd_id)
         if command_reference is None:
-            raise AttributeError("Requested command ID is not defined in the device_module's Interpreter")
+            raise AttributeError("Requested command ID is not defined in the device's Interpreter")
         return command_reference
 
     def get_capabilities(self):
@@ -80,11 +80,11 @@ class Device(metaclass=Interface):
     def _execute_command(self, command: Command):
         try:
             validity = True
-            response = self._get_command_reference(command.command_id)(*command.args)
+            response = self.get_command_reference(command.command_id)(*command.args)
         except Exception as e:
             validity = False
             response = e
-            Logger().error(e)
+            Log.error(e)
 
         command.response = response
         command.is_valid = validity

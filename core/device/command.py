@@ -1,6 +1,6 @@
 from threading import Event
 
-from core.data.database import DatabaseManager
+from core.db.database import DatabaseManager
 from core.utils.TimeStamper import now
 
 

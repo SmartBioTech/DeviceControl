@@ -29,7 +29,7 @@ class GAS(JavaDevice):
 
     def get_small_valves(self):
         """
-        Obtain settings of individual vents of GAS device_module.
+        Obtain settings of individual vents of GAS device.
         Represented as one byte, where first 6 bits represent
         vents indexed as in a picture scheme available here:
         https://i.imgur.com/jSeFFaO.jpg
@@ -44,7 +44,7 @@ class GAS(JavaDevice):
 
     def set_small_valves(self, mode):
         """
-        Changes settings of individual vents of GAS device_module.
+        Changes settings of individual vents of GAS device.
         Can be set by one byte (converted to int), where first 6
         bits represent vents indexed as in a picture scheme
         available here: https://i.imgur.com/jSeFFaO.jpg

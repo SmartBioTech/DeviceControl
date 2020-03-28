@@ -1,10 +1,10 @@
-from core.device_module.device_connector.abstract.device import Device
+from core.device.abstract import Connector
 from custom.devices.PSI.scheme.libs.parsing import Parser
 from custom.devices.PSI.scheme.scheme.command import Command
 from custom.devices.PSI.scheme.scheme.scheme_manager import SchemeManager
 
 
-class GAS(Device):
+class GAS(Connector):
     def __init__(self, config):
         super(GAS, self).__init__(config)
         self._parser = Parser()
@@ -34,7 +34,7 @@ class GAS(Device):
 
     def get_small_valves(self) -> str:
         """
-        Obtain settings of individual vents of GAS device_module.
+        Obtain settings of individual vents of GAS device.
 
         Represented as one byte, where first 6 bits represent
         vents indexed as in a picture scheme available here:
@@ -48,7 +48,7 @@ class GAS(Device):
 
     def set_small_valves(self, mode: int) -> bool:
         """
-        Changes settings of individual vents of GAS device_module.
+        Changes settings of individual vents of GAS device.
 
         Can be set by one byte (converted to int), where first 6
         bits represent vents indexed as in a picture scheme

@@ -1,8 +1,8 @@
-from core.device_module.device_connector.abstract.device import Device
+from core.device.abstract import Connector
 from custom.devices.Phenometrics.libs.communication import Connection
 
 
-class PBR(Device):
+class PBR(Connector):
     def __init__(self, config: dict):
         self.host_address = None
         self.host_port = None
@@ -175,7 +175,7 @@ class PBR(Device):
                "max": maximal stirring in %,
                "on": True if stirring is turned on (bool)
 
-        :param raw: True for raw data, False for data calculated according to temperature calibration
+        :param raw: True for raw db, False for db calculated according to temperature calibration
         :param repeats: the number of measurement repeats
         :param wait: waiting time between indivdevice_idual repeats
         :return: The current settings structured in a dictionary.
@@ -220,7 +220,7 @@ class PBR(Device):
         """
         TBA
 
-        :param raw: True for raw data, False for data ???
+        :param raw: True for raw db, False for db ???
         :param repeats: the number of measurement repeats
         :return:
         """
@@ -235,9 +235,9 @@ class PBR(Device):
         :return: dictionary of all measured values
         """
         measure_all_dictionary = dict()
-        measure_all_dictionary["pwm_settings"] = False, "pwm settings not available for this device_module"
-        measure_all_dictionary["light_0"] = False, "light_0 not available for this device_module"
-        measure_all_dictionary["light_1"] = False, "light_1 not available for this device_module"
+        measure_all_dictionary["pwm_settings"] = False, "pwm settings not available for this device"
+        measure_all_dictionary["light_0"] = False, "light_0 not available for this device"
+        measure_all_dictionary["light_1"] = False, "light_1 not available for this device"
 
         try:
             measure_all_dictionary["od_0"] = True, self.measure_od(0)
@@ -259,10 +259,10 @@ class PBR(Device):
         except Exception:
             measure_all_dictionary["temp"] = False, "Cannot get temp"
 
-        measure_all_dictionary["pump"] = False, "pump settings not available for this device_module"
-        measure_all_dictionary["o2"] = False, "o2 settings not available for this device_module"
-        measure_all_dictionary["co2"] = False, "co2 settings not available for this device_module"
-        measure_all_dictionary["ft"] = False, "ft settings not available for this device_module"
+        measure_all_dictionary["pump"] = False, "pump settings not available for this device"
+        measure_all_dictionary["o2"] = False, "o2 settings not available for this device"
+        measure_all_dictionary["co2"] = False, "co2 settings not available for this device"
+        measure_all_dictionary["ft"] = False, "ft settings not available for this device"
 
         return measure_all_dictionary
 

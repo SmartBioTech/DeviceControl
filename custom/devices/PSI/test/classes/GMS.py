@@ -1,7 +1,7 @@
-from core.device_module.device_connector.abstract.device import Device
+from core.device.abstract import Connector
 
 
-class GMS(Device):
+class GMS(Connector):
     def __init__(self, config):
         super(GMS, self).__init__(config)
         self._GAS_TYPES = ["CO2", "Air", "N2"]

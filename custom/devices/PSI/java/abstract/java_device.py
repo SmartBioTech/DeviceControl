@@ -5,10 +5,10 @@ from custom.devices.PSI.java.utils.jvm_controller import is_jvm_started, start_j
 
 import jpype.imports
 
-from core.device_module.device_connector.abstract.device import Device
+from core.device.abstract import Connector
 
 
-class JavaDevice(Device):
+class JavaDevice(Connector):
     def __init__(self, config):
         super(JavaDevice, self).__init__(config)
         self.device = self.connect(self.address)

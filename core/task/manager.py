@@ -1,9 +1,8 @@
 from typing import Dict
 
-from core.task_module.abstract.task import BaseTask
+from core.task.abstract import BaseTask
 from core.utils.errors import IdError
 from core.utils.singleton import singleton
-from custom.tasks import classes as task_classes
 
 
 @singleton
@@ -26,7 +25,8 @@ class TaskManager:
 
     @staticmethod
     def load_class(task_class: str) -> BaseTask.__class__:
-        return task_classes.get(task_class)
+        from custom.tasks import classes
+        return classes.get(task_class)
 
     def remove_task(self, task_id):
         if task_id in self.tasks:
@@ -39,8 +39,8 @@ class TaskManager:
         return self.tasks.get(task_id)
 
     def end(self):
-        for name, task in self.tasks.items():
-            task.end()
+        for key in list(self.tasks.keys()):
+            self.remove_task(key)
 
     def ping(self) -> Dict[str, bool]:
         result = {}

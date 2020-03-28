@@ -4,10 +4,11 @@ from time import sleep
 
 import numpy as np
 
-from core.device_module.command import Command
-from core.device_module.device_manager import Device, DeviceManager
-from core.task_module import task_manager
-from core.task_module.abstract.task import BaseTask
+from core.device.abstract import Connector
+from core.device.command import Command
+from core.device.manager import DeviceManager
+from core.task.abstract import BaseTask
+from core.task.manager import TaskManager
 from core.utils.errors import IdError
 
 
@@ -30,9 +31,9 @@ class PBRMeasureAll(BaseTask):
         self.pump_id = None
 
         self.__dict__.update(config)
-        self.device: Device = DeviceManager().get_device(self.device_id)
+        self.device: Connector = DeviceManager().get_device(self.device_id)
         self.average_od = self.measure_initial_od_average()
-        self.pump = task_manager.TaskManager().create_task(self.pump_config)
+        self.pump = TaskManager().create_task(self.pump_config)
 
         try:
             assert self.sleep_period is not None
@@ -51,7 +52,7 @@ class PBRMeasureAll(BaseTask):
         super(PBRMeasureAll, self).__init__()
 
     def get_od_for_init(self):
-        cmd = Command(5,
+        cmd = Command(self.device_id, 5,
                       [self.od_channel],
                       self.task_id)
 
@@ -72,7 +73,7 @@ class PBRMeasureAll(BaseTask):
         computed = False
         average = 0
 
-        # calculate the average OD from the measured data
+        # calculate the average OD from the measured db
         while not computed:
 
             mean = np.mean(data)
@@ -137,7 +138,7 @@ class PBRMeasureAll(BaseTask):
         self.average_od = self.measure_initial_od_average()
 
         while self.is_active:
-            command = Command(19, [self.ft_channel, self.pump_id], self.task_id, is_awaited=True)
+            command = Command(self.device_id, 19, [self.ft_channel, self.pump_id], self.task_id, is_awaited=True)
             self.device.post_command(command, 1)
 
             od_variant = 'od_1' if self.od_channel == 1 else 'od_0'
@@ -160,7 +161,6 @@ class PBRMeasureAll(BaseTask):
 
     def end(self):
         self.is_active = False
-        task_manager.TaskManager().remove_task(self.pump_config.get("task_id"))
 
 
 class PBRGeneralPump(BaseTask):
@@ -177,7 +177,7 @@ class PBRGeneralPump(BaseTask):
         try:
             assert self.device is not None
         except AssertionError:
-            raise IdError("Device with requested ID is not initiated")
+            raise IdError("Connector with requested ID is not initiated")
 
         try:
             assert self.min_od is not None
@@ -208,7 +208,7 @@ class PBRGeneralPump(BaseTask):
 
     def change_pump_state(self, state: bool):
         for try_n in range(5):
-            command = Command(8, [self.pump_id, state], self.task_id)
+            command = Command(self.device_id, 8, [self.pump_id, state], self.task_id)
             self.device.post_command(command, 1)
             command.await_cmd()
 

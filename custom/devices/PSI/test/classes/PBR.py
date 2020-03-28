@@ -1,8 +1,8 @@
 from random import random
-from core.device_module.device_connector.abstract.device import Device
+from core.device.abstract import Connector
 
 
-class PBR(Device):
+class PBR(Connector):
     def __init__(self, config):
         super(PBR, self).__init__(config)
         self._last_value = 0.45
@@ -186,7 +186,7 @@ class PBR(Device):
                "max": maximal stirring in %,
                "on": True if stirring is turned on (bool)
 
-        :param raw: True for raw data, False for data calculated according to temperature calibration
+        :param raw: True for raw db, False for db calculated according to temperature calibration
         :param repeats: the number of measurement repeats
         :param wait: waiting time between individual repeats
         :return: The current settings structured in a dictionary.
@@ -228,7 +228,7 @@ class PBR(Device):
         """
         TBA
 
-        :param raw: True for raw data, False for data ???
+        :param raw: True for raw db, False for db ???
         :param repeats: the number of measurement repeats
         :return:
         """

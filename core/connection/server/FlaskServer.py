@@ -34,7 +34,7 @@ def end():
             return SUCCESS
         else:
             return BAD_REQUEST
-    else:
+    elif _type == "all":
         manager.end()
         return SUCCESS
 
