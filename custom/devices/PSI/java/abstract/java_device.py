@@ -22,6 +22,8 @@ class JavaDevice(Connector):
 
         device = Controller.commander_connector(java_config_path, self.address, 115200)
 
+        Controller.load_plugins()
+
         threading.Thread(target=device.connect, args=[0]).start()
         return device
 

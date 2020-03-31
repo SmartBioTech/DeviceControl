@@ -13,6 +13,7 @@ class Controller:
     def __init__(self):
         self.lock = Lock()
         self.commander_connector = None
+        self.plugins_loaded = False
 
     def start_jvm(self):
         self.lock.acquire()
@@ -23,10 +24,13 @@ class Controller:
 
         self.commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
 
-        server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
-        server_plugin_manager.getInstance().loadPlugins()
-
         self.lock.release()
+
+    def load_plugins(self):
+        if not self.plugins_loaded:
+            server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
+            server_plugin_manager.getInstance().loadPlugins()
+        self.plugins_loaded = True
 
     @staticmethod
     def shutdown_jvm():
