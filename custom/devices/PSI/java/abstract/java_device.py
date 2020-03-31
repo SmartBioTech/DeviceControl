@@ -25,6 +25,7 @@ class JavaDevice(Connector):
 
         server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
         server_plugin_manager.getInstance().loadPlugins()
+        print("here")
         
         threading.Thread(target=device.connect, args=[0]).start()
         return device
