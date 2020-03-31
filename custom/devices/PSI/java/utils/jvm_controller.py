@@ -12,6 +12,7 @@ class Controller:
 
     def __init__(self):
         self.lock = Lock()
+        self.commander_connector = None
 
     def start_jvm(self):
         self.lock.acquire()
@@ -19,6 +20,11 @@ class Controller:
             jpype.addClassPath('custom/devices/PSI/java/lib/jar/bioreactor-commander-0.8.7.jar')
             jpype.startJVM(jvmpath=jpype.getDefaultJVMPath(), convertStrings=False,
                            classpath="custom/devices/PSI/java/lib/jar/bioreactor-commander-0.8.7.jar")
+
+        self.commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
+
+        server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
+        server_plugin_manager.getInstance().loadPlugins()
 
         self.lock.release()
 

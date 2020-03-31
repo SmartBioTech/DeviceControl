@@ -19,11 +19,8 @@ class JavaDevice(Connector):
         Controller.start_jvm()
         if not jpype.isThreadAttachedToJVM():
             jpype.attachThreadToJVM()
-        commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
-        device = commander_connector(java_config_path, self.address, 115200)
 
-        server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
-        server_plugin_manager.getInstance().loadPlugins()
+        device = Controller.commander_connector(java_config_path, self.address, 115200)
 
         threading.Thread(target=device.connect, args=[0]).start()
         return device
