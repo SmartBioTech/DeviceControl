@@ -15,8 +15,10 @@ class Server:
         self.BAD_REQUEST = Response(status=400)
         self.UNAUTHORIZED = Response(status=401)
         self.ERROR = Response(status=500)
+        self.register_endpoints()
+        self.server.run()
 
-    def run(self):
+    def register_endpoints(self):
 
         @self.server.route('/device', methods=["POST"])
         def initiate():
@@ -68,4 +70,10 @@ class Server:
             else:
                 return self.BAD_REQUEST
 
-        self.server.run()
+        @self.server.route('/data', methods=["GET"])
+        def get_data():
+            sql_arguments = dict(request.args)
+            print(sql_arguments)
+            print(type(sql_arguments))
+            return self.SUCCESS
+
