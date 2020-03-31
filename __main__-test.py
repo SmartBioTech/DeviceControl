@@ -1,4 +1,5 @@
 from threading import Thread
+from time import sleep
 
 from core.device.manager import DeviceManager
 from core.manager import AppManager
@@ -24,4 +25,5 @@ tasks = [config_pbr, config_gas]
 for task in tasks:
     appManager.register_device(task)
 
+sleep(10)
 print(appManager.ping())
