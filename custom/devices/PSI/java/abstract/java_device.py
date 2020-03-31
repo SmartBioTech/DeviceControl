@@ -9,21 +9,21 @@ from core.device.abstract import Connector
 
 
 class JavaDevice(Connector):
-    def __init__(self, config):
+    def __init__(self, config, java_config_path):
         super(JavaDevice, self).__init__(config)
-        self.device = self.connect(self.address)
+        self.device = self.connect(java_config_path)
         self.interpreter = {}
 
-    def connect(self, device_config):
+    def connect(self, java_config_path):
         if not is_jvm_started():
             jpype.addClassPath('device_connector/java/lib/jar/bioreactor-commander-0.8.7.jar')
             start_jvm()
 
-        commanderConnector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
-        device = commanderConnector(device_config, self.address, 115200)
+        commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
+        device = commander_connector(java_config_path, self.address, 115200)
 
-        serverPluginManager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
-        serverPluginManager.getInstance().loadPlugins()
+        server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
+        server_plugin_manager.getInstance().loadPlugins()
         device.connect(0)
 
         return device

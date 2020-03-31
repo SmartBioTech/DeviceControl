@@ -3,7 +3,7 @@ from custom.devices.PSI.java.abstract.java_device import JavaDevice
 
 class GMS(JavaDevice):
     def __init__(self, config: dict):
-        super(GMS, self).__init__(config)
+        super(GMS, self).__init__(config, "custom/devices/PSI/java/lib/config/device_GMS.config")
         self.interpreter = {
             "1": self.get_valve_info,
             "2": self.get_valve_flow,
