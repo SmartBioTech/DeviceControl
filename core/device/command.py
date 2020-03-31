@@ -1,6 +1,6 @@
 from threading import Event
 
-from core.db.database import DatabaseManager
+from core.db import Database
 from core.utils.TimeStamper import now
 
 
@@ -12,7 +12,7 @@ class Command:
         self.source = source
         self.device_id = device_id
         self.time_issued = now()
-        self.database = DatabaseManager()
+        self.database = Database
 
         self._resolved = Event()
         self.is_valid = None
