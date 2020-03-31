@@ -5,7 +5,7 @@ import jpype.imports
 
 def start_jvm():
     jpype.startJVM(jvmpath=jpype.getDefaultJVMPath(), convertStrings=False,
-                   classpath="device_connector/java/lib/jar/bioreactor-commander-0.8.7.jar")
+                   classpath="custom/devices/PSI/java/lib/jar/bioreactor-commander-0.8.7.jar")
 
 
 def shutdown_jvm():
