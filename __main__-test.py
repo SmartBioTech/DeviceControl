@@ -22,4 +22,4 @@ config_gas = {"device_id": "002",
 
 tasks = [config_pbr, config_gas]
 for task in tasks:
-    Thread(target=appManager.register_device, args=[task]).start()
+    appManager.register_device(task)
