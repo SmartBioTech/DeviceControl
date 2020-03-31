@@ -20,13 +20,14 @@ class JavaDevice(Connector):
             jpype.addClassPath('custom/devices/PSI/java/lib/jar/bioreactor-commander-0.8.7.jar')
             start_jvm()
 
+        jpype.attachThreadToJVM()
+
         commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
         device = commander_connector(java_config_path, self.address, 115200)
 
         server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
         server_plugin_manager.getInstance().loadPlugins()
-        print("here")
-        
+
         threading.Thread(target=device.connect, args=[0]).start()
         return device
 
