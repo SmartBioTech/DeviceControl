@@ -16,14 +16,13 @@ class Server:
         self.UNAUTHORIZED = Response(status=401)
         self.ERROR = Response(status=500)
         self.register_endpoints()
-        self.server.run()
+        self.server.run(host='0.0.0.0')
 
     def register_endpoints(self):
 
         @self.server.route('/device', methods=["POST"])
         def initiate():
             device_config = request.get_json()
-            print("json loaded")
 
             if self.app_manager.register_device(device_config):
                 return self.SUCCESS

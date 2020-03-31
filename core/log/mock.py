@@ -6,8 +6,8 @@ class MockLogger:
 
     @staticmethod
     def error(exc: Exception):
-        pass
+        print(exc)
 
     @staticmethod
     def info(msg: str):
-        pass
+        print(msg)
