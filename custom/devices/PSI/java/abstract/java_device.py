@@ -2,7 +2,7 @@ import threading
 from abc import abstractmethod
 
 import jpype
-from custom.devices.PSI.java.utils.jvm_controller import is_jvm_started, start_jvm
+from custom.devices.PSI.java.utils import Controller
 
 import jpype.imports
 
@@ -16,11 +16,11 @@ class JavaDevice(Connector):
         self.interpreter = {}
 
     def connect(self, java_config_path):
-        if not is_jvm_started():
+        if not Controller.is_jvm_started():
             jpype.addClassPath('custom/devices/PSI/java/lib/jar/bioreactor-commander-0.8.7.jar')
-            start_jvm()
-        else:
-            jpype.attachThreadToJVM()
+            Controller.start_jvm()
+        elif not Controller.finished:
+            Controller.finished_flag.wait()
 
         commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
         device = commander_connector(java_config_path, self.address, 115200)
