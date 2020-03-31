@@ -1,3 +1,4 @@
+import threading
 from abc import abstractmethod
 
 import jpype
@@ -24,8 +25,7 @@ class JavaDevice(Connector):
 
         server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
         server_plugin_manager.getInstance().loadPlugins()
-        device.connect(0)
-
+        threading.Thread(target=device.connect(0)).start()
         return device
 
     def disconnect(self):
