@@ -17,6 +17,8 @@ class JavaDevice(Connector):
 
     def connect(self, java_config_path):
         Controller.start_jvm()
+        if not jpype.isThreadAttachedToJVM():
+            jpype.attachThreadToJVM()
         commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
         device = commander_connector(java_config_path, self.address, 115200)
 
