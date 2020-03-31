@@ -16,7 +16,7 @@ class Server:
         self.UNAUTHORIZED = Response(status=401)
         self.ERROR = Response(status=500)
         self.register_endpoints()
-        self.server.run(port=30)
+        self.server.run()
 
     def register_endpoints(self):
 
