@@ -23,3 +23,5 @@ config_gas = {"device_id": "002",
 tasks = [config_pbr, config_gas]
 for task in tasks:
     appManager.register_device(task)
+
+print(appManager.ping())
