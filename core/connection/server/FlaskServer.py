@@ -108,6 +108,7 @@ class Scheduler(Thread):
 
     def schedule_job(self, job: Job):
         self.jobs.append(job)
+        self.has_jobs.set()
 
     @staticmethod
     def execute(job: Job):
