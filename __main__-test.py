@@ -30,5 +30,5 @@ for task in tasks:
     job = Job(appManager.register_device, [task])
     Thread(target=scheduler.schedule_job, args=[job]).start()
 
-sleep(10)
+sleep(20)
 print(appManager.ping())
