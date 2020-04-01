@@ -19,6 +19,6 @@ if len(sys.argv) > 1:
 if conModule is None:
     conModule = classes.get(default)
 
-conModule(appManager).run()
+conModule(appManager).start()
 
 

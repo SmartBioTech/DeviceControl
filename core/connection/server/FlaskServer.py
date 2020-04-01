@@ -22,6 +22,8 @@ class Server:
         self.UNAUTHORIZED = Response(status=401)
         self.ERROR = Response(status=500)
         self.register_endpoints()
+
+    def start(self):
         self.scheduler.start()
         self.server.run(host='0.0.0.0')
 
