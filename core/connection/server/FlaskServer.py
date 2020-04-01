@@ -119,5 +119,5 @@ class Scheduler(Thread):
         while self.is_active:
             self.has_jobs.wait()
             while self.jobs:
-                self.execute(*self.jobs.pop(0))
+                self.execute(self.jobs.pop(0))
             self.has_jobs.clear()
