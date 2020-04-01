@@ -9,7 +9,7 @@ from core.device.command import Command
 from core.device.manager import DeviceManager
 from core.task.abstract import BaseTask
 from core.task.manager import TaskManager
-from core.utils.errors import IdError
+from core.utils.observable import Observable, Observer
 
 
 class PBRMeasureAll(BaseTask):
@@ -27,13 +27,12 @@ class PBRMeasureAll(BaseTask):
         self.ft_channel = None
         self.latest_values = deque(maxlen=2)
         self.device_id: str = ""
-        self.pump_config: dict = {}
         self.pump_id = None
 
         self.__dict__.update(config)
         self.device: Connector = DeviceManager().get_device(self.device_id)
         self.average_od = self.measure_initial_od_average()
-        self.pump = TaskManager().create_task(self.pump_config)
+        self.od = Observable()
 
         try:
             assert self.sleep_period is not None
@@ -150,7 +149,7 @@ class PBRMeasureAll(BaseTask):
                     self.latest_values.appendleft(od)
                     od_is_outlier = self.handle_outlier(od)
                     if not od_is_outlier:
-                        self.pump.stabilize(od)
+                        self.od.value = od
                 else:
                     od_is_outlier = False
 
@@ -163,30 +162,36 @@ class PBRMeasureAll(BaseTask):
         self.is_active = False
 
 
-class PBRGeneralPump(BaseTask):
+class PBRGeneralPump(BaseTask, Observer):
 
     def __init__(self, config):
-        super(PBRGeneralPump, self).__init__()
         self.min_od = None
         self.max_od = None
         self.pump_id = None
         self.device_id: str = ""
+        self.od_task_id: str = ""
+
         self.__dict__.update(config)
         self.is_pump_on = False
-        self.device = DeviceManager().get_device(self.device_id)
-        try:
-            assert self.device is not None
-        except AssertionError:
-            raise IdError("Connector with requested ID is not initiated")
 
         try:
             assert self.min_od is not None
             assert self.max_od is not None
             assert self.device_id is not ""
-            assert self.device is not None
             assert self.pump_id is not None
+            assert self.od_task_id is not ""
         except AssertionError:
             raise AttributeError("Configuration of PBRGeneralPump task must contain all required attributes")
+
+        self.device = DeviceManager().get_device(self.device_id)
+        self.od_task: PBRMeasureAll = TaskManager().get_task(self.od_task_id)
+
+        self.od_task.od.observe(self)
+
+        super(PBRGeneralPump, self).__init__()
+
+    def update(self, observable: Observable):
+        self.stabilize(observable.value)
 
     def start(self):
         pass
@@ -213,6 +218,8 @@ class PBRGeneralPump(BaseTask):
             command.await_cmd()
 
             if isinstance(command.response, bool) and command.response:
+                print("pump is {}".format("ON" if state else "OFF"))
+                print("changing pump state to: {}".format(state))
                 self.is_pump_on = state
                 return
         raise ConnectionError

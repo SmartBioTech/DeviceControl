@@ -36,7 +36,10 @@ class TaskManager:
             raise IdError("Task with requested ID doesn't exist")
 
     def get_task(self, task_id):
-        return self.tasks.get(task_id)
+        task = self.tasks.get(task_id)
+        if task is None:
+            raise IdError("Task with given ID: %s was not found" % task_id)
+        return task
 
     def end(self):
         for key in list(self.tasks.keys()):
