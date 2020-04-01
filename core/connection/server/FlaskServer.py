@@ -48,15 +48,13 @@ class Server:
             target_id = data.get("target_id")
             if _type == "device":
                 job = Job(task=self.app_manager.end_device, args=[target_id])
-                if self.app_manager.end_device(target_id):
-                    return self.SUCCESS
-                else:
-                    return self.BAD_REQUEST
+
             elif _type == "task":
                 job = Job(task=self.app_manager.end_task, args=[target_id])
 
             elif _type == "all":
                 job = Job(task=self.app_manager.end)
+
             else:
                 return self.BAD_REQUEST
 
