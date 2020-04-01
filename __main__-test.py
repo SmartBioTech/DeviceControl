@@ -1,4 +1,5 @@
 from threading import Thread
+from time import sleep
 
 from core.connection.server.FlaskServer import Scheduler, Job
 from core.device.manager import DeviceManager
@@ -28,3 +29,6 @@ tasks = [config_pbr, config_gas]
 for task in tasks:
     job = Job(appManager.register_device, [task])
     Thread(target=scheduler.schedule_job, args=[job]).start()
+
+sleep(10)
+print(appManager.ping())
