@@ -1,6 +1,6 @@
 from threading import Thread
 
-from core.connection.server.FlaskServer import Scheduler
+from core.connection.server.FlaskServer import Scheduler, Job
 from core.device.manager import DeviceManager
 from core.manager import AppManager
 from core.task.manager import TaskManager
@@ -26,4 +26,5 @@ config_gas = {"device_id": "002",
 
 tasks = [config_pbr, config_gas]
 for task in tasks:
-    Thread(target=scheduler.schedule_job, args=[appManager.register_device, task]).start()
+    job = Job(appManager.register_device, task)
+    Thread(target=scheduler.schedule_job, args=[job]).start()
