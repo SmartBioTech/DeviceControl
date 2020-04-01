@@ -26,5 +26,5 @@ config_gas = {"device_id": "002",
 
 tasks = [config_pbr, config_gas]
 for task in tasks:
-    job = Job(appManager.register_device, task)
+    job = Job(appManager.register_device, [task])
     Thread(target=scheduler.schedule_job, args=[job]).start()
