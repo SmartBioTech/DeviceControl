@@ -1,3 +1,4 @@
+from core.data.manager import DataManager
 from core.data.command import Command
 from core.log import Log
 from  core.device.manager import DeviceManager
@@ -6,9 +7,10 @@ from core.utils.errors import IdError
 
 
 class AppManager:
-    def __init__(self, taskManager: TaskManager, deviceManager: DeviceManager):
+    def __init__(self, taskManager: TaskManager, deviceManager: DeviceManager, dataManager: DataManager):
         self.taskManager = taskManager
         self.deviceManager = deviceManager
+        self.dataManager = dataManager
 
     def register_device(self, config: dict) -> (bool, str):
         try:
@@ -61,6 +63,9 @@ class AppManager:
             "devices": self.deviceManager.ping(),
             "tasks": self.taskManager.ping()
         }
+
+    def get_data(self, device_id, log_id):
+        return self.dataManager.get_data_by_id(log_id, device_id)
 
     def end(self):
         self.deviceManager.end()

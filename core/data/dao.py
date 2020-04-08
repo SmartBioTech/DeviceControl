@@ -2,6 +2,7 @@ from typing import List, Optional, Tuple
 
 import mysql.connector as cn
 
+from core.utils.db import enquote_all
 from core.utils.singleton import singleton
 
 
@@ -78,11 +79,11 @@ class Dao:
     def select(self, table: str, columns: List[str], where: Optional[List[str]] = None) -> str:
 
         if where:
-            where = " WHERE " + ", ".join(where)
+            where = " WHERE " + " AND ".join(where)
         else:
             where = ""
 
-        query = "SELECT %s FROM %s%s" % (", ".join(columns), table, where)
+        query = "SELECT %s FROM %s %s" % (", ".join(columns), table, where)
 
         return self._execute_query(query)
 
@@ -95,8 +96,7 @@ class Dao:
             columns.append(pair[0])
             values.append(pair[1])
 
-        for i in (range(len(values))):
-            values[i] = f"\"{values[i]}\""
+        enquote_all(values)
 
         columns = ", ".join(columns)
         values = ", ".join(values)

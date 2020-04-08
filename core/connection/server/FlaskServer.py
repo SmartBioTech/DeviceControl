@@ -1,7 +1,7 @@
 from threading import Thread, Event
 from typing import List, Callable
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, jsonify
 
 from core.manager import AppManager
 from core.utils.singleton import singleton
@@ -109,10 +109,10 @@ class Server:
 
         @self.server.route('/data', methods=["GET"])
         def get_data():
-            sql_arguments = dict(request.args)
-            print(sql_arguments)
-            print(type(sql_arguments))
-            return self.SUCCESS
+            args = dict(request.args)
+            device_id = args.get("device_id", None)
+            log_id = args.get("log_id", None)
+            return jsonify(self.app_manager.get_data(device_id, log_id))
 
 
 class Job:

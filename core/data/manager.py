@@ -1,6 +1,7 @@
 from typing import Optional
 
 from core.data.dao import Dao
+from core.utils.db import enquote_all, enquote
 from core.utils.singleton import singleton
 
 
@@ -24,6 +25,7 @@ class DataManager:
     def get_data_by_id(self, log_id: Optional[int] = None, device_id: Optional[str] = None):
         where_conditions = []
         if device_id is not None:
+            device_id = enquote(device_id)
             where_conditions.append(f"device_id={device_id}")
 
             if log_id is None:
@@ -46,7 +48,7 @@ class DataManager:
             row = row[1:]
             result[log_id] = row
 
-        if device_id is not None:
+        if device_id is not None and response:
             self.last_seen[device_id] = max(result.keys())
 
         return result

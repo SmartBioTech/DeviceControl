@@ -1,5 +1,6 @@
 import sys
 
+from core.data.manager import DataManager
 from core.device.manager import DeviceManager
 from core.log import Logger
 from core.manager import AppManager
@@ -10,7 +11,8 @@ logger = Logger()
 
 deviceManager = DeviceManager()
 taskManager = TaskManager()
-appManager = AppManager(taskManager, deviceManager)
+dataManager = DataManager()
+appManager = AppManager(taskManager, deviceManager, dataManager)
 
 default = "flask_server"
 

@@ -1,6 +1,6 @@
 from threading import Event
 
-from core.data import DataManager
+from core.data.manager import DataManager
 from core.utils.TimeStamper import now
 
 
