@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from threading import Thread
+from threading import Thread, Lock
 
 import jpype
 
@@ -17,6 +17,7 @@ class Connector(metaclass=Interface):
         self.address = None
         self.setup = {}
         self.java = None
+        self.lock = Lock()
 
         self.__dict__.update(config)
 
@@ -68,7 +69,13 @@ class Connector(metaclass=Interface):
             result[key] = func.__name__, arguments
         return result
 
-    def post_command(self, cmd: Command, priority=2):
+    def post_command(self, cmd: Command):
+        self.lock.acquire()
+        cmd.device_id = self.device_id
+        self._execute_command(cmd)
+        self.lock.release()
+
+    def _post_command(self, cmd: Command, priority=2):
         cmd.device_id = self.device_id
         self._queue.put(cmd, priority)
         if not self._is_queue_check_running:
@@ -76,8 +83,6 @@ class Connector(metaclass=Interface):
             t.start()
 
     def _queue_new_item(self):
-        if self.java is not None and Controller.is_jvm_started() and not jpype.isThreadAttachedToJVM():
-            jpype.attachThreadToJVM()
         self._is_queue_check_running = True
         while self._queue.has_items():
             self._execute_command(self._queue.get())
