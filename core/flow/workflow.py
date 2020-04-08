@@ -34,8 +34,6 @@ class Scheduler(Thread):
     def run(self):
         from custom.devices.PSI.java.utils import Controller
         Controller.start_jvm()
-        Controller.load_plugins()
-
         while self.is_active:
             self.has_jobs.wait()
             while self.jobs:
