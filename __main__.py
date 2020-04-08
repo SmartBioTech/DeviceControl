@@ -1,9 +1,12 @@
 import sys
 
 from core.device.manager import DeviceManager
+from core.log import Logger
 from core.manager import AppManager
 from core.task.manager import TaskManager
 from core.connection import classes
+
+logger = Logger()
 
 deviceManager = DeviceManager()
 taskManager = TaskManager()

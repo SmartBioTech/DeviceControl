@@ -1,9 +1,9 @@
-POST http://localhost:5000/command
+POST http://192.168.17.51:5000/command
 Content-Type: application/json
 
 {
-  "device_id": "007",
-  "command_id": "1"
+  "device_id": "002",
+  "command_id": "7"
 }
 
 ###

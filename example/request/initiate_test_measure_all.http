@@ -2,9 +2,9 @@ POST http://localhost:5000/task
 Content-Type: application/json
 
 {
-  "task_id": "007measureall",
+  "task_id": "od001",
   "task_class": "PBR_measure_all",
-  "device_id": "007",
+  "device_id": "001",
   "sleep_period": 7,
   "lower_tol": 5,
   "upper_tol": 5,
@@ -12,16 +12,8 @@ Content-Type: application/json
   "tolerance": 5,
   "ft_channel": 1,
   "max_outliers": 5,
-  "pump_id": 1,
+  "pump_id": 1
 
-  "pump_config": {
-      "task_id": "taskPBRpump",
-      "task_class": "PSI_PBR_pump",
-      "device_id": "007",
-      "max_od": 0.3,
-      "min_od": 0.2,
-      "pump_id": 1
-  }
 }
 
 ###
