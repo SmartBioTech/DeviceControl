@@ -6,7 +6,6 @@ import jpype
 from core.log import Log
 from core.data.command import Command
 from core.utils.AbstractClass import abstractattribute, Interface
-from custom.devices.PSI.java.utils import Controller
 
 
 class Connector(metaclass=Interface):
