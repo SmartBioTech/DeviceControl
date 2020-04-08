@@ -15,8 +15,7 @@ class Connector(metaclass=Interface):
         self.address = None
         self.setup = {}
         self.java = None
-        self.scheduler = Scheduler()
-        self.scheduler.start()
+        self.scheduler = Scheduler
 
         self.__dict__.update(config)
 

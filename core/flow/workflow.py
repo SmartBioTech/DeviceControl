@@ -15,7 +15,6 @@ class Job:
         self.args: [] = args
 
 
-@singleton
 class Scheduler(Thread):
     def __init__(self):
         super(Scheduler, self).__init__()
@@ -38,3 +37,6 @@ class Scheduler(Thread):
             while self.jobs:
                 self.execute(self.jobs.pop(0))
             self.has_jobs.clear()
+
+
+Scheduler = Scheduler()

@@ -16,7 +16,7 @@ class Server:
         self.app_manager: AppManager = app_manager
         self.server = Flask(__name__)
 
-        self.scheduler = Scheduler()
+        self.scheduler = Scheduler
 
         self.SUCCESS = Response(status=200)
         self.BAD_REQUEST = Response(status=400)

@@ -13,7 +13,7 @@ logger = Logger()
 deviceManager = DeviceManager()
 taskManager = TaskManager()
 dataManager = DataManager()
-scheduler = Scheduler()
+scheduler = Scheduler
 appManager = AppManager(taskManager, deviceManager, dataManager)
 
 default = "flask_server"
