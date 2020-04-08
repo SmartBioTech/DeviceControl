@@ -25,7 +25,7 @@ class JavaDevice(Connector):
 
         Controller.load_plugins()
 
-        threading.Thread(target=device.connect, args=[0]).start()
+        device.connect()
         return device
 
     def disconnect(self):
