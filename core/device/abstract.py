@@ -68,7 +68,7 @@ class Connector(metaclass=Interface):
             result[key] = func.__name__, arguments
         return result
 
-    def post_command(self, cmd: Command):
+    def post_command(self, cmd: Command, priority=0):
         self.lock.acquire()
         cmd.device_id = self.device_id
         self._execute_command(cmd)
