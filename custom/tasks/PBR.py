@@ -5,7 +5,7 @@ from time import sleep
 import numpy as np
 
 from core.device.abstract import Connector
-from core.device.command import Command
+from core.data.command import Command
 from core.device.manager import DeviceManager
 from core.task.abstract import BaseTask
 from core.task.manager import TaskManager
@@ -72,7 +72,7 @@ class PBRMeasureAll(BaseTask):
         computed = False
         average = 0
 
-        # calculate the average OD from the measured db
+        # calculate the average OD from the measured data
         while not computed:
 
             mean = np.mean(data)

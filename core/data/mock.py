@@ -1,4 +1,3 @@
-from core.db import DatabaseManager
 from core.utils.singleton import singleton
 
 

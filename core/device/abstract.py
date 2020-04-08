@@ -2,7 +2,7 @@ from abc import abstractmethod
 from threading import Thread
 
 from core.log import Log
-from core.device.command import Command
+from core.data.command import Command
 from core.utils.AbstractClass import abstractattribute, Interface
 
 

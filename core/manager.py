@@ -1,4 +1,4 @@
-from core.device.command import Command
+from core.data.command import Command
 from core.log import Log
 from  core.device.manager import DeviceManager
 from core.task.manager import TaskManager

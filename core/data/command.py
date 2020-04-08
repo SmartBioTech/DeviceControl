@@ -1,6 +1,6 @@
 from threading import Event
 
-from core.db import Database
+from core.data import DataManager
 from core.utils.TimeStamper import now
 
 
@@ -12,7 +12,6 @@ class Command:
         self.source = source
         self.device_id = device_id
         self.time_issued = now()
-        self.database = Database
 
         self._resolved = Event()
         self.is_valid = None
@@ -38,5 +37,5 @@ class Command:
 
     def save_to_database(self):
         if not self._saved:
-            self.database.update_log(self)
+            DataManager.save_cmd(self)
         self._saved = True
