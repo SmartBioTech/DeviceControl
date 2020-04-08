@@ -1,6 +1,8 @@
 from threading import Thread
 from time import sleep
 
+import requests
+
 from core.data.command import Command
 from core.device.manager import DeviceManager
 from core.task.abstract import BaseTask
@@ -30,8 +32,12 @@ class GASMeasureAll(BaseTask):
 
     def _run(self):
         while self.is_active:
-            command = Command(self.device_id, "6", [], self.task_id)
-            self.device.post_command(command)
+            command_msg = {
+                "device_id": self.device_id,
+                "command_id": "7",
+                "source": self.task_id
+            }
+            requests.post("http//:localhost:5000/command", json=command_msg)
             sleep(int(self.sleep_period))
 
     def end(self):
