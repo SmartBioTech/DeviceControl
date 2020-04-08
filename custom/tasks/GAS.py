@@ -1,4 +1,5 @@
 from threading import Thread
+from time import sleep
 
 from core.data.command import Command
 from core.device.manager import DeviceManager
@@ -21,7 +22,7 @@ class GASMeasureAll(BaseTask):
             raise AttributeError("Configuration of GASMeasureAll task must contain all required attributes")
 
         self.device = DeviceManager().get_device(self.device_id)
-        super(GASMeasureAll).__init__()
+        super(GASMeasureAll, self).__init__()
 
     def start(self):
         t = Thread(target=self._run)
@@ -31,6 +32,7 @@ class GASMeasureAll(BaseTask):
         while self.is_active:
             command = Command(self.device_id, "6", [], self.task_id)
             self.device.post_command(command)
+            sleep(int(self.sleep_period))
 
     def end(self):
         self.is_active = False
