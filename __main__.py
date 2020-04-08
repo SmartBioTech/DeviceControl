@@ -2,7 +2,7 @@ import sys
 
 from core.data.manager import DataManager
 from core.device.manager import DeviceManager
-from core.flow.workflow import Scheduler
+from core.flow.workflow import Scheduler, WorkflowProvider
 from core.log import Logger
 from core.manager import AppManager
 from core.task.manager import TaskManager
@@ -13,7 +13,7 @@ logger = Logger()
 deviceManager = DeviceManager()
 taskManager = TaskManager()
 dataManager = DataManager()
-scheduler = Scheduler
+workflowProvider = WorkflowProvider()
 appManager = AppManager(taskManager, deviceManager, dataManager)
 
 default = "flask_server"
@@ -26,7 +26,6 @@ if len(sys.argv) > 1:
 if conModule is None:
     conModule = classes.get(default)
 
-scheduler.start()
 conModule(appManager).start()
 
 

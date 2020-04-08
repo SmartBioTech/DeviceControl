@@ -39,4 +39,8 @@ class Scheduler(Thread):
             self.has_jobs.clear()
 
 
-Scheduler = Scheduler()
+@singleton
+class WorkflowProvider:
+    def __init__(self):
+        self.scheduler = Scheduler()
+        self.scheduler.start()

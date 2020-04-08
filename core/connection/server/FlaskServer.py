@@ -3,7 +3,7 @@ from typing import List, Callable
 
 from flask import Flask, request, Response, jsonify
 
-from core.flow.workflow import Job, Scheduler
+from core.flow.workflow import Job, WorkflowProvider
 from core.manager import AppManager
 from core.utils.singleton import singleton
 
@@ -16,7 +16,7 @@ class Server:
         self.app_manager: AppManager = app_manager
         self.server = Flask(__name__)
 
-        self.scheduler = Scheduler
+        self.scheduler = WorkflowProvider().scheduler
 
         self.SUCCESS = Response(status=200)
         self.BAD_REQUEST = Response(status=400)

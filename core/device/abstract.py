@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from threading import Thread
 
-from core.flow.workflow import Scheduler, Job
+from core.flow.workflow import Scheduler, Job, WorkflowProvider
 from core.log import Log
 from core.data.command import Command
 from core.utils.AbstractClass import abstractattribute, Interface
@@ -15,7 +15,7 @@ class Connector(metaclass=Interface):
         self.address = None
         self.setup = {}
         self.java = None
-        self.scheduler = Scheduler
+        self.scheduler = WorkflowProvider().scheduler
 
         self.__dict__.update(config)
 
