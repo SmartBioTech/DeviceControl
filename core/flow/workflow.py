@@ -2,6 +2,7 @@ from threading import Thread, Event
 from typing import List, Callable
 
 from core.utils.singleton import singleton
+from custom.devices.PSI.java.utils import Controller
 
 
 class Job:
@@ -32,6 +33,7 @@ class Scheduler(Thread):
         job.is_done.set()
 
     def run(self):
+        Controller.start_jvm()
         while self.is_active:
             self.has_jobs.wait()
             while self.jobs:
