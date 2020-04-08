@@ -22,11 +22,9 @@ class Controller:
             jpype.startJVM(jvmpath=jpype.getDefaultJVMPath(), convertStrings=False,
                            classpath="custom/devices/PSI/java/lib/jar/bioreactor-commander-0.8.7.jar")
 
-        self.commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
-        self._load_plugins()
         self.lock.release()
 
-    def _load_plugins(self):
+    def load_plugins(self):
         if not self.plugins_loaded:
             server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
             server_plugin_manager.getInstance().loadPlugins()

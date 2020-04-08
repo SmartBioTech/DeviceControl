@@ -2,11 +2,10 @@ import threading
 from abc import abstractmethod
 
 import jpype
-from custom.devices.PSI.java.utils import Controller
-
 import jpype.imports
 
 from core.device.abstract import Connector
+from custom.devices.PSI.java.utils import Controller
 
 
 class JavaDevice(Connector):
@@ -20,7 +19,11 @@ class JavaDevice(Connector):
         if not jpype.isThreadAttachedToJVM():
             jpype.attachThreadToJVM()
 
-        device = Controller.commander_connector(java_config_path, self.address, 115200)
+        commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
+
+        device = commander_connector(java_config_path, self.address, 115200)
+
+        Controller.load_plugins()
 
         threading.Thread(target=device.connect, args=[0]).start()
         return device
