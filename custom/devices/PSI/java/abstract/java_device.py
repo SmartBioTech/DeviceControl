@@ -25,7 +25,7 @@ class JavaDevice(Connector):
 
         Controller.load_plugins()
 
-        device.connect()
+        device.connect(0)
         return device
 
     def disconnect(self):
