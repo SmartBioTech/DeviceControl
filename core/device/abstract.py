@@ -1,9 +1,12 @@
 from abc import abstractmethod
 from threading import Thread
 
+import jpype
+
 from core.log import Log
 from core.data.command import Command
 from core.utils.AbstractClass import abstractattribute, Interface
+from custom.devices.PSI.java.utils import Controller
 
 
 class Connector(metaclass=Interface):
@@ -13,6 +16,7 @@ class Connector(metaclass=Interface):
         self.device_class = None
         self.address = None
         self.setup = {}
+        self.java = None
 
         self.__dict__.update(config)
 
@@ -72,6 +76,8 @@ class Connector(metaclass=Interface):
             t.start()
 
     def _queue_new_item(self):
+        if self.java is not None and Controller.is_jvm_started() and not jpype.isThreadAttachedToJVM():
+            jpype.attachThreadToJVM()
         self._is_queue_check_running = True
         while self._queue.has_items():
             self._execute_command(self._queue.get())
