@@ -4,8 +4,10 @@ from core.log import Log
 from  core.device.manager import DeviceManager
 from core.task.manager import TaskManager
 from core.utils.errors import IdError
+from core.utils.singleton import singleton
 
 
+@singleton
 class AppManager:
     def __init__(self, taskManager: TaskManager, deviceManager: DeviceManager, dataManager: DataManager):
         self.taskManager = taskManager

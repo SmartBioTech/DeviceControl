@@ -1,8 +1,7 @@
 from abc import abstractmethod
-from threading import Thread, Lock
+from threading import Thread
 
-import jpype
-
+from core.flow.workflow import Scheduler, Job
 from core.log import Log
 from core.data.command import Command
 from core.utils.AbstractClass import abstractattribute, Interface
@@ -16,7 +15,8 @@ class Connector(metaclass=Interface):
         self.address = None
         self.setup = {}
         self.java = None
-        self.lock = Lock()
+        self.scheduler = Scheduler()
+        self.scheduler.start()
 
         self.__dict__.update(config)
 
@@ -69,10 +69,8 @@ class Connector(metaclass=Interface):
         return result
 
     def post_command(self, cmd: Command, priority=0):
-        self.lock.acquire()
         cmd.device_id = self.device_id
-        self._execute_command(cmd)
-        self.lock.release()
+        Job(task=self._execute_command, args=[cmd])
 
     def _post_command(self, cmd: Command, priority=2):
         cmd.device_id = self.device_id
