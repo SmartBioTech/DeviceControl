@@ -1,11 +1,11 @@
-POST http://192.168.17.51:5000/task
+POST http://localhost:5000/task
 Content-Type: application/json
 
 {
-  "task_id": "measure_all_001",
+  "task_id": "od001",
   "task_class": "PBR_measure_all",
   "device_id": "001",
-  "sleep_period": 60,
+  "sleep_period": 7,
   "lower_tol": 5,
   "upper_tol": 5,
   "od_channel": 1,
