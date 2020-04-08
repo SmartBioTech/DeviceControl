@@ -37,5 +37,5 @@ class Command:
 
     def save_to_database(self):
         if not self._saved:
-            DataManager.save_cmd(self)
+            DataManager().save_cmd(self)
         self._saved = True
