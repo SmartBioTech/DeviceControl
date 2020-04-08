@@ -69,7 +69,8 @@ class Connector(metaclass=Interface):
 
     def post_command(self, cmd: Command, priority=0):
         cmd.device_id = self.device_id
-        Job(task=self._execute_command, args=[cmd])
+        job = Job(task=self._execute_command, args=[cmd])
+        self.scheduler.schedule_job(job)
 
     def _post_command(self, cmd: Command, priority=2):
         cmd.device_id = self.device_id
