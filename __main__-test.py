@@ -30,7 +30,7 @@ config_gas = {"device_id": "002",
 devices = [config_pbr, config_gas]
 for device in devices:
     job = Job(appManager.register_device, [device])
-    Thread(target=WorkflowProvider.scheduler.schedule_job, args=[job]).start()
+    Thread(target=workflowProvider.scheduler.schedule_job, args=[job]).start()
 
 sleep(20)
 
@@ -56,5 +56,5 @@ measure_all_GAS = {
 
 tasks = [measure_all_GAS, measure_all_PBR]
 for task in tasks:
-    job = Job(appManager.register_task(), [task])
-    Thread(target=WorkflowProvider.scheduler.schedule_job, args=[job]).start()
+    job = Job(appManager.register_task, [task])
+    Thread(target=workflowProvider.scheduler.schedule_job, args=[job]).start()
