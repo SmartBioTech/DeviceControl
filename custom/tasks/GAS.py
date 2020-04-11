@@ -34,7 +34,7 @@ class GASMeasureAll(BaseTask):
         while self.is_active:
             command_msg = {
                 "device_id": self.device_id,
-                "command_id": "6",
+                "command_id": "7",
                 "source": self.task_id
             }
 
