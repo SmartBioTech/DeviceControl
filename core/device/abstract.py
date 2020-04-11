@@ -67,12 +67,12 @@ class Connector(metaclass=Interface):
             result[key] = func.__name__, arguments
         return result
 
-    def post_command(self, cmd: Command, priority=0):
+    def _post_command(self, cmd: Command, priority=0):
         cmd.device_id = self.device_id
         job = Job(task=self._execute_command, args=[cmd])
         self.scheduler.schedule_job(job)
 
-    def _post_command(self, cmd: Command, priority=2):
+    def post_command(self, cmd: Command, priority=2):
         cmd.device_id = self.device_id
         self._queue.put(cmd, priority)
         if not self._is_queue_check_running:

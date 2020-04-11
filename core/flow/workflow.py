@@ -18,6 +18,7 @@ class Job:
 class Scheduler(Thread):
     def __init__(self):
         super(Scheduler, self).__init__()
+        self.name = "scheduler thread"
         self.jobs: List[(Job, [])] = []
         self.is_active = True
         self.has_jobs = Event()
