@@ -34,11 +34,11 @@ class GASMeasureAll(BaseTask):
         while self.is_active:
             command_msg = {
                 "device_id": self.device_id,
-                "command_id": "7",
+                "command_id": "6",
                 "source": self.task_id
             }
 
-            cmd = Command(self.device_id, "7", [], self.task_id)
+            cmd = Command(self.device_id, "6", [], self.task_id)
             self.device.post_command(cmd)
             sleep(int(self.sleep_period))
 
