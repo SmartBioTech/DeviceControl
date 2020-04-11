@@ -37,7 +37,9 @@ class GASMeasureAll(BaseTask):
                 "command_id": "7",
                 "source": self.task_id
             }
-            requests.post("http://localhost:5000/command", json=command_msg)
+
+            cmd = Command(self.device_id, "7", [], self.task_id)
+            self.device.post_command(cmd)
             sleep(int(self.sleep_period))
 
     def end(self):
