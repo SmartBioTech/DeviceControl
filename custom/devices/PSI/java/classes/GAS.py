@@ -114,6 +114,7 @@ class GAS(JavaDevice):
 
         return msg.getDoubleParam(0)
 
+
     def measure_all(self):
         """
         Measures all basic measurable values.
@@ -130,10 +131,10 @@ class GAS(JavaDevice):
         except Exception:
             measure_all_dict["flow"] = False, "cannot get flow"
 
-        try:
-            measure_all_dict["pressure"] = True, self.get_pressure(5, 0)
-        except Exception:
-            measure_all_dict["pressure"] = False, "cannot get pressure"
+        # try:
+        #     measure_all_dict["pressure"] = True, self.get_pressure(5, 0)
+        # except Exception:
+        #     measure_all_dict["pressure"] = False, "cannot get pressure"
 
         return measure_all_dict
 
