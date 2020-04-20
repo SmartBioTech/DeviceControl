@@ -26,6 +26,7 @@ pip3 install Flask-RESTful
 pip3 install pycrypto
 pip3 install pyserial
 pip3 install mettler_toledo_device
+pip3 install requests
 
 apt -y install libatlas3-base
 
