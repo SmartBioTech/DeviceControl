@@ -30,5 +30,10 @@ sleep(600)
 
 end = {
     "type": "task",
-     "target_id": "test3" }
+    "target_id": "test3" }
+r.post("http://localhost:5000/end", json=end)
+
+end = {
+    "type": "device",
+    "target_id": "BAL29" }
 r.post("http://localhost:5000/end", json=end)
