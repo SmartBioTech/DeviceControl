@@ -1,6 +1,7 @@
-from custom.tasks import PBR, GAS, TH_IB2, U1W_TVSL
+from custom.tasks import PBR, GAS, TH_IB2, U1W_TVSL, SICS
 
 classes = {
+    "Balance_measure_weight": SICS.MeasureWeight,
     "U1W_TVSL_measure_all": U1W_TVSL.MeasureAll,
     "TH_IB2_measure_all": TH_IB2.MeasureAll,
     "PBR_measure_all": PBR.PBRMeasureAll,
