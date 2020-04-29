@@ -5,13 +5,15 @@ from core.flow.workflow import Scheduler, WorkflowProvider
 from core.log import Logger
 
 from core.connection import classes
+from custom.devices.PSI.java.utils.jvm_controller import Controller
 
 logger = Logger()
 
 
 workflowProvider = WorkflowProvider()
+controller = Controller()
 
-default = "websocket_client"
+default = "flask_server"
 
 conModule = None
 conModuleStartArgs = None
