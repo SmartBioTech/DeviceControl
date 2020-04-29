@@ -16,7 +16,6 @@ class Controller:
         self.commander_connector = None
         self.plugins_loaded = False
         self.start_jvm()
-        sleep(10)
         self.load_plugins()
 
     def start_jvm(self):
@@ -31,6 +30,7 @@ class Controller:
     def load_plugins(self):
         if not self.plugins_loaded:
             server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
+            sleep(10)
             server_plugin_manager.getInstance().loadPlugins()
         self.plugins_loaded = True
 
