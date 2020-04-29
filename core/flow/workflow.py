@@ -31,8 +31,12 @@ class Scheduler(Thread):
 
     @staticmethod
     def execute(job: Job):
-        job.success, cause, job.data = job.task(*job.args)
-        job.cause = repr(cause)
+        try:
+            job.data = job.task(*job.args)
+            job.success = True
+        except Exception as exc:
+            job.cause = repr(exc)
+            job.success = False
         job.is_done.set()
 
     def run(self):

@@ -1,10 +1,12 @@
 from threading import Lock
 from time import sleep
+from typing import Callable
 
 import jpype
 # Enable Java imports
 import jpype.imports
 
+from core.flow.workflow import Scheduler, Job
 from core.utils.singleton import singleton
 
 
@@ -16,6 +18,9 @@ class Controller:
         self.commander_connector = None
         self.plugins_loaded = False
         self.start_jvm()
+        self.scheduler = Scheduler()
+        self.scheduler.start()
+        self.execute_command(self.start_jvm, [])
 
     def start_jvm(self):
         self.lock.acquire()
@@ -40,3 +45,12 @@ class Controller:
     @staticmethod
     def is_jvm_started():
         return jpype.isJVMStarted()
+
+    def execute_command(self, cmd: Callable, args: list):
+        job = Job(task=cmd, args=args)
+        self.scheduler.schedule_job(job)
+        job.is_done.wait()
+        if job.success:
+            return job.data
+        else:
+            return job.cause
