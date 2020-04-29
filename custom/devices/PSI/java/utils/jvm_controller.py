@@ -14,6 +14,8 @@ class Controller:
         self.lock = Lock()
         self.commander_connector = None
         self.plugins_loaded = False
+        self.start_jvm()
+        self.load_plugins()
 
     def start_jvm(self):
         self.lock.acquire()

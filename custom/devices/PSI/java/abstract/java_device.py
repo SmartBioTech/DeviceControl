@@ -5,25 +5,23 @@ import jpype
 import jpype.imports
 
 from core.device.abstract import Connector
-from custom.devices.PSI.java.utils import Controller
+from custom.devices.PSI.java.utils.jvm_controller import Controller
 
 
 class JavaDevice(Connector):
     def __init__(self, config, java_config_path):
         super(JavaDevice, self).__init__(config)
+        self.controller = Controller()
         self.device = self.connect(java_config_path)
         self.interpreter = {}
 
     def connect(self, java_config_path):
-        Controller.start_jvm()
         if not jpype.isThreadAttachedToJVM():
             jpype.attachThreadToJVM()
 
         commander_connector = jpype.JClass("psi.bioreactor.commander.CommanderConnector")
 
         device = commander_connector(java_config_path, self.address, 115200)
-
-        Controller.load_plugins()
 
         device.connect(0)
         return device
