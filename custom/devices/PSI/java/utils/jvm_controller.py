@@ -1,4 +1,5 @@
 from threading import Lock
+from time import sleep
 
 import jpype
 # Enable Java imports
@@ -15,6 +16,7 @@ class Controller:
         self.commander_connector = None
         self.plugins_loaded = False
         self.start_jvm()
+        sleep(10)
         self.load_plugins()
 
     def start_jvm(self):
