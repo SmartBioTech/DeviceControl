@@ -36,8 +36,8 @@ class Scheduler(Thread):
         job.is_done.set()
 
     def run(self):
-        from custom.devices.PSI.java.utils import Controller
-        Controller.start_jvm()
+        from custom.devices.PSI.java.utils.jvm_controller import Controller
+        Controller()
         while self.is_active:
             self.has_jobs.wait()
             while self.jobs:
