@@ -17,7 +17,6 @@ class Controller:
         self.lock = Lock()
         self.commander_connector = None
         self.plugins_loaded = False
-        self.start_jvm()
         self.scheduler = Scheduler()
         self.scheduler.start()
         self.execute_command(self.start_jvm, [])
