@@ -23,6 +23,8 @@ class JavaDevice(Connector):
 
         device = commander_connector(java_config_path, self.address, 115200)
 
+        self.controller.load_plugins()
+
         device.connect(0)
         return device
 
