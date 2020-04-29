@@ -1,5 +1,6 @@
 from threading import Thread, Event
 from typing import List, Callable
+import jpype
 
 from core.utils.singleton import singleton
 
@@ -31,6 +32,8 @@ class Scheduler(Thread):
 
     @staticmethod
     def execute(job: Job):
+        if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
+            jpype.attachThreadToJVM()
         try:
             job.data = job.task(*job.args)
             job.success = True
