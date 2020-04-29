@@ -10,7 +10,9 @@ class Job:
             args = []
 
         self.task: Callable = task
-        self.result = False
+        self.success = False
+        self.cause = None
+        self.data = None
         self.is_done = Event()
         self.args: [] = args
 
@@ -29,7 +31,8 @@ class Scheduler(Thread):
 
     @staticmethod
     def execute(job: Job):
-        job.result = job.task(*job.args)
+        job.success, cause, job.data = job.task(*job.args)
+        job.cause = repr(cause)
         job.is_done.set()
 
     def run(self):

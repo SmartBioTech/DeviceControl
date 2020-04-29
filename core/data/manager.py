@@ -1,14 +1,16 @@
+from threading import Thread
 from typing import Optional
 
 from core.data.dao import Dao
-from core.utils.db import enquote_all, enquote
+from core.utils.db import enquote
 from core.utils.singleton import singleton
 
 
 @singleton
 class DataManager:
-    def __init__(self):
+    def __init__(self, ws_client=None):
         self.last_seen = {}
+        self.ws_client = ws_client
 
     def save_cmd(self, cmd):
         Dao.insert(Dao.cmd_table, [
@@ -21,6 +23,9 @@ class DataManager:
             ("command_id", str(cmd.command_id))
         ]
                    )
+
+        if self.ws_client is not None:
+            Thread(target=self.ws_client.send_data, args=[cmd.to_dict()]).start()
 
     def get_data_by_id(self, log_id: Optional[int] = None, device_id: Optional[str] = None):
         where_conditions = []

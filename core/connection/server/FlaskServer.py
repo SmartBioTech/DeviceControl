@@ -3,17 +3,20 @@ from typing import List, Callable
 
 from flask import Flask, request, Response, jsonify
 
+from core.data.manager import DataManager
+from core.device.manager import DeviceManager
 from core.flow.workflow import Job, WorkflowProvider
 from core.manager import AppManager
+from core.task.manager import TaskManager
 from core.utils.singleton import singleton
 
 
 @singleton
 class Server:
 
-    def __init__(self, app_manager):
+    def __init__(self):
 
-        self.app_manager: AppManager = app_manager
+        self.app_manager = AppManager(TaskManager(), DeviceManager(), DataManager())
         self.server = Flask(__name__)
 
         self.scheduler = WorkflowProvider().scheduler
@@ -38,7 +41,7 @@ class Server:
             self.scheduler.schedule_job(job)
             job.is_done.wait()
 
-            if job.result:
+            if job.success:
                 return self.SUCCESS
 
             return self.BAD_REQUEST
@@ -63,7 +66,7 @@ class Server:
             self.scheduler.schedule_job(job)
             job.is_done.wait()
 
-            if job.result:
+            if job.success:
                 return self.SUCCESS
             else:
                 return self.BAD_REQUEST
@@ -73,7 +76,7 @@ class Server:
             job = Job(task=self.app_manager.ping)
             self.scheduler.schedule_job(job)
             job.is_done.wait()
-            return job.result
+            return job.success
 
         @self.server.route('/command', methods=["POST"])
         def command():
@@ -88,7 +91,7 @@ class Server:
             self.scheduler.schedule_job(job)
             job.is_done.wait()
 
-            if job.result:
+            if job.success:
                 return self.SUCCESS
 
             return self.BAD_REQUEST
@@ -102,7 +105,7 @@ class Server:
             self.scheduler.schedule_job(job)
             job.is_done.wait()
 
-            if job.result:
+            if job.success:
                 return self.SUCCESS
 
             return self.BAD_REQUEST

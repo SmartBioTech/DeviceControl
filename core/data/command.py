@@ -39,3 +39,14 @@ class Command:
         if not self._saved:
             DataManager().save_cmd(self)
         self._saved = True
+
+    def to_dict(self) -> dict:
+        return {
+            "time_issued": str(self.time_issued),
+            "time_executed": str(self.time_executed),
+            "device_id": str(self.device_id),
+            "response": str(self.response),
+            "target": str(self.args),
+            "source": str(self.source),
+            "command_id": str(self.command_id)
+        }

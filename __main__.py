@@ -1,31 +1,27 @@
 import sys
 
-from core.data.manager import DataManager
-from core.device.manager import DeviceManager
+
 from core.flow.workflow import Scheduler, WorkflowProvider
 from core.log import Logger
-from core.manager import AppManager
-from core.task.manager import TaskManager
+
 from core.connection import classes
 
 logger = Logger()
 
-deviceManager = DeviceManager()
-taskManager = TaskManager()
-dataManager = DataManager()
-workflowProvider = WorkflowProvider()
-appManager = AppManager(taskManager, deviceManager, dataManager)
 
-default = "flask_server"
+workflowProvider = WorkflowProvider()
+
+default = "websocket_client"
 
 conModule = None
+conModuleStartArgs = None
 
 if len(sys.argv) > 1:
-    conModule = classes.get(sys.argv[1])
+    conModule, conModuleStartArgs = classes.get(sys.argv[1])
 
 if conModule is None:
-    conModule = classes.get(default)
+    conModule, conModuleStartArgs = classes.get(default)
 
-conModule(appManager).start()
+conModule().start(*conModuleStartArgs)
 
 
