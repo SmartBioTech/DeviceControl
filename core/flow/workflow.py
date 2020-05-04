@@ -1,5 +1,6 @@
 from threading import Thread, Event
 from typing import List, Callable
+import jpype
 
 from core.utils.singleton import singleton
 
@@ -31,13 +32,17 @@ class Scheduler(Thread):
 
     @staticmethod
     def execute(job: Job):
-        job.success, cause, job.data = job.task(*job.args)
-        job.cause = repr(cause)
+        if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
+            jpype.attachThreadToJVM()
+        try:
+            job.data = job.task(*job.args)
+            job.success = True
+        except Exception as exc:
+            job.cause = repr(exc)
+            job.success = False
         job.is_done.set()
 
     def run(self):
-        from custom.devices.PSI.java.utils import Controller
-        Controller.start_jvm()
         while self.is_active:
             self.has_jobs.wait()
             while self.jobs:

@@ -1,11 +1,7 @@
-from threading import Thread, Event
-from typing import List, Callable
-
 from flask import Flask, request, Response, jsonify
 
 from core.data.manager import DataManager
 from core.device.manager import DeviceManager
-from core.flow.workflow import Job, WorkflowProvider
 from core.manager import AppManager
 from core.task.manager import TaskManager
 from core.utils.singleton import singleton
@@ -18,8 +14,6 @@ class Server:
 
         self.app_manager = AppManager(TaskManager(), DeviceManager(), DataManager())
         self.server = Flask(__name__)
-
-        self.scheduler = WorkflowProvider().scheduler
 
         self.SUCCESS = Response(status=200)
         self.BAD_REQUEST = Response(status=400)
@@ -36,12 +30,9 @@ class Server:
         def initiate():
             device_config = request.get_json()
 
-            job = Job(task=self.app_manager.register_device, args=[device_config])
+            success, cause, data = self.app_manager.register_device(device_config)
 
-            self.scheduler.schedule_job(job)
-            job.is_done.wait()
-
-            if job.success:
+            if success:
                 return self.SUCCESS
 
             return self.BAD_REQUEST
@@ -52,31 +43,26 @@ class Server:
             _type = data.get("type")
             target_id = data.get("target_id")
             if _type == "device":
-                job = Job(task=self.app_manager.end_device, args=[target_id])
+                success, cause, data = self.app_manager.end_device(target_id)
 
             elif _type == "task":
-                job = Job(task=self.app_manager.end_task, args=[target_id])
+                success, cause, data = self.app_manager.end_task(target_id)
 
             elif _type == "all":
-                job = Job(task=self.app_manager.end)
-
+                success, cause, data = self.app_manager.end()
             else:
                 return self.BAD_REQUEST
 
-            self.scheduler.schedule_job(job)
-            job.is_done.wait()
-
-            if job.success:
+            if success:
                 return self.SUCCESS
             else:
                 return self.BAD_REQUEST
 
         @self.server.route('/ping')
         def ping():
-            job = Job(task=self.app_manager.ping)
-            self.scheduler.schedule_job(job)
-            job.is_done.wait()
-            return job.success
+            success, cause, data = self.app_manager.ping()
+            if success:
+                return data
 
         @self.server.route('/command', methods=["POST"])
         def command():
@@ -86,12 +72,9 @@ class Server:
             args = data.get("arguments", "[]")
             source = data.get("source", "external")
 
-            job = Job(task=self.app_manager.command, args=[device_id, cmd_id, args, source])
+            success, cause, data = self.app_manager.command(device_id, cmd_id, args, source)
 
-            self.scheduler.schedule_job(job)
-            job.is_done.wait()
-
-            if job.success:
+            if success:
                 return self.SUCCESS
 
             return self.BAD_REQUEST
@@ -100,12 +83,9 @@ class Server:
         def task():
             data: dict = request.get_json()
 
-            job = Job(task=self.app_manager.register_task, args=[data])
+            success, cause, data = self.app_manager.register_task(data)
 
-            self.scheduler.schedule_job(job)
-            job.is_done.wait()
-
-            if job.success:
+            if success:
                 return self.SUCCESS
 
             return self.BAD_REQUEST
