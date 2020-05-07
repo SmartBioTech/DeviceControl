@@ -98,5 +98,8 @@ class Server:
             log_id = args.get("log_id", None)
             time = args.get("time", None)
             if time is not None:
-                time = process_time(time)
+                try:
+                    time = process_time(time)
+                except SyntaxError as e:
+                    return jsonify(False, e, None)
             return jsonify(self.app_manager.get_data(device_id, log_id=log_id, time=time))

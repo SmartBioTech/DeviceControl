@@ -20,5 +20,5 @@ def process_time(time):
                     + time[10:12] + ':' \
                     + time[12:14] + "'"
         return processed
-    except Exception as e:
-        raise Exception(e)
+    except IndexError:
+        raise SyntaxError("Invalid time format has been provided")
