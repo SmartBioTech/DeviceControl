@@ -23,6 +23,7 @@ pip3 install mysql-connector
 pip3 install JPype1
 pip3 install Flask
 pip3 install Flask-RESTful
+pip3 install python-socketio
 pip3 install pycrypto
 pip3 install pyserial
 pip3 install mettler_toledo_device
