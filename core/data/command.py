@@ -1,7 +1,7 @@
 from threading import Event
 
 from core.data.manager import DataManager
-from core.utils.TimeStamper import now
+from core.utils.time import now
 
 
 class Command:
