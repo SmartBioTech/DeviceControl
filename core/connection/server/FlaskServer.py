@@ -5,6 +5,7 @@ from core.device.manager import DeviceManager
 from core.manager import AppManager
 from core.task.manager import TaskManager
 from core.utils.singleton import singleton
+from core.utils.time import process_time
 
 
 @singleton
@@ -95,6 +96,10 @@ class Server:
             args = dict(request.args)
             device_id = args.get("device_id", None)
             log_id = args.get("log_id", None)
-            return jsonify(self.app_manager.get_data(device_id, log_id))
-
-
+            time = args.get("time", None)
+            if time is not None:
+                try:
+                    time = process_time(time)
+                except SyntaxError as e:
+                    return jsonify(False, e, None)
+            return jsonify(self.app_manager.get_data(device_id, log_id=log_id, time=time))

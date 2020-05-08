@@ -1,9 +1,9 @@
 from typing import Tuple, Optional
 
-from core.data.manager import DataManager
 from core.data.command import Command
+from core.data.manager import DataManager
+from core.device.manager import DeviceManager
 from core.log import Log
-from  core.device.manager import DeviceManager
 from core.task.manager import TaskManager
 from core.utils.errors import IdError
 from core.utils.singleton import singleton
@@ -69,8 +69,10 @@ class AppManager:
             "tasks": self.taskManager.ping()
         }
 
-    def get_data(self, device_id, log_id):
-        return True, None, self.dataManager.get_data_by_id(log_id, device_id)
+    def get_data(self, device_id, log_id=None, time=None):
+        if log_id is not None:
+            return True, None, self.dataManager.get_data_by_id(log_id, device_id)
+        return True, None, self.dataManager.get_data_by_time(time, device_id)
 
     def end(self):
         self.deviceManager.end()
