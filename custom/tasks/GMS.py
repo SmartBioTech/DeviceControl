@@ -8,7 +8,7 @@ from core.device.manager import DeviceManager
 from core.task.abstract import BaseTask
 
 
-class MeasureAll(BaseTask):
+class GMSMeasureAll(BaseTask):
     def __init__(self, config):
         self.sleep_period = None
         self.device_id: str = ""
