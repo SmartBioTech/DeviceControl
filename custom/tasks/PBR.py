@@ -218,8 +218,8 @@ class PBRGeneralPump(BaseTask, Observer):
             command.await_cmd()
 
             if isinstance(command.response, bool) and command.response:
-                print("pump is {}".format("ON" if state else "OFF"))
-                print("changing pump state to: {}".format(state))
+                # print("pump is {}".format("ON" if state else "OFF"))
+                # print("changing pump state to: {}".format(state))
                 self.is_pump_on = state
                 return
         raise ConnectionError
