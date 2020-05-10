@@ -42,7 +42,7 @@ class GAS(JavaDevice):
 
         return msg.getParam(0)
 
-    def set_small_valves(self, mode):
+    def set_small_valves(self, mode=0):
         """
         Changes settings of individual vents of GAS device.
         Can be set by one byte (converted to int), where first 6
@@ -58,7 +58,7 @@ class GAS(JavaDevice):
         msg = self.device.send("set-small-valves", mode)
         return not msg.isError()
 
-    def get_flow(self, repeats):
+    def get_flow(self, repeats=5):
         """
         Actual flow being send from GAS to the PBR.
         :param repeats: the number of measurement repeats

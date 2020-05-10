@@ -10,7 +10,7 @@ class GMS(JavaDevice):
             "3": self.set_valve_flow,
         }
 
-    def get_valve_flow(self, valve):
+    def get_valve_flow(self, valve=0):
         """
         Get value (L/min) of current flow in the given valve.
         :param valve: ID of the valve (0 for CO2, 1 for Air)
@@ -37,7 +37,7 @@ class GMS(JavaDevice):
         msg = self.device.send("set-valve-flow", valve, value)
         return not msg.isError()
 
-    def get_valve_info(self, valve):
+    def get_valve_info(self, valve=0):
         """
         Gives information about the valve
         :param valve: ID of the valve (0 for CO2, 1 for Air)
