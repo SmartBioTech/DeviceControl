@@ -24,7 +24,7 @@ class PBRMeasureAll(BaseTask):
         self.od_channel = None
         self.tolerance = None
         self.max_outliers = None
-        self.ft_channel = None
+        # self.ft_channel = None
         self.latest_values = deque(maxlen=2)
         self.device_id: str = ""
         self.pump_id = None
@@ -42,7 +42,7 @@ class PBRMeasureAll(BaseTask):
             assert self.lower_tol is not None
             assert self.upper_tol is not None
             assert self.od_channel is not None
-            assert self.ft_channel is not None
+            # assert self.ft_channel is not None
             assert self.device_id is not ""
 
         except AssertionError:
@@ -137,7 +137,7 @@ class PBRMeasureAll(BaseTask):
         self.average_od = self.measure_initial_od_average()
 
         while self.is_active:
-            command = Command(self.device_id, "19", [self.ft_channel, self.pump_id], self.task_id, is_awaited=True)
+            command = Command(self.device_id, "19", [self.pump_id], self.task_id, is_awaited=True)
             self.device.post_command(command, 1)
 
             od_variant = 'od_1' if self.od_channel == 1 else 'od_0'

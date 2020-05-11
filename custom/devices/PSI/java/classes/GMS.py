@@ -11,7 +11,7 @@ class GMS(JavaDevice):
             "11": self.get_valve_flow,
             "12": self.set_valve_flow,
             "13": self.get_device_type,
-            "14": self.get_device_sn,
+            "14": self.get_device_id,
             "15": self.get_serial_nr,
             "16": self.get_fw_ver
         }
@@ -53,7 +53,7 @@ class GMS(JavaDevice):
             "type": msg.getParam(0)
         }
 
-    def get_device_sn(self):
+    def get_device_id(self):
         msg = self.device.send("get-device-id")
         if msg.isError():
             raise Exception(msg.getError())

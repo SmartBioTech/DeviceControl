@@ -319,10 +319,9 @@ class PBR(JavaDevice):
 
         return msg.getDoubleParam(0)
 
-    def measure_all(self, ft_channel=5, pump_id=5):
+    def measure_all(self, pump_id=5):
         """
         Measures all basic measurable values.
-
         :param ft_channel: channel for ft_measure
         :param pump_id: id of particular pump
         :return: dictionary of all measured values
@@ -346,17 +345,17 @@ class PBR(JavaDevice):
         try:
             measure_all_dictionary["od_0"] = True, self.measure_od(0, 30)
         except Exception:
-            measure_all_dictionary["od_0"] = False, "Cannot get od_0"
+            measure_all_dictionary["od_0"] = False, "Cannot get OD_0"
 
         try:
             measure_all_dictionary["od_1"] = True, self.measure_od(1, 30)
         except Exception:
-            measure_all_dictionary["od_1"] = False, "Cannot get od_1"
+            measure_all_dictionary["od_1"] = False, "Cannot get OD_1"
 
         try:
             measure_all_dictionary["ph"] = True, self.get_ph(5, 0),
         except Exception:
-            measure_all_dictionary["ph"] = False, "Cannot get ph"
+            measure_all_dictionary["ph"] = False, "Cannot get pH"
 
         try:
             measure_all_dictionary["temp"] = True, self.get_temp(),
@@ -371,17 +370,22 @@ class PBR(JavaDevice):
         try:
             measure_all_dictionary["o2"] = True, self.get_o2()
         except Exception:
-            measure_all_dictionary["o2"] = False, "Cannot get o2"
+            measure_all_dictionary["o2"] = False, "Cannot get O2"
 
         try:
             measure_all_dictionary["co2"] = True, self.get_co2()
         except Exception:
-            measure_all_dictionary["co2"] = False, "Cannot get co2"
+            measure_all_dictionary["co2"] = False, "Cannot get CO2"
 
         try:
-            measure_all_dictionary["ft"] = True, self.measure_ft(ft_channel)
+            measure_all_dictionary["ft_0"] = True, self.measure_ft(0)
         except Exception:
-            measure_all_dictionary["ft"] = False, "Cannot measure ft"
+            measure_all_dictionary["ft_0"] = False, "Cannot measure Ft_0"
+
+        try:
+            measure_all_dictionary["ft_1"] = True, self.measure_ft(1)
+        except Exception:
+            measure_all_dictionary["ft_1"] = False, "Cannot measure Ft_1"
 
         return measure_all_dictionary
 

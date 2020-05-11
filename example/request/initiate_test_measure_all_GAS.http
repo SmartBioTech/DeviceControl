@@ -2,16 +2,10 @@ POST http://192.168.17.51:5000/task
 Content-Type: application/json
 
 {
-  "task_id": "001measureall",
-  "task_class": "PBR_measure_all",
-  "device_id": "001",
-  "sleep_period": 5,
-  "max_outliers": 5,
-  "pump_id": 1,
-  "lower_tol": 5,
-  "upper_tol": 5,
-  "od_channel": 1,
-  "ft_channel": 5
+  "task_id": "002measureall",
+  "task_class": "GAS_measure_all",
+  "device_id": "002",
+  "sleep_period": 5
 }
 
 ###
