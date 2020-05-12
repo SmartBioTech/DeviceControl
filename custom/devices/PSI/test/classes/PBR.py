@@ -253,7 +253,8 @@ class PBR(Connector):
         result["pump"] = True, self.get_pump_params(pump_id)
         result["o2"] = True, self.get_o2()
         result["co2"] = False, "Cannot get co2"
-        result["ft"] = True, self.measure_ft(ft_channel)
+        result["ft_0"] = True, self.measure_ft(ft_channel)
+        result["ft_1"] = True, self.measure_ft(ft_channel)
 
         return result
 
