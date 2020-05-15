@@ -1,11 +1,12 @@
 from collections import deque
 from threading import Thread
 from time import sleep
+from typing import Dict, Union
 
 import numpy as np
 
-from core.device.abstract import Connector
 from core.data.command import Command
+from core.device.abstract import Connector
 from core.device.manager import DeviceManager
 from core.task.abstract import BaseTask
 from core.task.manager import TaskManager
@@ -49,6 +50,46 @@ class PBRMeasureAll(BaseTask):
             raise AttributeError("Configuration of PBRMeasureAll task must contain all required attributes")
 
         super(PBRMeasureAll, self).__init__()
+
+        self.commands_to_execute: Dict[str, dict] = {
+            "pwm_settings": {
+                "id": "12"
+            },
+            "light_0": {
+                "id": "9",
+                "args": [0]
+            },
+            "light_1": {
+                "id": "9",
+                "args": [1]
+            },
+            "od_0": {
+                "id": "5",
+                "args": [0, 30]
+            },
+            "od_1": {
+                "id": "5",
+                "args": [1, 30]
+            },
+            "ph": {
+                "id": "4",
+                "args": [5, 0]
+            },
+            "temp": {
+                "id": "2"
+            },
+            "pump": {
+                "id": "6",
+                "args": [self.pump_id]
+            },
+            "o2": {
+                "id": "14"
+            },
+            "ft": {
+                "id": "17",
+                "args": [self.ft_channel]
+            }
+        }
 
     def get_od_for_init(self):
         cmd = Command(self.device_id, "5",
@@ -135,25 +176,29 @@ class PBRMeasureAll(BaseTask):
 
     def _run(self):
         self.average_od = self.measure_initial_od_average()
+        od_variant = 'od_1' if self.od_channel == 1 else 'od_0'
 
         while self.is_active:
-            command = Command(self.device_id, "19", [self.ft_channel, self.pump_id], self.task_id, is_awaited=True)
-            self.device.post_command(command, 1)
+            commands = []
 
-            od_variant = 'od_1' if self.od_channel == 1 else 'od_0'
-            command.await_cmd()
+            for _name, _command in self.commands_to_execute.items():
+                command = Command(self.device_id,
+                                  _command.get("id"),
+                                  _command.get("args", []),
+                                  self.task_id,
+                                  is_awaited=True)
+                commands.append((_name, command))
+                self.device.post_command(command, 1)
 
-            if command.is_valid:
-                od_is_valid, od = command.response.get(od_variant)
-                if od_is_valid:
+            for name, command in commands:
+                command.await_cmd()
+                if command.is_valid and name == od_variant:
+                    od = command.response
                     self.latest_values.appendleft(od)
                     od_is_outlier = self.handle_outlier(od)
                     if not od_is_outlier:
                         self.od.value = od
-                else:
-                    od_is_outlier = False
-
-                command.response[od_variant] = od_is_valid, od, od_is_outlier
+                    command.response = od, od_is_outlier
                 command.save_to_database()
 
             sleep(self.sleep_period)
