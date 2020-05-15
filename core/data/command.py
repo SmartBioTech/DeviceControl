@@ -33,6 +33,7 @@ class Command:
         return self._resolved.wait(timeout=timeout)
 
     def resolve(self):
+        self.time_executed = now()
         self._resolved.set()
 
     def save_to_database(self):
