@@ -12,9 +12,9 @@ from core.utils.singleton import singleton
 @singleton
 class AppManager:
     def __init__(self, taskManager: TaskManager, deviceManager: DeviceManager, dataManager: DataManager):
-        self.taskManager = taskManager
-        self.deviceManager = deviceManager
-        self.dataManager = dataManager
+        self.taskManager: TaskManager = taskManager
+        self.deviceManager: DeviceManager = deviceManager
+        self.dataManager: DataManager = dataManager
 
     def register_device(self, config: dict) -> (bool, Optional[Exception], None):
         try:
@@ -70,9 +70,7 @@ class AppManager:
         }
 
     def get_data(self, device_id, log_id=None, time=None):
-        if log_id is not None:
-            return True, None, self.dataManager.get_data_by_id(log_id, device_id)
-        return True, None, self.dataManager.get_data_by_time(time, device_id)
+        return True, None, self.dataManager.get_data(log_id, time, device_id)
 
     def end(self):
         self.deviceManager.end()

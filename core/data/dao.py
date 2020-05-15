@@ -24,7 +24,8 @@ class Dao:
             "target",
             "response",
             "time_executed",
-            "source"
+            "source",
+            "is_valid"
         ]
         self._create_table()  # initialize the table
 
@@ -51,7 +52,8 @@ class Dao:
                  "target VARCHAR(255),"
                  "response VARCHAR(1000),"
                  "time_executed VARCHAR(255),"
-                 "source VARCHAR(255), "
+                 "source VARCHAR(255),"
+                 "is_valid BOOLEAN, "
                  "PRIMARY KEY (log_id))")
 
         self._execute_query(query)
