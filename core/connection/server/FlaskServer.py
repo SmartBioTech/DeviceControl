@@ -1,4 +1,6 @@
-from flask import Flask, request, Response, jsonify
+from typing import Optional
+
+from flask import Flask, request, jsonify
 
 from core.data.manager import DataManager
 from core.device.manager import DeviceManager
@@ -8,6 +10,22 @@ from core.utils.singleton import singleton
 from core.utils.time import process_time
 
 
+class Response:
+    def __init__(self, success: bool, cause: Optional[Exception], data: Optional[dict]):
+        self.success = success
+        self.cause = cause
+        self.data = data
+
+    def to_json(self):
+        return jsonify(
+            {
+                "success": self.success,
+                "cause": self.cause,
+                "data": self.data,
+            }
+        )
+
+
 @singleton
 class Server:
 
@@ -15,11 +33,6 @@ class Server:
 
         self.app_manager = AppManager(TaskManager(), DeviceManager(), DataManager())
         self.server = Flask(__name__)
-
-        self.SUCCESS = Response(status=200)
-        self.BAD_REQUEST = Response(status=400)
-        self.UNAUTHORIZED = Response(status=401)
-        self.ERROR = Response(status=500)
         self.register_endpoints()
 
     def start(self):
@@ -33,10 +46,7 @@ class Server:
 
             success, cause, data = self.app_manager.register_device(device_config)
 
-            if success:
-                return self.SUCCESS
-
-            return self.BAD_REQUEST
+            return Response(success, cause, data).to_json()
 
         @self.server.route('/end', methods=["POST"])
         def end():
@@ -52,18 +62,15 @@ class Server:
             elif _type == "all":
                 success, cause, data = self.app_manager.end()
             else:
-                return self.BAD_REQUEST
+                e = TypeError("Invalid type to end")
+                return Response(False, e, None).to_json()
 
-            if success:
-                return self.SUCCESS
-            else:
-                return self.BAD_REQUEST
+            return Response(success, cause, data).to_json()
 
         @self.server.route('/ping')
         def ping():
             success, cause, data = self.app_manager.ping()
-            if success:
-                return data
+            return Response(success, cause, data).to_json()
 
         @self.server.route('/command', methods=["POST"])
         def command():
@@ -75,21 +82,13 @@ class Server:
 
             success, cause, data = self.app_manager.command(device_id, cmd_id, args, source)
 
-            if success:
-                return self.SUCCESS
-
-            return self.BAD_REQUEST
+            return Response(success, cause, data).to_json()
 
         @self.server.route('/task', methods=["POST"])
         def task():
             data: dict = request.get_json()
-
             success, cause, data = self.app_manager.register_task(data)
-
-            if success:
-                return self.SUCCESS
-
-            return self.BAD_REQUEST
+            return Response(success, cause, data).to_json()
 
         @self.server.route('/data', methods=["GET"])
         def get_data():
@@ -101,5 +100,6 @@ class Server:
                 try:
                     time = process_time(time)
                 except SyntaxError as e:
-                    return jsonify(False, e, None)
-            return jsonify(self.app_manager.get_data(device_id, log_id=log_id, time=time))
+                    return Response(False, e, None).to_json()
+            success, cause, data = self.app_manager.get_data(device_id, log_id=log_id, time=time)
+            return Response(success, cause, data).to_json()
