@@ -85,9 +85,13 @@ class PBRMeasureAll(BaseTask):
             "o2": {
                 "id": "14"
             },
-            "ft": {
+            "ft_0": {
                 "id": "17",
-                "args": [self.ft_channel]
+                "args": [0]
+            },
+            "ft_1": {
+                "id": "17",
+                "args": [1]
             }
         }
 
