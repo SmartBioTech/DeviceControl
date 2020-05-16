@@ -2,9 +2,9 @@ POST http://192.168.17.51:5000/task
 Content-Type: application/json
 
 {
-  "task_id": "002measureall",
-  "task_class": "GAS_measure_all",
-  "device_id": "002",
+  "task_id": "001GMSmeasureall",
+  "task_class": "GMS_measure_all",
+  "device_id": "001",
   "sleep_period": 5
 }
 

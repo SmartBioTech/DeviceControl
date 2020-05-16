@@ -6,7 +6,7 @@ class PBR(Connector):
     def __init__(self, config):
         super(PBR, self).__init__(config)
         self._last_value = 0.45
-        self._increasing = False
+        self._increasing = True
         self.interpreter = {
             "1": self.get_temp_settings,
             "2": self.get_temp,
@@ -253,7 +253,8 @@ class PBR(Connector):
         result["pump"] = True, self.get_pump_params(pump_id)
         result["o2"] = True, self.get_o2()
         result["co2"] = False, "Cannot get co2"
-        result["ft"] = True, self.measure_ft(ft_channel)
+        result["ft_0"] = True, self.measure_ft(ft_channel)
+        result["ft_1"] = True, self.measure_ft(ft_channel)
 
         return result
 

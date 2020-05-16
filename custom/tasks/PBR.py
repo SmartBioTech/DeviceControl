@@ -5,8 +5,8 @@ from typing import Dict, Union
 
 import numpy as np
 
-from core.data.command import Command
 from core.device.abstract import Connector
+from core.data.command import Command
 from core.device.manager import DeviceManager
 from core.task.abstract import BaseTask
 from core.task.manager import TaskManager
@@ -25,7 +25,7 @@ class PBRMeasureAll(BaseTask):
         self.od_channel = None
         self.tolerance = None
         self.max_outliers = None
-        self.ft_channel = None
+        # self.ft_channel = None
         self.latest_values = deque(maxlen=2)
         self.device_id: str = ""
         self.pump_id = None
@@ -43,7 +43,7 @@ class PBRMeasureAll(BaseTask):
             assert self.lower_tol is not None
             assert self.upper_tol is not None
             assert self.od_channel is not None
-            assert self.ft_channel is not None
+            # assert self.ft_channel is not None
             assert self.device_id is not ""
 
         except AssertionError:
@@ -263,8 +263,8 @@ class PBRGeneralPump(BaseTask, Observer):
             command.await_cmd()
 
             if isinstance(command.response, bool) and command.response:
-                print("pump is {}".format("ON" if state else "OFF"))
-                print("changing pump state to: {}".format(state))
+                # print("pump is {}".format("ON" if state else "OFF"))
+                # print("changing pump state to: {}".format(state))
                 self.is_pump_on = state
                 return
         raise ConnectionError

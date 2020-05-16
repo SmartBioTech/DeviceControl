@@ -69,11 +69,11 @@ class PBR(JavaDevice):
         msg = self.device.send("set-tr-temp", temp)
         return not msg.isError()
 
-    def get_ph(self, repeats, wait):
+    def get_ph(self, repeats=5, wait=0):
         """
         Get current pH (dimensionless.)
-        :param repeats: the number of measurement repeats
-        :param wait: waiting time between individual repeats
+        :param repeats: The number of measurement repeats
+        :param wait: Waiting time between individual repeats
         :return: The current pH.
         """
         msg = self.device.send("get-ph", repeats, wait)
@@ -82,11 +82,11 @@ class PBR(JavaDevice):
 
         return msg.getDoubleParam(0)
 
-    def measure_od(self, channel=0, repeats=1):
+    def measure_od(self, channel=0, repeats=5):
         """
         Measure current Optical Density (OD, dimensionless).
-        :param channel: which channel should be measured
-        :param repeats: the number of measurement repeats
+        :param channel: Optical path to be measured ()
+        :param repeats: The number of measurement repeats
         :return: Measured OD
         """
         msg = self.device.send("measure-od", channel, repeats)
@@ -145,7 +145,7 @@ class PBR(JavaDevice):
         msg = self.device.send("set-pump-state", pump, on)
         return not msg.isError()
 
-    def get_light_intensity(self, channel):
+    def get_light_intensity(self, channel=0):
         """
         Checks for current (max?) light intensity.
         Items: "intensity": current light intensity (float) in μE,
@@ -174,9 +174,9 @@ class PBR(JavaDevice):
         msg = self.device.send("set-actinic-light-intensity", channel, intensity)
         return not msg.isError()
 
-    def turn_on_light(self, channel, on):
+    def turn_on_light(self, channel=0, on=True):
         """
-        Turn on/off LED panel on photobioreactor.
+        Turn on/off photobioreactor LED panel.
         :param channel: Given channel
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
@@ -207,10 +207,10 @@ class PBR(JavaDevice):
     def set_pwm(self, value, on):
         """
         Set stirring settings.
-        Channel: 0 red and 1 blue according to PBR configuration.
-        :param value: desired stirring pulse
+        For standard stirrer max (100 %) intensity is 600 rpm.
+        :param value: desired stirring intensity in %
         :param on: True turns on, False turns off
-        :return: True if was successful, False otherwise.
+        :return: True if successful, False otherwise.
         """
         msg = self.device.send("set-pwm", value, on)
         return not msg.isError()
@@ -251,7 +251,7 @@ class PBR(JavaDevice):
             "temp_on": msg.getIntParam(3),
         }
 
-    def set_thermoregulator_state(self, on):
+    def set_thermoregulator_state(self, on=-1):
         """
         Set state of thermoregulator.
         :param on: 1 -> on, 0 -> freeze, -1 -> off
@@ -260,11 +260,11 @@ class PBR(JavaDevice):
         msg = self.device.send("set-tr-state", on)
         return not msg.isError()
 
-    def measure_ft(self, channel):
+    def measure_ft(self, channel=0):
         """
-        ???
-        :param channel: ???
-        :return: ???
+        Measure steady-state terminal fluorescence.
+        :param channel: 0 -> blue (455 nm) measuring LEDs, 1 -> red (627 nm) measuring LEDs
+        :return: fluorescence value in arbitrary units
         """
         msg = self.device.send("measure-ft", channel)
         if msg.isError():
@@ -275,7 +275,7 @@ class PBR(JavaDevice):
             "background": msg.getIntParam(1)
         }
 
-    def measure_qy(self, channel):
+    def measure_qy(self, channel=0):
         """ Measure steady-state terminal and maximal fluorescence and calculate quantum yield
 
         !This measure NOT to be included with measure_all
@@ -308,10 +308,10 @@ class PBR(JavaDevice):
 
     def get_co2(self, raw=True, repeats=5):
         """
-        TBA
-        :param raw: True for raw data, False for data ???
+        Measure dissolved CO2 concentration.
+        :param raw: True for raw data, False for calibrated data
         :param repeats: the number of measurement repeats
-        :return:
+        :return: averaged CO2 concentration
         """
         msg = self.device.send("get-co2", repeats, raw)
         if msg.isError():
@@ -319,10 +319,9 @@ class PBR(JavaDevice):
 
         return msg.getDoubleParam(0)
 
-    def measure_all(self, ft_channel=5, pump_id=5):
+    def measure_all(self, pump_id=5):
         """
         Measures all basic measurable values.
-
         :param ft_channel: channel for ft_measure
         :param pump_id: id of particular pump
         :return: dictionary of all measured values
@@ -346,17 +345,17 @@ class PBR(JavaDevice):
         try:
             measure_all_dictionary["od_0"] = True, self.measure_od(0, 30)
         except Exception:
-            measure_all_dictionary["od_0"] = False, "Cannot get od_0"
+            measure_all_dictionary["od_0"] = False, "Cannot get OD_0"
 
         try:
             measure_all_dictionary["od_1"] = True, self.measure_od(1, 30)
         except Exception:
-            measure_all_dictionary["od_1"] = False, "Cannot get od_1"
+            measure_all_dictionary["od_1"] = False, "Cannot get OD_1"
 
         try:
             measure_all_dictionary["ph"] = True, self.get_ph(5, 0),
         except Exception:
-            measure_all_dictionary["ph"] = False, "Cannot get ph"
+            measure_all_dictionary["ph"] = False, "Cannot get pH"
 
         try:
             measure_all_dictionary["temp"] = True, self.get_temp(),
@@ -371,17 +370,22 @@ class PBR(JavaDevice):
         try:
             measure_all_dictionary["o2"] = True, self.get_o2()
         except Exception:
-            measure_all_dictionary["o2"] = False, "Cannot get o2"
+            measure_all_dictionary["o2"] = False, "Cannot get O2"
 
         try:
             measure_all_dictionary["co2"] = True, self.get_co2()
         except Exception:
-            measure_all_dictionary["co2"] = False, "Cannot get co2"
+            measure_all_dictionary["co2"] = False, "Cannot get CO2"
 
         try:
-            measure_all_dictionary["ft"] = True, self.measure_ft(ft_channel)
+            measure_all_dictionary["ft_0"] = True, self.measure_ft(0)
         except Exception:
-            measure_all_dictionary["ft"] = False, "Cannot measure ft"
+            measure_all_dictionary["ft_0"] = False, "Cannot measure Ft_0"
+
+        try:
+            measure_all_dictionary["ft_1"] = True, self.measure_ft(1)
+        except Exception:
+            measure_all_dictionary["ft_1"] = False, "Cannot measure Ft_1"
 
         return measure_all_dictionary
 
