@@ -70,9 +70,7 @@ class AppManager:
         }
 
     def get_data(self, device_id, log_id=None, time=None):
-        if log_id is not None:
-            return True, None, self.dataManager.get_data_by_id(log_id, device_id)
-        return True, None, self.dataManager.get_data_by_time(time, device_id)
+        return True, None, self.dataManager.get_data(log_id, time, device_id)
 
     def end(self):
         self.deviceManager.end()

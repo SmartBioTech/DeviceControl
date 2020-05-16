@@ -45,34 +45,23 @@ class DataManager:
 
         return result
 
-    def get_data_by_id(self, log_id: Optional[int] = None, device_id: Optional[str] = None):
+    def get_data(self,
+                 log_id: Optional[int] = None,
+                 time: Optional[str] = None,
+                 device_id: Optional[str] = None):
+
         where_conditions = []
         if device_id is not None:
-            device_id = enquote(device_id)
-            where_conditions.append(f"device_id={device_id}")
+            where_conditions.append(f"device_id={enquote(device_id)}")
 
-            if log_id is None:
-                log_id = self.last_seen.get(device_id, 0)
-
-            where_conditions.append(f"log_id>{log_id}")
+        if time is not None:
+            where_conditions.append(f"TIMESTAMP(time_issued)>TIMESTAMP({time})")
 
         elif log_id is not None:
             where_conditions.append(f"log_id>{log_id}")
 
-        return self._get_data(where_conditions, device_id)
-
-    def get_data_by_time(self, time, device_id: Optional[str] = None):
-        where_conditions = []
-        if device_id is not None:
-            device_id = enquote(device_id)
-            where_conditions.append(f"device_id={device_id}")
-
-            if time is None:
-                time = self.last_seen.get(device_id, 0)
-
-            where_conditions.append(f"TIMESTAMP(time_issued)>TIMESTAMP({time})")
-
-        elif time is not None:
-            where_conditions.append(f"TIMESTAMP(time_issued)>TIMESTAMP({time})")
+        else:
+            log_id = self.last_seen.get(device_id, 0)
+            where_conditions.append(f"log_id>{log_id}")
 
         return self._get_data(where_conditions, device_id)
