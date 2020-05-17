@@ -25,7 +25,8 @@ class AppManager:
 
         return device is not None, None, None
 
-    def end_device(self, device_id: str):
+    def end_device(self, config: dict):
+        device_id = config.get("target_id")
         try:
             self.deviceManager.remove_device(device_id)
             return True, None, None
@@ -55,7 +56,8 @@ class AppManager:
             Log.error(e)
             return False, e, None
 
-    def end_task(self, task_id):
+    def end_task(self, config: dict):
+        task_id = config.get("target_id")
         try:
             self.taskManager.remove_task(task_id)
             return True, None, None

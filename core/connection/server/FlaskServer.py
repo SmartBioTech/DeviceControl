@@ -52,12 +52,11 @@ class Server:
         def end():
             data = request.get_json()
             _type = data.get("type")
-            target_id = data.get("target_id")
             if _type == "device":
-                success, cause, data = self.app_manager.end_device(target_id)
+                success, cause, data = self.app_manager.end_device(data)
 
             elif _type == "task":
-                success, cause, data = self.app_manager.end_task(target_id)
+                success, cause, data = self.app_manager.end_task(data)
 
             elif _type == "all":
                 success, cause, data = self.app_manager.end()
