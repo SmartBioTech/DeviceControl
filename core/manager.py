@@ -72,6 +72,9 @@ class AppManager:
     def get_data(self, device_id, log_id=None, time=None):
         return True, None, self.dataManager.get_data(log_id, time, device_id)
 
+    def get_latest_data(self, device_id=None):
+        return True, None, self.dataManager.get_latest_data(device_id=device_id)
+
     def end(self):
         self.deviceManager.end()
         self.taskManager.end()
