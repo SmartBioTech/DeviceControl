@@ -6,7 +6,7 @@ class PBR(Connector):
     def __init__(self, config):
         super(PBR, self).__init__(config)
         self._last_value = 0.45
-        self._increasing = False
+        self._increasing = True
         self.interpreter = {
             "1": self.get_temp_settings,
             "2": self.get_temp,
