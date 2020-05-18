@@ -6,7 +6,7 @@ from core.utils.time import now
 
 class Command:
 
-    def __init__(self, device_id, command_id: str, args: list, source: str, is_awaited=False):
+    def __init__(self, device_id, command_id: str, args: list, source: str, save_on_resolve=True):
         self.command_id = command_id
         self.args = args
         self.source = source
@@ -17,7 +17,7 @@ class Command:
         self.is_valid = None
         self.time_executed = None
         self.response = None
-        self.is_awaited = is_awaited
+        self.save_on_resolve = save_on_resolve
         self._saved = False
 
     def __str__(self):
@@ -35,6 +35,8 @@ class Command:
     def resolve(self):
         self.time_executed = now()
         self._resolved.set()
+        if self.save_on_resolve:
+            self.save_to_database()
 
     def save_to_database(self):
         if not self._saved:
@@ -49,5 +51,6 @@ class Command:
             "response": str(self.response),
             "target": str(self.args),
             "source": str(self.source),
-            "command_id": str(self.command_id)
+            "command_id": str(self.command_id),
+            "is_valid": int(self.is_valid)
         }

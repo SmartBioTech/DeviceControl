@@ -1,29 +1,11 @@
-from typing import Optional
-
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 from core.data.manager import DataManager
 from core.device.manager import DeviceManager
 from core.manager import AppManager
 from core.task.manager import TaskManager
 from core.utils.singleton import singleton
-from core.utils.time import process_time
-
-
-class Response:
-    def __init__(self, success: bool, cause: Optional[Exception], data: Optional[dict]):
-        self.success = success
-        self.cause = cause
-        self.data = data
-
-    def to_json(self):
-        return jsonify(
-            {
-                "success": self.success,
-                "cause": self.cause,
-                "data": self.data,
-            }
-        )
+from core.utils.networking import Response
 
 
 @singleton
@@ -73,14 +55,8 @@ class Server:
 
         @self.server.route('/command', methods=["POST"])
         def command():
-            data: dict = request.get_json()
-            device_id = data.get("device_id")
-            cmd_id = data.get("command_id")
-            args = data.get("arguments", "[]")
-            source = data.get("source", "external")
-
-            success, cause, data = self.app_manager.command(device_id, cmd_id, args, source)
-
+            config: dict = request.get_json()
+            success, cause, data = self.app_manager.command(config)
             return Response(success, cause, data).to_json()
 
         @self.server.route('/task', methods=["POST"])
@@ -91,14 +67,6 @@ class Server:
 
         @self.server.route('/data', methods=["GET"])
         def get_data():
-            args = dict(request.args)
-            device_id = args.get("device_id", None)
-            log_id = args.get("log_id", None)
-            time = args.get("time", None)
-            if time is not None:
-                try:
-                    time = process_time(time)
-                except SyntaxError as e:
-                    return Response(False, e, None).to_json()
-            success, cause, data = self.app_manager.get_data(device_id, log_id=log_id, time=time)
+            config = dict(request.args)
+            success, cause, data = self.app_manager.get_data(config)
             return Response(success, cause, data).to_json()

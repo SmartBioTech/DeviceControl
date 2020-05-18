@@ -190,7 +190,7 @@ class PBRMeasureAll(BaseTask):
                                   _command.get("id"),
                                   _command.get("args", []),
                                   self.task_id,
-                                  is_awaited=True)
+                                  save_on_resolve=False)
                 commands.append((_name, command))
                 self.device.post_command(command, 1)
 

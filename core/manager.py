@@ -7,11 +7,16 @@ from core.log import Log
 from core.task.manager import TaskManager
 from core.utils.errors import IdError
 from core.utils.singleton import singleton
+from core.utils.time import process_time
 
 
 @singleton
 class AppManager:
-    def __init__(self, taskManager: TaskManager, deviceManager: DeviceManager, dataManager: DataManager):
+    def __init__(self,
+                 taskManager: TaskManager = None,
+                 deviceManager: DeviceManager = None,
+                 dataManager: DataManager = None
+                 ):
         self.taskManager: TaskManager = taskManager
         self.deviceManager: DeviceManager = deviceManager
         self.dataManager: DataManager = dataManager
@@ -35,19 +40,20 @@ class AppManager:
             Log.error(exc)
             return False, exc, None
 
-    def command(self, device_id, command_id, args, source, priority=False):
+    def command(self, config: dict):
+        device_id = config.get("device_id")
+        command_id = config.get("command_id")
+        args = config.get("arguments", "[]")
+        source = config.get("source", "external")
         try:
             cmd = Command(device_id, command_id, eval(args), source)
-            if priority:
-                self.deviceManager.get_device(device_id).post_command(cmd, priority=1)
-            else:
-                self.deviceManager.get_device(device_id).post_command(cmd)
+            self.deviceManager.get_device(device_id).post_command(cmd)
             return True, None, None
         except (IdError, AttributeError) as e:
             Log.error(e)
             return False, e, None
 
-    def register_task(self, config):
+    def register_task(self, config: dict):
         try:
             task = self.taskManager.create_task(config)
             task.start()
@@ -71,7 +77,15 @@ class AppManager:
             "tasks": self.taskManager.ping()
         }
 
-    def get_data(self, device_id, log_id=None, time=None):
+    def get_data(self, config: dict):
+        device_id = config.get("device_id", None)
+        log_id = config.get("log_id", None)
+        time = config.get("time", None)
+        if time is not None:
+            try:
+                time = process_time(time)
+            except SyntaxError as e:
+                return False, e, None
         return True, None, self.dataManager.get_data(log_id, time, device_id)
 
     def end(self):

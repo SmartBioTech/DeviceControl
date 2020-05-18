@@ -97,9 +97,6 @@ class Connector(metaclass=Interface):
         command.is_valid = validity
         command.executed_on = (self.device_class, self.device_id)
 
-        if not command.is_awaited:
-            command.save_to_database()
-
         command.resolve()
 
         return command
