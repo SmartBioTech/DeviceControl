@@ -103,3 +103,10 @@ class Server:
                     return Response(False, e, None).to_json()
             success, cause, data = self.app_manager.get_data(device_id, log_id=log_id, time=time)
             return Response(success, cause, data).to_json()
+
+        @self.server.route('/data/latest', methods=['GET'])
+        def get_latest_data():
+            args = dict(request.args)
+            device_id = args.get("device_id", None)
+            success, cause, data = self.app_manager.get_latest_data(device_id)
+            return Response(success, cause, data).to_json()

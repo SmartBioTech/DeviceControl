@@ -66,3 +66,15 @@ class DataManager:
             where_conditions.append(f"log_id>{log_id}")
 
         return self._get_data(where_conditions, device_id)
+
+    def get_latest_data(self, device_id):
+        where_conditions = []
+        if device_id is None:
+            where_conditions.append(
+                f"log_id=(SELECT MAX(log_id) FROM {Dao.cmd_table})"
+            )
+        else:
+            where_conditions.append(
+                f"log_id=(SELECT MAX(log_id) FROM {Dao.cmd_table} WHERE device_id={enquote(device_id)})",
+            )
+        return self._get_data(where_conditions, device_id)
