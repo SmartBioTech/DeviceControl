@@ -319,7 +319,7 @@ class PBR(JavaDevice):
 
         return msg.getDoubleParam(0)
 
-    def measure_all(self, ft_channel=5, pump_id=5):
+    def measure_all(self, pump_id=5):
         """
         Measures all basic measurable values.
 
@@ -379,9 +379,14 @@ class PBR(JavaDevice):
             measure_all_dictionary["co2"] = False, "Cannot get co2"
 
         try:
-            measure_all_dictionary["ft"] = True, self.measure_ft(ft_channel)
+            measure_all_dictionary["ft_0"] = True, self.measure_ft(0)
         except Exception:
-            measure_all_dictionary["ft"] = False, "Cannot measure ft"
+            measure_all_dictionary["ft_0"] = False, "Cannot measure ft_0"
+
+        try:
+            measure_all_dictionary["ft_1"] = True, self.measure_ft(1)
+        except Exception:
+            measure_all_dictionary["ft_1"] = False, "Cannot measure ft_1"
 
         return measure_all_dictionary
 
