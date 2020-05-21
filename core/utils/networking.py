@@ -37,6 +37,7 @@ class RequestTypes(Enum):
     END = "end"
     DATA = "data"
     COMMAND = "command"
+    UNKNOWN = None
 
     # noinspection PyArgumentList
     @classmethod
@@ -45,4 +46,4 @@ class RequestTypes(Enum):
         try:
             return cls(string)
         except ValueError:
-            return None
+            return cls.UNKNOWN

@@ -13,7 +13,7 @@ logger = Logger()
 workflowProvider = WorkflowProvider()
 controller = Controller()
 
-default = "flask_server"
+default = "flask_client"
 
 conModule = None
 conModuleStartArgs = None
