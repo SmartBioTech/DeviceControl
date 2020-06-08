@@ -181,7 +181,7 @@ class PBR(JavaDevice):
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
         """
-        msg = self.device.send("set-ext-light-state", channel, on)
+        msg = self.device.send("set-actinic-light-state", channel, on)
         return not msg.isError()
 
     def get_pwm_settings(self):
