@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="photobioreactor-base">
+    <include>userland/core</include>
+    <include>photobioreactor/switches</include>
+    <include>photobioreactor/statusReg</include>
+    <include>common/core</include>
+    <include>photobioreactor/pumps</include>
+    <include>photobioreactor/thermo</include>
+    <include>common/system</include>
+    <include>userland/events</include>
+</set>

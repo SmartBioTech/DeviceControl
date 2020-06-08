@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="FluorPen">
+    <include>fluorpen-base</include>
+        
+    <command name="get-detector-value" id="1050">
+        <return>2050</return>
+    </command>
+    <answer name="detector-value" id="2050">
+        <param name="value" type="FLOAT"/>
+        <param name="range" type="UINT8"/>
+    </answer>
+    
+    <command name="get-detector-value-r" id="1051">
+        <param name="repeats" type="UINT8"/>
+        <param name="range" type="UINT8"/>
+        <return>116</return>
+        <return>307</return>
+    </command>    
+    
+    <command name="set-od-led" id="1052">
+        <descr>zapnuti/vypnuti OD LEDky</descr>
+        <param name="led-nr" type="UINT8"><descr>0-1</descr></param>
+        <param name="state" type="BOOL"/>
+        <param name="intensity" type="UINT16"><descr>0-1023</descr></param>
+        <return>100</return>
+        <return>302</return>
+        <return>307</return>
+    </command>
+    
+    <command name="measure-od" id="1041">
+        <param name="channel" type="UINT8"/>
+        <param name="repeats" type="UINT16"/>
+        <return>2041</return>
+        <return>302</return>
+        <return>303</return>
+        <return>305</return>
+        <return>306</return>
+    </command>
+    <answer name="od" id="2041">
+        <param name="flash" type="INT32"/>
+        <param name="background" type="INT32"/>
+    </answer>    
+    
+    <command name="!calibrate-od" id="1040">
+        <descr>zkalibruje vsechny kanaly OD</descr>
+        <return>100</return>
+        <return>130</return>
+    </command>
+    
+    <command name="get-od-cal-consts" id="1042">
+        <param name="channel" type="UINT8"/>
+        <return>2042</return>
+        <return>302</return>
+    </command>
+    <answer name="od-cal-consts" id="2042">
+        <param name="intensity" type="UINT16"/>
+        <param name="const" type="FLOAT"/>
+        <param name="ref-const" type="FLOAT"/>
+        <param name="ref-gain" type="UINT16"/>
+    </answer>
+    
+    <command name="set-od-cal-consts" id="1043">
+        <param name="channel" type="UINT8"/>
+        <param name="intensity" type="UINT16"/>
+        <param name="const" type="FLOAT"/>
+        <param name="ref-const" type="FLOAT"/>
+        <param name="ref-gain" type="UINT16"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-opt-det-consts" id="1060">
+        <descr>
+        set detector constants
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <return>2060</return>
+    </command>
+    <answer name="opt-det-consts" id="2060">
+        <descr>
+        set detector constants
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <param name="r0" type="FLOAT"/>
+        <param name="r1" type="FLOAT"/>
+        <param name="r2" type="FLOAT"/>
+        <param name="r3" type="FLOAT"/>
+    </answer>
+    
+    <command name="set-opt-det-consts" id="1061">
+        <descr>
+        set detector constants
+        r0 - biggest number
+        r3 - lowest number
+        </descr>
+        <param name="r0" type="FLOAT"/>
+        <param name="r1" type="FLOAT"/>
+        <param name="r2" type="FLOAT"/>
+        <param name="r3" type="FLOAT"/>
+        <return>100</return>
+    </command>    
+</set>

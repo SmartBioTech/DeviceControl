@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="boot/core">
+	<!-- commandy bootloaderu -->
+    <command name="!program-completed" id="1003">
+    	<descr>notify device that firmware upload has finished</descr>
+    	<return>100</return>
+    	<return>130</return>
+    	<return>601</return>
+    </command>
+    
+    <command name="!run-userland" id="1004">
+        <descr>switch to userland mode</descr>
+        <return>100</return>
+        <return>130</return>
+        <return>601</return>
+    </command>
+
+    <answer name="program-not-loaded" id="601">
+        <descr>answer to program-completed or run-userland, but memory not ready</descr>
+    </answer>
+    
+    <answer name="program-write-error" id="600">
+        <descr>error writing page</descr>
+    </answer>
+
+<!--
+;;(define-command 1005 (!change-baud-rate
+;;			(:uint32 baudrate)))
+;; ok/error
+;; podporovane 9600 a 115200 pro vse mimo PerPump
+;; podporovane 9600 a 19200 pro PerPump
+;; pro zpetnou kompatibilitu s nahravatory
+-->
+</set>

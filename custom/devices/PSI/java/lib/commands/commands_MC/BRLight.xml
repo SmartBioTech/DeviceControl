@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="BRLight">
+    <include>userland/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+    <include>userland/events</include>
+    
+    <command name="get-light-settings" id="1001">
+        <param name="channel" type="UINT8"/>
+        <return>2001</return>
+        <return>302</return>
+    </command>
+    <answer name="light-settings" id="2001">
+        <param name="is-on" type="BOOL"/>
+        <param name="dac-abs" type="FLOAT"/>
+        <param name="uE-percentage" type="FLOAT"/>
+        <param name="uE-intensity" type="FLOAT"/>
+        <param name="uE-max" type="FLOAT"/>
+    </answer>
+    
+    <command name="set-light-intensity-dac-abs" id="1003">
+        <param name="channel" type="UINT8"/>
+        <param name="dac-abs" type="UINT16"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-light-intensity-ue" id="1002">
+        <param name="channel" type="UINT8"/>
+        <param name="intensity" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="get-light-calibration" id="1005">
+        <param name="channel" type="UINT8"/>
+        <return>2005</return>
+        <return>302</return>
+    </command>
+    <answer name="light-calibration" id="2005">
+        <param name="a" type="FLOAT"/>
+        <param name="b" type="FLOAT"/>
+        <param name="c" type="FLOAT"/>
+    </answer>    
+    
+    <command name="set-light-state" id="1004">
+        <param name="channel" type="UINT8"/>
+        <param name="is-on" type="BOOL"/>
+        <return>100</return>
+        <return>302</return>
+    </command>
+    
+    <command name="set-light-calibration" id="1006">
+        <param name="channel" type="UINT8"/>
+        <param name="a" type="FLOAT"/>
+        <param name="b" type="FLOAT"/>
+        <param name="c" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+    </command>    
+    
+    <command name="get-error-reg" id="1010">
+        <descr>
+bits 0-3 - LED overheat
+bit 4 - cooler overheat
+bit 7 - expander read error        
+        </descr>
+        <return>110</return>
+    </command>
+</set>
