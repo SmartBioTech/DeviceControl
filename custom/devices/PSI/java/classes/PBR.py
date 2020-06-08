@@ -251,10 +251,10 @@ class PBR(JavaDevice):
             "temp_on": msg.getIntParam(3),
         }
 
-    def set_thermoregulator_state(self, on=-1):
+    def set_thermoregulator_state(self, on=0):
         """
         Set state of thermoregulator.
-        :param on: 1 -> on, 0 -> freeze, -1 -> off
+        :param on: 0 - off, 1 - on, 2 - freeze
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-tr-state", on)
