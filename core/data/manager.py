@@ -38,8 +38,7 @@ class DataManager:
 
         for row in response:
             log_id = row[0]
-            row = row[1:]
-            row = dict(zip(Dao.cmd_table_columns[1:], row))
+            row = dict(zip(Dao.cmd_table_columns[1:], row[1:]))
             result[log_id] = row
 
         if device_id is not None and response:
