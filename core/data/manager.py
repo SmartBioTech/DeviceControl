@@ -18,7 +18,7 @@ class DataManager:
             ("time_executed", str(cmd.time_executed)),
             ("device_id", str(cmd.device_id)),
             ("response", str(cmd.response)),
-            ("target", str(cmd.args)),
+            ("arguments", str(cmd.args)),
             ("source", str(cmd.source)),
             ("command_id", str(cmd.command_id)),
             ("is_valid", int(cmd.is_valid))

@@ -47,7 +47,7 @@ class Command:
             "time_executed": str(self.time_executed),
             "device_id": str(self.device_id),
             "response": str(self.response),
-            "target": str(self.args),
+            "arguments": str(self.args),
             "source": str(self.source),
             "command_id": str(self.command_id)
         }
