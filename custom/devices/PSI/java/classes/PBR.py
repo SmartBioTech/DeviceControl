@@ -174,6 +174,18 @@ class PBR(JavaDevice):
         msg = self.device.send("set-actinic-light-intensity", channel, intensity)
         return not msg.isError()
 
+    def set_ratio_light_intensity(self, intensity, ratio=0.5):
+        """
+        Set target light intensity as a sum of red and blue lights, mixed according to given ratio.
+
+        :param intensity: target light intensity
+        :param ratio: (red/ratio) == (blue/(1-ratio))
+        :return: True if both were successful, False otherwise.
+        """
+        msg1 = self.device.send("set-actinic-light-intensity", 0, intensity * ratio)        # red
+        msg2 = self.device.send("set-actinic-light-intensity", 1, intensity * (1 - ratio))  # blue
+        return not msg1.isError() and not msg2.isError()
+
     def turn_on_light(self, channel, on):
         """
         Turn on/off LED panel on photobioreactor.

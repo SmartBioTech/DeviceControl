@@ -143,6 +143,16 @@ class PBR(Connector):
         """
         return True
 
+    def set_ratio_light_intensity(self, intensity, ratio=0.5):
+        """
+        Set target light intensity as a sum of red and blue lights, mixed according to given ratio.
+
+        :param intensity: target light intensity
+        :param ratio: (red/ratio) == (blue/(1-ratio))
+        :return: True if both were successful, False otherwise.
+        """
+        return True
+
     def turn_on_light(self, channel, on):
         """
         Turn on/off LED panel on photobioreactor.
