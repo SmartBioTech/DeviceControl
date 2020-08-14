@@ -18,9 +18,10 @@ class DataManager:
             ("time_executed", str(cmd.time_executed)),
             ("device_id", str(cmd.device_id)),
             ("response", str(cmd.response)),
-            ("target", str(cmd.args)),
+            ("arguments", str(cmd.args)),
             ("source", str(cmd.source)),
-            ("command_id", str(cmd.command_id))
+            ("command_id", str(cmd.command_id)),
+            ("is_valid", int(cmd.is_valid))
         ]
                    )
 
@@ -36,8 +37,15 @@ class DataManager:
         columns.pop(0)
 
         for row in response:
-            log_id = row[0]
-            row = row[1:]
+            log_id = int(row[0])
+            row = dict(zip(Dao.cmd_table_columns[1:], (row[1:])))
+            for key, item in row.items():
+                # noinspection PyBroadException
+                try:
+                    item = eval(item)
+                    row[key] = item
+                except Exception:
+                    continue
             result[log_id] = row
 
         if device_id is not None and response:

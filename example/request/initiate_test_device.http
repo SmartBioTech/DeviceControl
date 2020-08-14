@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {"device_id": "001",
   "device_class": "test_PBR",
-  "address": "/dev/ttyUSB1"
+  "address": "home"
 }
 
 ###

@@ -14,7 +14,6 @@ class Connector(metaclass=Interface):
         self.device_class = None
         self.address = None
         self.setup = {}
-        self.java = None
         self.scheduler = WorkflowProvider().scheduler
 
         self.__dict__.update(config)

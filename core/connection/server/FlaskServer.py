@@ -1,29 +1,14 @@
 from typing import Optional
 
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 from core.data.manager import DataManager
+from core.data.model import Response
 from core.device.manager import DeviceManager
 from core.manager import AppManager
 from core.task.manager import TaskManager
 from core.utils.singleton import singleton
 from core.utils.time import process_time
-
-
-class Response:
-    def __init__(self, success: bool, cause: Optional[Exception], data: Optional[dict]):
-        self.success = success
-        self.cause = cause
-        self.data = data
-
-    def to_json(self):
-        return jsonify(
-            {
-                "success": self.success,
-                "cause": self.cause,
-                "data": self.data,
-            }
-        )
 
 
 @singleton
@@ -44,9 +29,9 @@ class Server:
         def initiate():
             device_config = request.get_json()
 
-            success, cause, data = self.app_manager.register_device(device_config)
+            response = self.app_manager.register_device(device_config)
 
-            return Response(success, cause, data).to_json()
+            return response.to_json()
 
         @self.server.route('/end', methods=["POST"])
         def end():
@@ -54,23 +39,23 @@ class Server:
             _type = data.get("type")
             target_id = data.get("target_id")
             if _type == "device":
-                success, cause, data = self.app_manager.end_device(target_id)
+                response = self.app_manager.end_device(target_id)
 
             elif _type == "task":
-                success, cause, data = self.app_manager.end_task(target_id)
+                response = self.app_manager.end_task(target_id)
 
             elif _type == "all":
-                success, cause, data = self.app_manager.end()
+                response = self.app_manager.end()
             else:
                 e = TypeError("Invalid type to end")
-                return Response(False, e, None).to_json()
+                response = Response(False, None, e)
 
-            return Response(success, cause, data).to_json()
+            return response.to_json()
 
         @self.server.route('/ping')
         def ping():
-            success, cause, data = self.app_manager.ping()
-            return Response(success, cause, data).to_json()
+            response = self.app_manager.ping()
+            return response.to_json()
 
         @self.server.route('/command', methods=["POST"])
         def command():
@@ -80,15 +65,15 @@ class Server:
             args = data.get("arguments", "[]")
             source = data.get("source", "external")
 
-            success, cause, data = self.app_manager.command(device_id, cmd_id, args, source)
+            response = self.app_manager.command(device_id, cmd_id, args, source)
 
-            return Response(success, cause, data).to_json()
+            return response.to_json()
 
         @self.server.route('/task', methods=["POST"])
         def task():
             data: dict = request.get_json()
-            success, cause, data = self.app_manager.register_task(data)
-            return Response(success, cause, data).to_json()
+            response = self.app_manager.register_task(data)
+            return response.to_json()
 
         @self.server.route('/data', methods=["GET"])
         def get_data():
@@ -100,13 +85,13 @@ class Server:
                 try:
                     time = process_time(time)
                 except SyntaxError as e:
-                    return Response(False, e, None).to_json()
-            success, cause, data = self.app_manager.get_data(device_id, log_id=log_id, time=time)
-            return Response(success, cause, data).to_json()
+                    return Response(False, None, e).to_json()
+            response = self.app_manager.get_data(device_id, log_id=log_id, time=time)
+            return response.to_json()
 
         @self.server.route('/data/latest', methods=['GET'])
         def get_latest_data():
             args = dict(request.args)
             device_id = args.get("device_id", None)
-            success, cause, data = self.app_manager.get_latest_data(device_id)
-            return Response(success, cause, data).to_json()
+            response = self.app_manager.get_latest_data(device_id)
+            return response.to_json()
