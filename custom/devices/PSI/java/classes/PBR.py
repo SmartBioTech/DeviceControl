@@ -380,12 +380,12 @@ class PBR(JavaDevice):
         try:
             measure_all_dictionary["ft_0"] = True, self.measure_ft(0)
         except Exception:
-            measure_all_dictionary["ft_0"] = False, "Cannot measure Ft_0"
+            measure_all_dictionary["ft_0"] = False, "Cannot measure ft_0"
 
         try:
             measure_all_dictionary["ft_1"] = True, self.measure_ft(1)
         except Exception:
-            measure_all_dictionary["ft_1"] = False, "Cannot measure Ft_1"
+            measure_all_dictionary["ft_1"] = False, "Cannot measure ft_1"
 
         return measure_all_dictionary
 
