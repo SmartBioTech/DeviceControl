@@ -21,7 +21,7 @@ class Dao:
             "time_issued",
             "device_id",
             "command_id",
-            "target",
+            "arguments",
             "response",
             "time_executed",
             "source",
@@ -49,7 +49,7 @@ class Dao:
                  "time_issued VARCHAR(255),"
                  "device_id VARCHAR(255),"
                  "command_id VARCHAR(255),"
-                 "target VARCHAR(255),"
+                 "arguments VARCHAR(255),"
                  "response VARCHAR(1000),"
                  "time_executed VARCHAR(255),"
                  "source VARCHAR(255),"

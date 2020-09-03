@@ -181,7 +181,7 @@ class PBR(JavaDevice):
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
         """
-        msg = self.device.send("set-ext-light-state", channel, on)
+        msg = self.device.send("set-actinic-light-state", channel, on)
         return not msg.isError()
 
     def get_pwm_settings(self):
@@ -251,10 +251,10 @@ class PBR(JavaDevice):
             "temp_on": msg.getIntParam(3),
         }
 
-    def set_thermoregulator_state(self, on=-1):
+    def set_thermoregulator_state(self, on=0):
         """
         Set state of thermoregulator.
-        :param on: 1 -> on, 0 -> freeze, -1 -> off
+        :param on: 0 - off, 1 - on, 2 - freeze
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-tr-state", on)
@@ -380,12 +380,12 @@ class PBR(JavaDevice):
         try:
             measure_all_dictionary["ft_0"] = True, self.measure_ft(0)
         except Exception:
-            measure_all_dictionary["ft_0"] = False, "Cannot measure Ft_0"
+            measure_all_dictionary["ft_0"] = False, "Cannot measure ft_0"
 
         try:
             measure_all_dictionary["ft_1"] = True, self.measure_ft(1)
         except Exception:
-            measure_all_dictionary["ft_1"] = False, "Cannot measure Ft_1"
+            measure_all_dictionary["ft_1"] = False, "Cannot measure ft_1"
 
         return measure_all_dictionary
 

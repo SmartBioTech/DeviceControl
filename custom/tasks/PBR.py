@@ -25,7 +25,6 @@ class PBRMeasureAll(BaseTask):
         self.od_channel = None
         self.tolerance = None
         self.max_outliers = None
-        # self.ft_channel = None
         self.latest_values = deque(maxlen=2)
         self.device_id: str = ""
         self.pump_id = None
@@ -43,7 +42,6 @@ class PBRMeasureAll(BaseTask):
             assert self.lower_tol is not None
             assert self.upper_tol is not None
             assert self.od_channel is not None
-            # assert self.ft_channel is not None
             assert self.device_id is not ""
 
         except AssertionError:
