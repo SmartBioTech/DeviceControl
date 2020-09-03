@@ -1,8 +1,43 @@
+from threading import Thread, Event
+from time import sleep
+
 from core.device.abstract import Connector
+from core.log import Logger
 from custom.devices.Phenometrics.libs.communication import Connection
 
 
 class PBR(Connector):
+
+    class PumpManager:
+
+        def __init__(self, device_id, connection: Connection):
+            self.connection = connection
+            self.device_id = device_id
+            self._pump = Event()
+            self.discarded = Event()
+            t = Thread(target=self._run)
+            t.start()
+
+        def _run(self):
+            while not self.discarded.is_set():
+                self._pump.wait()
+                while self._pump.is_set():
+                    try:
+                        self.connection.send_command(self.device_id, 'setAux2', [1])
+                        sleep(20)
+                        self.connection.send_command(self.device_id, 'setAux2', [0])
+                    except Exception as exc:
+                        Logger.error(exc)
+
+        def start_pump(self):
+            self._pump.set()
+
+        def stop_pump(self):
+            self._pump.clear()
+
+        def discard(self):
+            self.discarded.set()
+
     def __init__(self, config: dict):
         self.host_address = None
         self.host_port = None
