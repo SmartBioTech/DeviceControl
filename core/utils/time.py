@@ -1,8 +1,9 @@
+
 from datetime import datetime
 
 
 def now():
-    return str(datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
+    return str(datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f"))
 
 
 def process_time(time):
@@ -14,11 +15,7 @@ def process_time(time):
     if time == None:
         return
     try:
-        processed = "'" + time[:4] + '-' \
-                    + time[4:6] + '-' + time[6:8] \
-                    + ' ' + time[8:10] + ':' \
-                    + time[10:12] + ':' \
-                    + time[12:14] + "'"
-        return processed
-    except IndexError:
+        processed = datetime.strptime(time, "%Y%m%d%H%M%S")
+        return "'" + processed.strftime("%Y-%m-%d %H:%M:%S.%f") + "'"
+    except Exception:
         raise SyntaxError("Invalid time format has been provided")
