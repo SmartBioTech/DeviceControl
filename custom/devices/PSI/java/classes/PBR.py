@@ -46,7 +46,7 @@ class PBR(JavaDevice):
             "temp_set": msg.getDoubleParam(0),
             "temp_min": msg.getDoubleParam(1),
             "temp_max": msg.getDoubleParam(2),
-            "state": msg.getBoolParam(3)
+            "temp_on": msg.getBoolParam(3)
         }
 
     def get_temp(self):
@@ -58,7 +58,7 @@ class PBR(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
+        return {'temp': msg.getDoubleParam(0)}
 
     def set_temp(self, temp):
         """
@@ -67,7 +67,7 @@ class PBR(JavaDevice):
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-tr-temp", temp)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def get_ph(self, repeats=5, wait=0):
         """
@@ -80,7 +80,7 @@ class PBR(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
+        return {'pH': msg.getDoubleParam(0)}
 
     def measure_od(self, channel=0, repeats=5):
         """
@@ -103,7 +103,7 @@ class PBR(JavaDevice):
         else:
             od = 3.0
 
-        return od
+        return {'od': od}
 
     def get_pump_params(self, pump):
         """
@@ -133,7 +133,7 @@ class PBR(JavaDevice):
         :return:  True if was successful, False otherwise.
         """
         msg = self.device.send("set-pump-params", pump, direction, flow)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def set_pump_state(self, pump, on):
         """
@@ -143,7 +143,7 @@ class PBR(JavaDevice):
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-pump-state", pump, on)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def get_light_intensity(self, channel=0):
         """
@@ -172,7 +172,7 @@ class PBR(JavaDevice):
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-actinic-light-intensity", channel, intensity)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def turn_on_light(self, channel=0, on=True):
         """
@@ -182,7 +182,7 @@ class PBR(JavaDevice):
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-actinic-light-state", channel, on)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def get_pwm_settings(self):
         """
@@ -213,7 +213,7 @@ class PBR(JavaDevice):
         :return: True if successful, False otherwise.
         """
         msg = self.device.send("set-pwm", value, on)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def get_o2(self, raw=True, repeats=5, wait=0):
         """
@@ -232,7 +232,7 @@ class PBR(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
+        return {'o2': msg.getDoubleParam(0)}
 
     def get_thermoregulator_settings(self):
         """
@@ -258,7 +258,7 @@ class PBR(JavaDevice):
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-tr-state", on)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def measure_ft(self, channel=0):
         """
@@ -271,18 +271,16 @@ class PBR(JavaDevice):
             raise Exception(msg.getError())
 
         return {
-            "flash": msg.getIntParam(0),
-            "background": msg.getIntParam(1)
+            "ft_flash": msg.getIntParam(0),
+            "ft_background": msg.getIntParam(1)
         }
 
     def measure_qy(self, channel=0):
         """ Measure steady-state terminal and maximal fluorescence and calculate quantum yield
-
         !This measure NOT to be included with measure_all
-        
+
         Arguments:
             channel {int} -- measuring light channel
-
         Returns:
             qy {real} -- quantum yield calculated as (fm-ft)/fm
             ft-flash {int} -- steady-state terminal fluorescence
@@ -298,7 +296,7 @@ class PBR(JavaDevice):
         return {
             # TODO: implement check for extreme / noisy measures that could possibly lead to crazy results in qy calculations
             "qy": ((msg.getIntParam(2) - msg.getIntParam(3)) - (msg.getIntParam(0) - msg.getIntParam(1))) / (
-                        msg.getIntParam(2) - msg.getIntParam(3)),
+                    msg.getIntParam(2) - msg.getIntParam(3)),
             "flash-ft": msg.getIntParam(0),
             "background-ft": msg.getIntParam(1),
             "flash-fm": msg.getIntParam(2),
@@ -317,7 +315,7 @@ class PBR(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
+        return {'co2': msg.getDoubleParam(0)}
 
     def measure_all(self, pump_id=5):
         """
