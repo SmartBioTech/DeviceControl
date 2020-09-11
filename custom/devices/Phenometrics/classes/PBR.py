@@ -330,7 +330,8 @@ class PBR(Connector):
         success, result = self.connection.send_command(self.device_id, "enableGUI", [])
         if not success:
             raise Exception(result)
-        return {'success': result.lstrip() == "enableGUI"}
+        # TODO: change "disableGUI" string to "enableGUI" after the bug on Phenometrics software is fixed
+        return {'success': result.lstrip() == "disableGUI"}
 
     def disconnect(self):
         self.enableGUI()
