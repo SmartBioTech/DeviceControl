@@ -25,7 +25,6 @@ class PBRMeasureAll(BaseTask):
         self.od_channel = None
         self.tolerance = None
         self.max_outliers = None
-        # self.ft_channel = None
         self.latest_values = deque(maxlen=2)
         self.device_id: str = ""
         self.pump_id = None
@@ -43,7 +42,6 @@ class PBRMeasureAll(BaseTask):
             assert self.lower_tol is not None
             assert self.upper_tol is not None
             assert self.od_channel is not None
-            # assert self.ft_channel is not None
             assert self.device_id is not ""
 
         except AssertionError:
@@ -111,7 +109,7 @@ class PBRMeasureAll(BaseTask):
         while len(data) < 5:
             od = self.get_od_for_init()
             if od is not None:
-                data.append(od)
+                data.append(od['od'])
 
         data.sort()
         computed = False
@@ -197,12 +195,12 @@ class PBRMeasureAll(BaseTask):
             for name, command in commands:
                 command.await_cmd()
                 if command.is_valid and name == od_variant:
-                    od = command.response
+                    od = command.response['od']
                     self.latest_values.appendleft(od)
                     od_is_outlier = self.handle_outlier(od)
                     if not od_is_outlier:
                         self.od.value = od
-                    command.response = od, od_is_outlier
+                    command.response = {'od': od, 'outlier': od_is_outlier}
                 command.save_to_database()
 
             sleep(self.sleep_period)
@@ -266,7 +264,7 @@ class PBRGeneralPump(BaseTask, Observer):
             self.device.post_command(command, 1)
             command.await_cmd()
 
-            if isinstance(command.response, bool) and command.response:
+            if isinstance(command.response['success'], bool) and command.response['success']:
                 # print("pump is {}".format("ON" if state else "OFF"))
                 # print("changing pump state to: {}".format(state))
                 self.is_pump_on = state
