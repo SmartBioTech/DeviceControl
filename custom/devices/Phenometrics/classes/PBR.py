@@ -37,6 +37,8 @@ class PBR(Connector):
             "23": self.get_cluster_name
         }
 
+        self.disableGUI()
+
     def get_temp_settings(self):
         """
         Get information about currently set temperature, maximal and
@@ -318,5 +320,18 @@ class PBR(Connector):
         except Exception:
             return False
 
+    def disableGUI(self):
+        success, result = self.connection.send_command(self.device_id, "disableGUI", [])
+        if not success:
+            raise Exception(result)
+        return {'success': result.lstrip() == "disableGUI"}
+
+    def enableGUI(self):
+        success, result = self.connection.send_command(self.device_id, "enableGUI", [])
+        if not success:
+            raise Exception(result)
+        # TODO: change "disableGUI" string to "enableGUI" after the bug on Phenometrics software is fixed
+        return {'success': result.lstrip() == "disableGUI"}
+
     def disconnect(self):
-        pass    # TODO
+        self.enableGUI()
