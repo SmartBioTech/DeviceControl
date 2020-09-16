@@ -1,5 +1,3 @@
-from typing import Optional
-
 from flask import Flask, request
 
 from core.data.manager import DataManager

@@ -13,20 +13,21 @@ class TaskManager:
 
     def create_task(self, config: dict):
         task_id = config.get("task_id")
-        task_class = config.get("task_class")
+        task_class = config.get('task_class')
+        task_type = config.get('task_type')
         assert task_id is not None
         assert task_class is not None
         if task_id not in self.tasks:
-            task = self.load_class(task_class)(config)
+            task = self.load_class(task_class, task_type)(config)
             self.tasks[task_id] = task
             return task
         else:
             raise IdError("Task with requested ID already exists")
 
     @staticmethod
-    def load_class(task_class: str) -> BaseTask.__class__:
+    def load_class(task_class: str, task_type: str) -> BaseTask.__class__:
         from custom.tasks import classes
-        return classes.get(task_class)
+        return classes.get(task_class, {}).get(task_type)
 
     def remove_task(self, task_id):
         if task_id in self.tasks:
