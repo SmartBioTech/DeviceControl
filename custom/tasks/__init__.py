@@ -7,5 +7,6 @@ classes = {
     "PBR_measure_all": PBR.PBRMeasureAll,
     "PSI_PBR_pump": PBR.PBRGeneralPump,
     "GAS_measure_all": GAS.GASMeasureAll,
-    "GMS_measure_all": GMS.GMSMeasureAll
+    "GMS_measure_all": GMS.GMSMeasureAll,
+    "PBR_measure_all_desync": PBR.PBRMeasureAllDesync,
 }
