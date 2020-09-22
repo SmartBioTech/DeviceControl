@@ -1,5 +1,5 @@
 from collections import deque
-from threading import Thread
+from threading import Thread, Event
 from time import sleep
 from typing import Dict, Union
 
@@ -278,3 +278,42 @@ class PBRGeneralPump(BaseTask, Observer):
         elif self.is_od_value_too_low(od):
             if self.is_pump_on:
                 self.turn_pump_off()
+
+
+class PBRDayNightRegime(BaseTask):
+    def __init__(self, config):
+        self.intervals = []
+        self.lights = []
+        self.device_id: str = ""
+        self.od_task_id: str = ""
+
+        self.__dict__.update(config)
+        super(PBRDayNightRegime, self).__init__()
+
+        self.device = DeviceManager().get_device(self.device_id)
+        self.waiting = Event()
+
+    def start(self):
+        t = Thread(target=self._run)
+        t.start()
+
+    def _run(self):
+        phase = 0
+        while not self.waiting.is_set():
+            self.change_light_intensity(self.lights[phase])
+            self.waiting.wait(self.intervals[phase]*3600)  # to get seconds
+            phase = (phase + 1) % len(self.intervals)
+
+    def change_light_intensity(self, intensity: bool):
+        for try_n in range(5):
+            command = Command(self.device_id, "10", [0, intensity], self.task_id)
+            self.device.post_command(command, 1)
+            command.await_cmd()
+
+            if isinstance(command.response['success'], bool) and command.response['success']:
+                return
+        raise ConnectionError
+
+    def end(self):
+        self.waiting.set()
+

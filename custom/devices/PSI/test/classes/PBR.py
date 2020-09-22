@@ -7,6 +7,7 @@ class PBR(Connector):
         super(PBR, self).__init__(config)
         self._last_value = 0.45
         self._increasing = True
+        self.light = 100
         self.interpreter = {
             "1": self.get_temp_settings,
             "2": self.get_temp,
@@ -121,7 +122,7 @@ class PBR(Connector):
         :param channel: Given channel ID
         :return: The current settings structured in a dictionary.
         """
-        return {"light_intensity": 500, "light_max": 1000, "light_on": True}
+        return {"light_intensity": self.light, "light_max": 1000, "light_on": True}
 
     def set_light_intensity(self, channel, intensity):
         """
@@ -130,6 +131,7 @@ class PBR(Connector):
         :param intensity: Desired intensity
         :return: True if was successful, False otherwise.
         """
+        self.light = intensity
         return {'success': True}
 
     def turn_on_light(self, channel, on):

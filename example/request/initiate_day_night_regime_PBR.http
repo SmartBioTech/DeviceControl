@@ -1,0 +1,7 @@
+{
+  "task_id": "001DayNightRegime",
+  "task_class": "PBR_day_night_regime",
+  "device_id": "001",
+  "intervals": [16,8],
+  "lights": [500,25]
+}
