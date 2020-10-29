@@ -12,9 +12,11 @@ class DeviceManager:
         self._devices: Dict[str, Connector] = {}
 
     def new_device(self, config: dict) -> Connector:
+        device_class = config.get("device_class")
+        device_type = config.get("device_type")
         if self._devices.get(config.get("device_id")) is not None:
             raise IdError("Connector with given ID already exists")
-        device = self.load_class(config.get("device_class"))(config)
+        device = self.load_class(device_class, device_type)(config)
         self._devices[device.device_id] = device
         return device
 
@@ -41,6 +43,6 @@ class DeviceManager:
         return result
 
     @staticmethod
-    def load_class(class_id: str) -> Connector.__class__:
+    def load_class(device_class: str, device_type: str) -> Connector.__class__:
         from custom.devices import classes
-        return classes.get(class_id)
+        return classes.get(device_class, {}).get(device_type)

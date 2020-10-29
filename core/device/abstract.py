@@ -11,7 +11,6 @@ class Connector(metaclass=Interface):
 
     def __init__(self, config: dict):
         self.device_id = None
-        self.device_class = None
         self.address = None
         self.setup = {}
         self.scheduler = WorkflowProvider().scheduler
@@ -20,7 +19,6 @@ class Connector(metaclass=Interface):
 
         try:
             assert self.device_id is not None
-            assert self.device_class is not None
             assert self.address is not None
         except AssertionError:
             raise AttributeError("Invalid configuration")
