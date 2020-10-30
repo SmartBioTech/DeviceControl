@@ -209,6 +209,29 @@ class PBRMeasureAll(BaseTask):
         self.is_active = False
 
 
+
+class ePBRMeasureAll(PBRMeasureAll):
+    def __init__(self, config):
+        super(ePBRMeasureAll, self).__init__(config)
+        self.commands_to_execute: Dict[str, dict] = {
+            "od_0": {
+                "id": "5",
+                "args": [0]
+            },
+            "od_1": {
+                "id": "5",
+                "args": [1]
+            },
+            "ph": {
+                "id": "4"
+            },
+            "temp": {
+                "id": "2"
+            }
+        }
+
+
+
 class PBRGeneralPump(BaseTask, Observer):
 
     def __init__(self, config):
