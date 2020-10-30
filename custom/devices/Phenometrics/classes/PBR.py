@@ -1,8 +1,56 @@
+from threading import Thread, Event
+from time import sleep
+
 from core.device.abstract import Connector
+from core.log import Logger
 from custom.devices.Phenometrics.libs.communication import Connection
 
 
 class PBR(Connector):
+
+    class PumpManager:
+
+        def __init__(self, device_id, connection: Connection):
+            self.connection = connection
+            self.device_id = device_id
+            self._pump = Event()
+            self.discarded = Event()
+            t = Thread(target=self._run)
+            t.start()
+            self.success = None
+
+        def _run(self):
+            while not self.discarded.is_set():
+                self._pump.wait()
+                while self._pump.is_set():
+                    try:
+                        self.success, result = self.connection.send_command(self.device_id, 'setAux2', [1])
+                        sleep(20)
+                        self.success, result = self.connection.send_command(self.device_id, 'setAux2', [0])
+                    except Exception as exc:
+                        Logger.error(exc)
+                self.success = None
+
+        def start_pump(self):
+            self._pump.set()
+
+            #   while we do not know whether the commands are going through or not
+            while self.success is None:
+                continue
+
+            #   if the commands are not going through, stop the process
+            if not self.success:
+                self.stop_pump()
+
+            return self.success
+
+        def stop_pump(self):
+            self._pump.clear()
+            return True
+
+        def discard(self):
+            self.discarded.set()
+
     def __init__(self, config: dict):
         self.host_address = None
         self.host_port = None
@@ -38,6 +86,7 @@ class PBR(Connector):
         }
 
         self.disableGUI()
+        self.pump_manager = PBR.PumpManager(self.device_id, self.connection)
 
     def get_temp_settings(self):
         """
@@ -110,17 +159,15 @@ class PBR(Connector):
         """
         raise NotImplementedError("The method not implemented")
 
-    def set_pump_state(self, pump, on):
+    def set_pump_state(self, on):
         """
         Turns on/off given pump.
         :param pump: device_id of a pump
         :param on: True to turn on, False to turn off
         :return: True if was successful, False otherwise.
         """
-        success, result = self.connection.send_command(self.device_id, 'setAux2', [int(on)])
-        if not success:
-            raise Exception(result)
-        return {'success': int(result) == int(on)}
+        result = self.pump_manager.start_pump() if on else self.pump_manager.stop_pump()
+        return {'success': result}
 
     def get_light_intensity(self, channel):
         """
@@ -335,3 +382,4 @@ class PBR(Connector):
 
     def disconnect(self):
         self.enableGUI()
+        self.pump_manager.discard()

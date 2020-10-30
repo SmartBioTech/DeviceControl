@@ -1,12 +1,12 @@
 from collections import deque
 from threading import Thread
 from time import sleep
-from typing import Dict, Union
+from typing import Dict
 
 import numpy as np
 
-from core.device.abstract import Connector
 from core.data.command import Command
+from core.device.abstract import Connector
 from core.device.manager import DeviceManager
 from core.task.abstract import BaseTask
 from core.task.manager import TaskManager
@@ -240,6 +240,8 @@ class PBRGeneralPump(BaseTask, Observer):
         self.pump_id = None
         self.device_id: str = ""
         self.od_task_id: str = ""
+        self.pump_on_command = None
+        self.pump_off_command = None
 
         self.__dict__.update(config)
         self.is_pump_on = False
@@ -250,6 +252,8 @@ class PBRGeneralPump(BaseTask, Observer):
             assert self.device_id is not ""
             assert self.pump_id is not None
             assert self.od_task_id is not ""
+            assert self.pump_on_command is not None
+            assert self.pump_off_command is not None
         except AssertionError:
             raise AttributeError("Configuration of PBRGeneralPump task must contain all required attributes")
 
@@ -259,6 +263,14 @@ class PBRGeneralPump(BaseTask, Observer):
         self.od_task.od.observe(self)
 
         super(PBRGeneralPump, self).__init__()
+
+    def get_pump_command(self, state: bool) -> Command:
+        if state:
+            return Command(self.device_id, self.pump_on_command.get("command_id"),
+                           eval(self.pump_on_command.get("arguments", "[]")), self.task_id)
+        else:
+            return Command(self.device_id, self.pump_off_command.get("command_id"),
+                           eval(self.pump_off_command.get("arguments", "[]")), self.task_id)
 
     def update(self, observable: Observable):
         self.stabilize(observable.value)
@@ -283,7 +295,7 @@ class PBRGeneralPump(BaseTask, Observer):
 
     def change_pump_state(self, state: bool):
         for try_n in range(5):
-            command = Command(self.device_id, "8", [self.pump_id, state], self.task_id)
+            command = self.get_pump_command(state)
             self.device.post_command(command, 1)
             command.await_cmd()
 
