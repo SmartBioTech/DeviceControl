@@ -8,9 +8,10 @@ from core.utils.singleton import singleton
 
 @singleton
 class DataManager:
-    def __init__(self, ws_client=None):
+    def __init__(self, ws_client=None, local_db=False):
         self.last_seen = {}
         self.ws_client = ws_client
+        self.local_db = local_db
 
     def save_cmd(self, cmd):
         Dao.insert(Dao.cmd_table, [
@@ -27,6 +28,9 @@ class DataManager:
 
         if self.ws_client is not None:
             Thread(target=self.ws_client.send_data, args=[cmd.to_dict()]).start()
+
+        if self.local_db:
+            LocalDBManager().store_command(cmd)
 
     def _get_data(self, conditions, device_id):
         response = Dao.select(Dao.cmd_table, Dao.cmd_table_columns, conditions)
@@ -85,3 +89,9 @@ class DataManager:
                 f"log_id=(SELECT MAX(log_id) FROM {Dao.cmd_table} WHERE device_id={enquote(device_id)})",
             )
         return self._get_data(where_conditions, device_id)
+
+
+@singleton
+class LocalDBManager:
+    def store_command(self, command):
+        pass

@@ -14,7 +14,7 @@ class Server:
 
     def __init__(self):
 
-        self.app_manager = AppManager(TaskManager(), DeviceManager(), DataManager())
+        self.app_manager = AppManager(TaskManager(), DeviceManager(), DataManager(local_db=True))
         self.server = Flask(__name__)
         self.register_endpoints()
 
