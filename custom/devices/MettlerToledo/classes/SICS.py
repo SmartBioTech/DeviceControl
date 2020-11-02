@@ -17,7 +17,7 @@ class SICS(Connector):
 
         :return: Current weight value.
         """
-        return self.connection.get_weight()
+        return {'weight': self.connection.get_weight()}
 
     def get_info(self):
         """

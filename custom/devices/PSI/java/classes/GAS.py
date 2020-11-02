@@ -25,7 +25,7 @@ class GAS(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getParam(0)
+        return {'co2-air': msg.getParam(0)}
 
     def get_small_valves(self):
         """
@@ -40,7 +40,7 @@ class GAS(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getParam(0)
+        return {'small-valves': msg.getParam(0)}
 
     def set_small_valves(self, mode=0):
         """
@@ -56,7 +56,7 @@ class GAS(JavaDevice):
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-small-valves", mode)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def get_flow(self, repeats=5):
         """
@@ -68,7 +68,7 @@ class GAS(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
+        return {'flow': msg.getDoubleParam(0)}
 
     def get_flow_target(self):
         """
@@ -79,7 +79,7 @@ class GAS(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
+        return {'flow-target': msg.getDoubleParam(0)}
 
     def set_flow_target(self, flow):
         """
@@ -88,7 +88,7 @@ class GAS(JavaDevice):
         :return: True if was successful, False otherwise.
         """
         msg = self.device.send("set-flow-target", flow)
-        return not msg.isError()
+        return {'success': not msg.isError()}
 
     def get_flow_max(self):
         """
@@ -99,7 +99,7 @@ class GAS(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
+        return {'flow-max': msg.getDoubleParam(0)}
 
     def get_pressure(self, repeats=5, wait=0):
         """
@@ -112,8 +112,7 @@ class GAS(JavaDevice):
         if msg.isError():
             raise Exception(msg.getError())
 
-        return msg.getDoubleParam(0)
-
+        return {'pressure': msg.getDoubleParam(0)}
 
     def measure_all(self):
         """
