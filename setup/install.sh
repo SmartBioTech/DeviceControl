@@ -11,8 +11,7 @@ echo "Setting up MySQL database..."
 apt -y install default-mysql-server
 service mysql start
 
-mysql < "server-database-setup.sql"
-mysql < "client-database-setup.sql"
+mysql < "database-setup.sql"
 
 echo "Setting up Python environment..."
 

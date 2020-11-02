@@ -1,9 +1,9 @@
 create user if not exists 'DeviceControl'@'localhost' identified by '&Bioarineo1';
-create database if not exists bioarineo_local;
-grant all privileges on bioarineo_local.* to 'DeviceControl'@'localhost' identified by '&Bioarineo1';
+create database if not exists device_control;
+grant all privileges on device_control.* to 'DeviceControl'@'localhost' identified by '&Bioarineo1';
 
 
-USE bioarineo_local;
+USE device_control;
 
 
 CREATE TABLE `devices` (
@@ -70,7 +70,7 @@ CREATE TABLE `events` (
 
 INSERT INTO `event_types` (`type`)
 VALUES
-    ('pump state change'),
+    ('command executed'),
     ('measurement not successful');
 
 INSERT INTO `variables` (`code`, `name`, `type`)
