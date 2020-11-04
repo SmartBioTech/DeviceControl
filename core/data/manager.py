@@ -12,22 +12,28 @@ class DataManager:
         self.last_seen = {}
         self.ws_client = ws_client
 
-    def save_value(self):
-        pass
+    def save_value(self, values):
+        # TODO: store new variable if does not exists - send also dev_id
+        Dao.insert('values', values)
 
-    def save_event(self):
-        pass
+    def save_event(self, values):
+        Dao.insert('events', values)
 
     def save_device(self):
+        # TODO: store device if does not exists
+        #  + store experiment (temporal hack) !!!
         pass
 
     def save_experiment(self):
+        # TODO: use utils.now()
         pass
 
     def save_variable(self):
+        # TODO: add also an event about creating a new variable
         pass
 
     def save_cmd(self, cmd):
+        # TODO: update all references to this function and delete it
         Dao.insert(Dao.cmd_table, [
             ("time_issued", str(cmd.time_issued)),
             ("time_executed", str(cmd.time_executed)),
@@ -44,6 +50,7 @@ class DataManager:
         # if self.ws_client is not None:
         #     Thread(target=self.ws_client.send_data, args=[cmd.to_dict()]).start()
 
+    # TODO: add argument for event/value data type
     def _get_data(self, conditions, device_id):
         response = Dao.select(Dao.cmd_table, Dao.cmd_table_columns, conditions)
         result = {}
@@ -69,6 +76,7 @@ class DataManager:
 
         return result
 
+    # TODO: add argument for event/value data type
     def get_data(self,
                  log_id: Optional[int] = None,
                  time: Optional[str] = None,
@@ -90,6 +98,7 @@ class DataManager:
 
         return self._get_data(where_conditions, device_id)
 
+    # TODO: add argument for event/value data type
     def get_latest_data(self, device_id):
         where_conditions = []
         if device_id is None:

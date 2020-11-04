@@ -37,6 +37,7 @@ class Server:
             _type = data.get("type")
             target_id = data.get("target_id")
             if _type == "device":
+                # TODO: update appropriate experiment end time
                 response = self.app_manager.end_device(target_id)
 
             elif _type == "task":
@@ -79,6 +80,7 @@ class Server:
             device_id = args.get("device_id", None)
             log_id = args.get("log_id", None)
             time = args.get("time", None)
+            # TODO: add data type (event/value)
             if time is not None:
                 try:
                     time = process_time(time)

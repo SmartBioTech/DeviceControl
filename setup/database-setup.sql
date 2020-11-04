@@ -72,7 +72,8 @@ INSERT IGNORE INTO `event_types` (`id`, type`)
 VALUES
     (1, 'command executed'),
     (2, 'measurement not successful'),
-    (3, 'pump state changed');
+    (3, 'pump state changed'),
+    (4, 'variable created');
 
 INSERT IGNORE INTO `variables` (`code`, `name`, `type`)
 VALUES
