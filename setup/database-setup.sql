@@ -6,7 +6,7 @@ grant all privileges on device_control.* to 'DeviceControl'@'localhost' identifi
 USE device_control;
 
 
-CREATE TABLE `devices` (
+CREATE TABLE IF NOT EXISTS `devices` (
   `id` varchar(100) NOT NULL,
   `class` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `devices` (
 );
 
 
-CREATE TABLE `experiments` (
+CREATE TABLE IF NOT EXISTS `experiments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dev_id` int(11) NOT NULL,
   `start` TIMESTAMP NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `experiments` (
 );
 
 
-CREATE TABLE `variables` (
+CREATE TABLE IF NOT EXISTS `variables` (
   `code` varchar(30) NOT NULL,
   `name` varchar(150) DEFAULT NULL,
   `type` enum('measured','computed','adjusted','aggregate') DEFAULT NULL,
@@ -34,13 +34,13 @@ CREATE TABLE `variables` (
 );
 
 
-CREATE TABLE `values` (
-  `id` NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `values` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` TIMESTAMP NOT NULL,
   `value` double NOT NULL,
   `dev_id` int(11) NOT NULL,
   `var_id` varchar(30) NOT NULL,
-  `argument` int(11) DEFAULT NULL,
+  `args` int(11) DEFAULT NULL,
   `unit` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`dev_id`) REFERENCES `devices`(`id`),
@@ -48,14 +48,14 @@ CREATE TABLE `values` (
 );
 
 
-CREATE TABLE `event_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `event_types` (
+  `id` int(11) NOT NULL,
   `type` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
 
-CREATE TABLE `events` (
+CREATE TABLE IF NOT EXISTS `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dev_id` int(11) NOT NULL,
   `event_type` int(11) NOT NULL,
@@ -68,12 +68,13 @@ CREATE TABLE `events` (
   FOREIGN KEY (`event_type`) REFERENCES `event_types`(`id`)
 );
 
-INSERT INTO `event_types` (`type`)
+INSERT IGNORE INTO `event_types` (`id`, type`)
 VALUES
-    ('command executed'),
-    ('measurement not successful');
+    (1, 'command executed'),
+    (2, 'measurement not successful'),
+    (3, 'pump state changed');
 
-INSERT INTO `variables` (`code`, `name`, `type`)
+INSERT IGNORE INTO `variables` (`code`, `name`, `type`)
 VALUES
     ('temp', 'current temperature', 'measured'),
     ('temp_min', 'max allowed temperature', 'measured'),
