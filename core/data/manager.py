@@ -1,6 +1,7 @@
 from threading import Thread
 from typing import Optional
 
+from core.utils import time
 from core.data.dao import Dao
 from core.utils.db import enquote
 from core.utils.singleton import singleton
@@ -12,32 +13,37 @@ class DataManager:
         self.last_seen_id = {'values': {}, 'events': {}}
         self.ws_client = ws_client
 
-        self.variables = []  # TODO: get all variable names from DB
+        self.variables = self.load_variables()
+
+    def load_variables(self):
+        return list(self._get_data([], None, 'variables').keys())
 
     def save_value(self, values):
         if values[3] not in self.variables:
-            # TODO: add variable ( send also dev_id)
-            pass
+            self.save_variable(values[3])
+            self.variables.append(values[3])
         Dao.insert('values', values)
 
     def save_event(self, values):
         Dao.insert('events', values)
 
     def save_device(self, device):
-        # TODO: store device if does not exists
-        #  + store experiment (temporal hack) !!!
-        pass
+        Dao.insert('devices', [device.device_id, device.device_class, device.type, device.address], ignore=True)
 
-    def save_experiment(self):
-        # TODO: use utils.now()
-        pass
+        # TEMPORAL HACK !!!
+        self.save_experiment(device.device_id)
+
+    def save_experiment(self, device_id):
+        current_time = time.now()
+        Dao.insert('experiments', [device_id, current_time])
 
     def update_experiment(self, device_id):
-        pass
+        # update end time in latest experiment with device_id
+        extra = 'ORDER BY id DESC LIMIT 1'
+        Dao.update('experiments', {'end': time.now()}, {'dev_id': device_id}, extra)
 
-    def save_variable(self):
-        # TODO: add also an event about creating a new variable
-        pass
+    def save_variable(self, variable):
+        Dao.insert("variables", [variable, 'measured'])
 
     def _get_data(self, conditions, device_id, table):
         response = Dao.select(table, conditions)
@@ -46,7 +52,7 @@ class DataManager:
         columns = list.copy(Dao.tables['table'])
 
         for row in response:
-            log_id = int(row[0])
+            log_id = row[0]
             row = dict(zip(columns, (row[1:])))
             for key, item in row.items():
                 # noinspection PyBroadException
@@ -58,7 +64,7 @@ class DataManager:
             result[log_id] = row
 
         if device_id is not None and response:
-            self.last_seen[table][device_id] = max(result.keys())
+            self.last_seen[table][device_id] = max(list(map(int, result.keys())))
 
         return result
 

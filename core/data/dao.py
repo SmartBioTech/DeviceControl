@@ -17,7 +17,7 @@ class Dao:
 
         self.tables = {'events': ['dev_id', 'event_type', 'time', 'args', 'command', 'response'],
                        'values': ['time', 'value', 'dev_id', 'var_id', 'channel', 'note'],
-                       'experiments': ['dev_id', 'start', 'description'],
+                       'experiments': ['dev_id', 'start'],
                        'devices': ['id', 'class', 'type', 'address'],
                        'variables': ['code', 'type']}
 
@@ -51,7 +51,7 @@ class Dao:
 
         return self._execute_query(query)
 
-    def select(self, table: str, columns: List[str], where: Optional[List[str]] = None) -> str:
+    def select(self, table: str, where: Optional[List[str]] = None) -> str:
 
         if where:
             where = " WHERE " + " AND ".join(where)
@@ -62,21 +62,22 @@ class Dao:
 
         return self._execute_query(query)
 
-    def insert(self, table: str, values: list):
+    def insert(self, table: str, values: list, ignore=False):
         values = enquote_all(values)
 
         columns = ", ".join(self.tables[table])
         values = ", ".join(values)
+        ignore = "IGNORE" if ignore else ""
 
-        query = "INSERT INTO {} ({}) VALUES ({})".format(table, columns, values)
+        query = "INSERT {} INTO {} ({}) VALUES ({})".format(ignore, table, columns, values)
 
         self._execute_query(query)
 
-    def update(self, table: str, values: dict, where: dict):
+    def update(self, table: str, values: dict, where: dict, extra: str = ""):
         where = " AND ".join(["{} = {}".format(var, where[var]) for var in where])
         values = " , ".join(["{} = {}".format(val, where[val]) for val in values])
 
-        query = "UPDATE {} SET {} WHERE {}".format(table, values, where)
+        query = "UPDATE {} SET {} WHERE {} {}".format(table, values, where, extra)
 
         self._execute_query(query)
 

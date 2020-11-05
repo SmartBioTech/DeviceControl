@@ -28,7 +28,10 @@ class AppManager:
     def end_device(self, device_id: str) -> Response:
         try:
             self.deviceManager.remove_device(device_id)
+
+            # TEMPORAL HACK !!!
             self.dataManager.update_experiment(device_id)
+
             return Response(True, None)
         except AttributeError:
             exc = IdError("Connector with given ID: %s was not found" % device_id)
