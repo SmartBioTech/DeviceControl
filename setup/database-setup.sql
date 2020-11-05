@@ -1,6 +1,6 @@
 create user if not exists 'DeviceControl'@'localhost' identified by '&Bioarineo1';
 create database if not exists device_control;
-grant all privileges on device_control.* to 'DeviceControl'@'localhost' identified by '&Bioarineo1';
+grant all privileges on device_control.* to 'DeviceControl'@'localhost';
 
 
 USE device_control;
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `devices` (
 
 CREATE TABLE IF NOT EXISTS `experiments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dev_id` int(11) NOT NULL,
+  `dev_id` varchar(100) NOT NULL,
   `start` TIMESTAMP NOT NULL,
   `end` TIMESTAMP NOT NULL,
   `description` varchar(255),
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` TIMESTAMP NOT NULL,
   `value` double NOT NULL,
-  `dev_id` int(11) NOT NULL,
+  `dev_id` varchar(100) NOT NULL,
   `var_id` varchar(30) NOT NULL,
   `channel` int(11) DEFAULT NULL,
   `note` varchar(30) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `event_types` (
 
 CREATE TABLE IF NOT EXISTS `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `dev_id` int(11) NOT NULL,
+  `dev_id` varchar(100) NOT NULL,
   `event_type` int(11) NOT NULL,
   `time` TIMESTAMP NOT NULL,
   `args` varchar(100) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   FOREIGN KEY (`event_type`) REFERENCES `event_types`(`id`)
 );
 
-INSERT IGNORE INTO `event_types` (`id`, type`)
+INSERT IGNORE INTO `event_types` (`id`, `type`)
 VALUES
     (1, 'command executed'),
     (2, 'measurement not successful'),
@@ -107,7 +107,7 @@ VALUES
     ('co2', 'dissolved CO2 concentration', 'measured'),
     ('valve_flow_current', 'current valve flow', 'measured'),
     ('valve_flow_set', 'current valve flow target', 'measured'),
-    ('warning', 'valve flow warning'),
+    ('warning', 'valve flow warning', 'measured'),
     ('valve_max_flow', 'valve max flow', 'measured'),
     ('valve_gas_type', 'valve gas type', 'measured'),
     ('user_gas_type', '???', 'measured'),
