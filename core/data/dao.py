@@ -68,7 +68,15 @@ class Dao:
         columns = ", ".join(self.tables[table])
         values = ", ".join(values)
 
-        query = f"""INSERT INTO {table} ({columns}) VALUES ({values})"""
+        query = "INSERT INTO {} ({}) VALUES ({})".format(table, columns, values)
+
+        self._execute_query(query)
+
+    def update(self, table: str, values: dict, where: dict):
+        where = " AND ".join(["{} = {}".format(var, where[var]) for var in where])
+        values = " , ".join(["{} = {}".format(val, where[val]) for val in values])
+
+        query = "UPDATE {} SET {} WHERE {}".format(table, values, where)
 
         self._execute_query(query)
 

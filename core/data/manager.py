@@ -32,6 +32,9 @@ class DataManager:
         # TODO: use utils.now()
         pass
 
+    def update_experiment(self, device_id):
+        pass
+
     def save_variable(self):
         # TODO: add also an event about creating a new variable
         pass
