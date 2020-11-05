@@ -58,12 +58,12 @@ class Dao:
         else:
             where = ""
 
-        query = "SELECT %s FROM %s %s" % (", ".join(columns), table, where)
+        query = "SELECT * FROM %s %s" % (table, where)
 
         return self._execute_query(query)
 
     def insert(self, table: str, values: list):
-        # enquote_all(values)
+        values = enquote_all(values)
 
         columns = ", ".join(self.tables[table])
         values = ", ".join(values)

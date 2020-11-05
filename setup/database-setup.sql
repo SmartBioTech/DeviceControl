@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `variables` (
   `code` varchar(30) NOT NULL,
   `name` varchar(150) DEFAULT NULL,
   `type` enum('measured','computed','adjusted','aggregate') DEFAULT NULL,
+  `unit` int(11) DEFAULT NULL,
   PRIMARY KEY (`code`)
 );
 
@@ -42,7 +43,6 @@ CREATE TABLE IF NOT EXISTS `values` (
   `var_id` varchar(30) NOT NULL,
   `channel` int(11) DEFAULT NULL,
   `note` varchar(30) NOT NULL,
-  `unit` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`dev_id`) REFERENCES `devices`(`id`),
   FOREIGN KEY (`var_id`) REFERENCES `variables`(`code`)

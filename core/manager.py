@@ -69,11 +69,11 @@ class AppManager:
             "tasks": self.taskManager.ping()
         })
 
-    def get_data(self, device_id, log_id=None, time=None) -> Response:
-        return Response(True, self.dataManager.get_data(log_id, time, device_id))
+    def get_data(self, device_id, log_id=None, time=None, data_type='values') -> Response:
+        return Response(True, self.dataManager.get_data(log_id, time, device_id, data_type))
 
-    def get_latest_data(self, device_id=None) -> Response:
-        return Response(True, self.dataManager.get_latest_data(device_id=device_id))
+    def get_latest_data(self, device_id=None, data_type='values') -> Response:
+        return Response(True, self.dataManager.get_latest_data(device_id=device_id, data_type=data_type))
 
     def end(self) -> Response:
         self.deviceManager.end()

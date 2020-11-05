@@ -80,18 +80,19 @@ class Server:
             device_id = args.get("device_id", None)
             log_id = args.get("log_id", None)
             time = args.get("time", None)
-            # TODO: add data type (event/value)
+            data_type = args.get("type", "values")  # (event/value)
             if time is not None:
                 try:
                     time = process_time(time)
                 except SyntaxError as e:
                     return Response(False, None, e).to_json()
-            response = self.app_manager.get_data(device_id, log_id=log_id, time=time)
+            response = self.app_manager.get_data(device_id, log_id=log_id, time=time, data_type=data_type)
             return response.to_json()
 
         @self.server.route('/data/latest', methods=['GET'])
         def get_latest_data():
             args = dict(request.args)
             device_id = args.get("device_id", None)
-            response = self.app_manager.get_latest_data(device_id)
+            data_type = args.get("type", "values")  # (event/value)
+            response = self.app_manager.get_latest_data(device_id, data_type=data_type)
             return response.to_json()
