@@ -19,7 +19,7 @@ class GMS(Connector):
         :param valve: ID of the valve (0 for CO2, 1 for Air)
         :return: The current settings of the valve flow and actual value, both in (L/min).
         """
-        return True, {"valve_flow_current": 5, "valve_flow_set": 10}
+        return True, {"valve_flow_current": 5, "valve_flow_set": 10, "channel": valve}
 
     def set_valve_flow(self, valve, value):
         """
@@ -38,7 +38,7 @@ class GMS(Connector):
         :param valve: ID of the valve (0 for CO2, 1 for Air)
         :return: A dictionary with gas type and maximal allowed flow.
         """
-        return True, {"valve_max_flow": 10, "valve_gas_type": self._GAS_TYPES[0]}
+        return True, {"valve_max_flow": 10, "valve_gas_type": self._GAS_TYPES[0], "channel": valve}
 
     def test_connection(self) -> bool:
         return True

@@ -15,8 +15,8 @@ class Dao:
         self._host = host if host is not None else "127.0.0.1"
         self._password = password if password is not None else "&Bioarineo1"
 
-        self.tables = {'events': ['dev_id', 'event_type', 'time', 'args', 'event', 'response'],
-                       'values': ['time', 'value', 'dev_id', 'var_id', 'args'],
+        self.tables = {'events': ['dev_id', 'event_type', 'time', 'args', 'command', 'response'],
+                       'values': ['time', 'value', 'dev_id', 'var_id', 'channel', 'note'],
                        'experiments': ['dev_id', 'start', 'description'],
                        'devices': ['id', 'class', 'type', 'address'],
                        'variables': ['code', 'type']}

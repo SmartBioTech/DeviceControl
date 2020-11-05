@@ -81,7 +81,7 @@ class PBR(Connector):
             if random() > 0.01:
                 return {'od': self._last_value + sign * step}
         self._last_value += sign * step
-        return {'od': self._last_value}
+        return {'od': self._last_value, "channel": channel}
 
     def get_pump_params(self, pump):
         """
@@ -121,7 +121,7 @@ class PBR(Connector):
         :param channel: Given channel ID
         :return: The current settings structured in a dictionary.
         """
-        return {"light_intensity": 500, "light_max": 1000, "light_on": True}
+        return {"light_intensity": 500, "light_max": 1000, "light_on": True, "channel": channel}
 
     def set_light_intensity(self, channel, intensity):
         """
@@ -210,7 +210,7 @@ class PBR(Connector):
         :param channel: ???
         :return: ???
         """
-        return {'ft_flash': 2816, 'ft_background': 0}
+        return {'ft_flash': 2816, 'ft_background': 0, "channel": channel}
 
     def get_co2(self, raw=True, repeats=5):
         """

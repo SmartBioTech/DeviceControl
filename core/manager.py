@@ -18,6 +18,7 @@ class AppManager:
     def register_device(self, config: dict) -> Response:
         try:
             device = self.deviceManager.new_device(config)
+            self.dataManager.save_device(device)
         except (IdError, ModuleNotFoundError, AttributeError) as e:
             Log.error(e)
             return Response(False, None, e)

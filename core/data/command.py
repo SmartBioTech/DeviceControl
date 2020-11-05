@@ -36,10 +36,22 @@ class Command:
         self.time_executed = now()
         self._resolved.set()
 
-    def save_to_database(self):
+    def save_to_database(self, event=1):
         if not self._saved:
-            DataManager().save_cmd(self)
+            values = [self.device_id, event, self.time_executed, self.args, self.command_id, self.response]
+            DataManager().save_event(values)
         self._saved = True
+
+    def save_data_to_db(self):
+        if self.is_valid:
+            channel = self.response.pop("channel", None)
+            note = self.response.pop("outlier", None)
+            for variable in self.response:
+                values = [self.time_executed, self.response[variable], self.device_id, variable, channel, note]
+                DataManager().save_value(values)
+        else:
+            values = [self.device_id, 2, self.time_executed, self.args, self.command_id, self.response]
+            DataManager().save_event(values)
 
     def to_dict(self) -> dict:
         return {

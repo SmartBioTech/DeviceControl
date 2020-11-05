@@ -12,14 +12,18 @@ class DataManager:
         self.last_seen = {}
         self.ws_client = ws_client
 
+        self.variables = []  # TODO: get all variable names from DB
+
     def save_value(self, values):
-        # TODO: store new variable if does not exists - send also dev_id
+        if values[3] not in self.variables:
+            # TODO: add variable ( send also dev_id)
+            pass
         Dao.insert('values', values)
 
     def save_event(self, values):
         Dao.insert('events', values)
 
-    def save_device(self):
+    def save_device(self, device):
         # TODO: store device if does not exists
         #  + store experiment (temporal hack) !!!
         pass
@@ -31,24 +35,6 @@ class DataManager:
     def save_variable(self):
         # TODO: add also an event about creating a new variable
         pass
-
-    def save_cmd(self, cmd):
-        # TODO: update all references to this function and delete it
-        Dao.insert(Dao.cmd_table, [
-            ("time_issued", str(cmd.time_issued)),
-            ("time_executed", str(cmd.time_executed)),
-            ("device_id", str(cmd.device_id)),
-            ("response", str(cmd.response)),
-            ("arguments", str(cmd.args)),
-            ("source", str(cmd.source)),
-            ("command_id", str(cmd.command_id)),
-            ("is_valid", int(cmd.is_valid))
-        ]
-                   )
-
-        # TODO: why this is here? matters only for client execution type !!!
-        # if self.ws_client is not None:
-        #     Thread(target=self.ws_client.send_data, args=[cmd.to_dict()]).start()
 
     # TODO: add argument for event/value data type
     def _get_data(self, conditions, device_id):

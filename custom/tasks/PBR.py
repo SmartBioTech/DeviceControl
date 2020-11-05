@@ -200,8 +200,8 @@ class PBRMeasureAll(BaseTask):
                     od_is_outlier = self.handle_outlier(od)
                     if not od_is_outlier:
                         self.od.value = od
-                    command.response = {'od': od, 'outlier': od_is_outlier}
-                command.save_to_database()
+                    command.response = {'od': od, 'outlier': od_is_outlier, 'channel': self.od_channel}
+                command.save_data_to_db()
 
             sleep(self.sleep_period)
 
@@ -302,6 +302,7 @@ class PBRGeneralPump(BaseTask, Observer):
             if isinstance(command.response['success'], bool) and command.response['success']:
                 # print("pump is {}".format("ON" if state else "OFF"))
                 # print("changing pump state to: {}".format(state))
+                command.save_to_database(3)
                 self.is_pump_on = state
                 return
         raise ConnectionError
