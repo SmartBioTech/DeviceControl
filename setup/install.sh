@@ -19,7 +19,7 @@ apt -y install python3-pip
 
 pip3 install importlib
 pip3 install numpy
-pip3 install mysql-connector
+pip3 install mysql-connector-python
 pip3 install JPype1
 pip3 install Flask
 pip3 install Flask-RESTful

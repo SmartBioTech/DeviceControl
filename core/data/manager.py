@@ -49,7 +49,7 @@ class DataManager:
         response = Dao.select(table, conditions)
         result = {}
 
-        columns = list.copy(Dao.tables['table'])
+        columns = list.copy(Dao.tables[table])
 
         for row in response:
             log_id = row[0]
