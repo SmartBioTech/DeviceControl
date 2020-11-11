@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `experiments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dev_id` varchar(100) NOT NULL,
   `start` TIMESTAMP NOT NULL,
-  `end` TIMESTAMP NOT NULL,
+  `end` TIMESTAMP DEFAULT NULL,
   `description` varchar(255),
   PRIMARY KEY (`id`),
   FOREIGN KEY (`dev_id`) REFERENCES `devices`(`id`)
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `values` (
   `dev_id` varchar(100) NOT NULL,
   `var_id` varchar(30) NOT NULL,
   `channel` int(11) DEFAULT NULL,
-  `note` varchar(30) NOT NULL,
+  `note` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`dev_id`) REFERENCES `devices`(`id`),
   FOREIGN KEY (`var_id`) REFERENCES `variables`(`code`)

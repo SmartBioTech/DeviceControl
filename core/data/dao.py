@@ -69,7 +69,9 @@ class Dao:
         values = ", ".join(values)
         ignore = "IGNORE" if ignore else ""
 
-        query = "INSERT {} INTO {} ({}) VALUES ({})".format(ignore, table, columns, values)
+        query = "INSERT {} INTO `{}` ({}) VALUES ({})".format(ignore, table, columns, values)
+
+        print("\n", query, "\n")
 
         self._execute_query(query)
 

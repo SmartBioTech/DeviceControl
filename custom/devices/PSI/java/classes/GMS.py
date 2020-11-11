@@ -94,7 +94,7 @@ class GMS(JavaDevice):
         return True, {
             "valve_flow_current": msg.getDoubleParam(0),
             "valve_flow_set": msg.getDoubleParam(1),
-            "warning": msg.getBoolParam(2),
+            "warning": int(msg.getBoolParam(2)),
             "channel": valve
         }
 

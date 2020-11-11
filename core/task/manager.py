@@ -17,6 +17,7 @@ class TaskManager:
         task_type = config.get('task_type')
         assert task_id is not None
         assert task_class is not None
+        assert task_type is not None
         if task_id not in self.tasks:
             task = self.load_class(task_class, task_type)(config)
             self.tasks[task_id] = task

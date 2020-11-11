@@ -45,7 +45,7 @@ class PBR(JavaDevice):
             "temp": msg.getDoubleParam(0),
             "temp_min": msg.getDoubleParam(1),
             "temp_max": msg.getDoubleParam(2),
-            "temp_on": msg.getBoolParam(3)
+            "temp_on": int(msg.getBoolParam(3))
         }
 
     def get_temp(self):
@@ -116,7 +116,7 @@ class PBR(JavaDevice):
 
         return {
             "pump_direction": msg.getIntParam(0),
-            "pump_on": msg.getBoolParam(1),
+            "pump_on": int(msg.getBoolParam(1)),
             "pump_valves": msg.getIntParam(2),
             "pump_flow": msg.getDoubleParam(3),
             "pump_min": msg.getDoubleParam(4),
@@ -160,7 +160,7 @@ class PBR(JavaDevice):
         return {
             "light_intensity": msg.getDoubleParam(0),
             "light_max": msg.getDoubleParam(1),
-            "light_on": msg.getBoolParam(2),
+            "light_on": int(msg.getBoolParam(2)),
             "channel": channel
         }
 

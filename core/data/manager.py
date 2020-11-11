@@ -28,7 +28,7 @@ class DataManager:
         Dao.insert('events', values)
 
     def save_device(self, device):
-        Dao.insert('devices', [device.device_id, device.device_class, device.type, device.address], ignore=True)
+        Dao.insert('devices', [device.device_id, device.device_class, device.device_type, device.address], ignore=True)
 
         # TEMPORAL HACK !!!
         self.save_experiment(device.device_id)
