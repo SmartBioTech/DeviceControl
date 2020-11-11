@@ -47,7 +47,7 @@ class Dao:
         return result
 
     def select_all(self, table: str) -> str:
-        query = "SELECT * FROM {}".format(table)
+        query = "SELECT * FROM `{}`".format(table)
 
         return self._execute_query(query)
 
@@ -58,7 +58,7 @@ class Dao:
         else:
             where = ""
 
-        query = "SELECT * FROM %s %s" % (table, where)
+        query = "SELECT * FROM `%s` %s" % (table, where)
 
         return self._execute_query(query)
 
@@ -77,12 +77,12 @@ class Dao:
         where = " AND ".join(["{} = {}".format(var, where[var]) for var in where])
         values = " , ".join(["{} = {}".format(val, where[val]) for val in values])
 
-        query = "UPDATE {} SET {} WHERE {} {}".format(table, values, where, extra)
+        query = "UPDATE `{}` SET {} WHERE {} {}".format(table, values, where, extra)
 
         self._execute_query(query)
 
     def _drop(self, table: str):
-        query = f"DROP TABLE {table}"
+        query = "DROP TABLE `{}`".format(table)
         self._execute_query(query)
 
 

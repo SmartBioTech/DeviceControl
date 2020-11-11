@@ -64,7 +64,7 @@ class DataManager:
             result[log_id] = row
 
         if device_id is not None and response:
-            self.last_seen[table][device_id] = max(list(map(int, result.keys())))
+            self.last_seen_id[table][device_id] = max(list(map(int, result.keys())))
 
         return result
 
@@ -76,7 +76,7 @@ class DataManager:
 
         where_conditions = []
         if device_id is not None:
-            where_conditions.append("device_id={}".format(enquote(device_id)))
+            where_conditions.append("dev_id={}".format(enquote(device_id)))
 
         if last_time is not None:
             where_conditions.append("TIMESTAMP(time)>TIMESTAMP({})".format(last_time))
@@ -93,6 +93,6 @@ class DataManager:
             where_conditions.append("log_id=(SELECT MAX(id) FROM {})".format(data_type))
         else:
             where_conditions.append(
-                "log_id=(SELECT MAX(id) FROM {} WHERE device_id={})".format(data_type, enquote(device_id)),
+                "log_id=(SELECT MAX(id) FROM {} WHERE dev_id={})".format(data_type, enquote(device_id)),
             )
         return self._get_data(where_conditions, device_id, data_type)
