@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS `devices` (
 CREATE TABLE IF NOT EXISTS `experiments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dev_id` varchar(100) NOT NULL,
-  `start` TIMESTAMP NOT NULL,
-  `end` TIMESTAMP DEFAULT NULL,
+  `start` TIMESTAMP(3) NOT NULL,
+  `end` TIMESTAMP(3) DEFAULT NULL,
   `description` varchar(255),
   PRIMARY KEY (`id`),
   FOREIGN KEY (`dev_id`) REFERENCES `devices`(`id`)
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `variables` (
 
 CREATE TABLE IF NOT EXISTS `values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `time` TIMESTAMP NOT NULL,
+  `time` TIMESTAMP(3) NOT NULL,
   `value` double NOT NULL,
   `dev_id` varchar(100) NOT NULL,
   `var_id` varchar(30) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dev_id` varchar(100) NOT NULL,
   `event_type` int(11) NOT NULL,
-  `time` TIMESTAMP NOT NULL,
+  `time` TIMESTAMP(3) NOT NULL,
   `args` varchar(100) NOT NULL,
   `command` varchar(100) NOT NULL,
   `response` varchar(100) NOT NULL,

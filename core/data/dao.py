@@ -2,7 +2,7 @@ from typing import List, Optional, Tuple
 
 import mysql.connector as cn
 
-from core.utils.db import enquote_all
+from core.utils.db import enquote_all, enquote
 from core.utils.singleton import singleton
 
 
@@ -74,8 +74,8 @@ class Dao:
         self._execute_query(query)
 
     def update(self, table: str, values: dict, where: dict, extra: str = ""):
-        where = " AND ".join(["{} = {}".format(var, where[var]) for var in where])
-        values = " , ".join(["{} = {}".format(val, where[val]) for val in values])
+        where = " AND ".join(["{} = {}".format(var, enquote(where[var])) for var in where])
+        values = " , ".join(["{} = {}".format(val, enquote(values[val])) for val in values])
 
         query = "UPDATE `{}` SET {} WHERE {} {}".format(table, values, where, extra)
 

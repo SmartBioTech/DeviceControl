@@ -34,7 +34,7 @@ measure_all_task = {
                     'task_class': 'PSI',
                     'task_type': 'PBR_measure_all',
                     'device_id': PBR_id,
-                    'sleep_period': 0.1,
+                    'sleep_period': 0.01,
                     'max_outliers': 6,
                     'pump_id': 5,
                     'lower_tol': 5,
@@ -94,7 +94,7 @@ assert len(response.json()["data"]) != 0
 values_keys_first = set(map(int, response.json()["data"]))
 
 # sleep for some more time
-time.sleep(10)
+time.sleep(20)
 
 ############################################################################
 ############################## get all events ##############################
@@ -130,7 +130,7 @@ assert all(list(map(lambda item: item > last, values_keys_second)))
 
 # get data from a time point
 from_time = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
-time.sleep(1)
+time.sleep(15)
 URL = 'http://localhost:5000/data?device_id={}&type=values&time={}'
 response = requests.get(URL.format(PBR_id, from_time))
 assert response.json()["success"]
@@ -152,4 +152,11 @@ assert len(response.json()["data"]) != 0
 ########################### end tasks and device ###########################
 ############################################################################
 
-# TODO: test /data/latest
+response = requests.post('http://localhost:5000/end', json={'type': 'task', 'target_id': pump_task_id})
+assert response.json()["success"]
+
+response = requests.post('http://localhost:5000/end', json={'type': 'task', 'target_id': measure_all_task_id})
+assert response.json()["success"]
+
+response = requests.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id})
+assert response.json()["success"]
