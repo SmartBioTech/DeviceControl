@@ -72,9 +72,7 @@ CREATE TABLE IF NOT EXISTS `events` (
 INSERT IGNORE INTO `event_types` (`id`, `type`)
 VALUES
     (1, 'command executed'),
-    (2, 'measurement not successful'),
-    (3, 'pump state changed'),
-    (4, 'variable created');
+    (2, 'measurement not successful');
 
 INSERT IGNORE INTO `variables` (`code`, `name`, `type`)
 VALUES

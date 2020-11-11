@@ -240,7 +240,7 @@ class PBRGeneralPump(BaseTask, Observer):
         self.max_od = None
         self.pump_id = None
         self.device_id: str = ""
-        self.od_task_id: str = ""
+        self.measure_all_task_id: str = ""
         self.pump_on_command = None
         self.pump_off_command = None
 
@@ -252,14 +252,14 @@ class PBRGeneralPump(BaseTask, Observer):
             assert self.max_od is not None
             assert self.device_id != ""
             assert self.pump_id is not None
-            assert self.od_task_id != ""
+            assert self.measure_all_task_id != ""
             assert self.pump_on_command is not None
             assert self.pump_off_command is not None
         except AssertionError:
             raise AttributeError("Configuration of PBRGeneralPump task must contain all required attributes")
 
         self.device = DeviceManager().get_device(self.device_id)
-        self.od_task: PBRMeasureAll = TaskManager().get_task(self.od_task_id)
+        self.od_task: PBRMeasureAll = TaskManager().get_task(self.measure_all_task_id)
 
         self.od_task.od.observe(self)
 
@@ -303,7 +303,6 @@ class PBRGeneralPump(BaseTask, Observer):
             if isinstance(command.response['success'], bool) and command.response['success']:
                 # print("pump is {}".format("ON" if state else "OFF"))
                 # print("changing pump state to: {}".format(state))
-                command.save_to_database(3)
                 self.is_pump_on = state
                 return
         raise ConnectionError

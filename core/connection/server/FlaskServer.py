@@ -26,7 +26,6 @@ class Server:
         @self.server.route('/device', methods=["POST"])
         def initiate():
             device_config = request.get_json()
-            print(device_config)
 
             response = self.app_manager.register_device(device_config)
 

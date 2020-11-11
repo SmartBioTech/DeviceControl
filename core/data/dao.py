@@ -71,8 +71,6 @@ class Dao:
 
         query = "INSERT {} INTO `{}` ({}) VALUES ({})".format(ignore, table, columns, values)
 
-        print("\n", query, "\n")
-
         self._execute_query(query)
 
     def update(self, table: str, values: dict, where: dict, extra: str = ""):
