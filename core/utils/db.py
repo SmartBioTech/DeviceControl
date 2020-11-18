@@ -8,5 +8,8 @@ def enquote_all(clauses: List[str]):
     return clauses
 
 
-def enquote(clause: str):
-    return f"\"{clause}\""
+def enquote(clause):
+    if clause is not None:
+        return f"\"{clause}\""
+    else:
+        return "NULL"

@@ -18,6 +18,7 @@ class AppManager:
     def register_device(self, config: dict) -> Response:
         try:
             device = self.deviceManager.new_device(config)
+            self.dataManager.save_device(device)
         except (IdError, ModuleNotFoundError, AttributeError) as e:
             Log.error(e)
             return Response(False, None, e)
@@ -27,6 +28,10 @@ class AppManager:
     def end_device(self, device_id: str) -> Response:
         try:
             self.deviceManager.remove_device(device_id)
+
+            # TEMPORAL HACK !!!
+            self.dataManager.update_experiment(device_id)
+
             return Response(True, None)
         except AttributeError:
             exc = IdError("Connector with given ID: %s was not found" % device_id)
@@ -68,11 +73,11 @@ class AppManager:
             "tasks": self.taskManager.ping()
         })
 
-    def get_data(self, device_id, log_id=None, time=None) -> Response:
-        return Response(True, self.dataManager.get_data(log_id, time, device_id))
+    def get_data(self, device_id, log_id=None, time=None, data_type='values') -> Response:
+        return Response(True, self.dataManager.get_data(log_id, time, device_id, data_type))
 
-    def get_latest_data(self, device_id=None) -> Response:
-        return Response(True, self.dataManager.get_latest_data(device_id=device_id))
+    def get_latest_data(self, device_id=None, data_type='values') -> Response:
+        return Response(True, self.dataManager.get_latest_data(device_id=device_id, data_type=data_type))
 
     def end(self) -> Response:
         self.deviceManager.end()

@@ -74,15 +74,14 @@ class PBR(Connector):
             "12": self.get_pwm_settings,
             "13": self.set_pwm,
             "14": self.get_o2,
-            "15": self.get_thermoregulator_settings,
-            "16": self.set_thermoregulator_state,
-            "17": self.measure_ft,
-            "18": self.get_co2,
-            "19": self.measure_all,
-            "20": self.measure_AUX,
-            "21": self.flash_LED,
-            "22": self.get_hardware_address,
-            "23": self.get_cluster_name
+            "15": self.set_thermoregulator_state,
+            "16": self.measure_ft,
+            "17": self.get_co2,
+            "18": self.measure_all,
+            "19": self.measure_AUX,
+            "20": self.flash_LED,
+            "21": self.get_hardware_address,
+            "22": self.get_cluster_name
         }
 
         self.disableGUI()
@@ -139,7 +138,7 @@ class PBR(Connector):
         success, result = self.connection.send_command(self.device_id, variant[channel], [])
         if not success:
             raise Exception(result)
-        return {'od': float(result)}
+        return {'od': float(result), "channel": channel}
 
     def get_pump_params(self, pump):
         """
@@ -239,17 +238,6 @@ class PBR(Connector):
         """
         raise NotImplementedError("The method not implemented")
 
-    def get_thermoregulator_settings(self):
-        """
-        Get current settings of thermoregulator.
-        Items: "temp": current temperature in Celsius degrees,
-               "min": minimal allowed temperature,
-               "max": maximal allowed temperature,
-               "on": state of thermoregulator (1 -> on, 0 -> freeze, -1 -> off)
-        :return: The current settings structured in a dictionary.
-        """
-        raise NotImplementedError("The method not implemented")
-
     def set_thermoregulator_state(self, on):
         """
         Set state of thermoregulator.
@@ -327,7 +315,7 @@ class PBR(Connector):
         success, result = self.connection.send_command(self.device_id, variant[channel], [])
         if not success:
             raise Exception(result)
-        return {'aux': float(result)}
+        return {'aux': float(result), "channel": channel}
 
     def flash_LED(self):
         """

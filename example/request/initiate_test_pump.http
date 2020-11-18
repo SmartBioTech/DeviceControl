@@ -8,7 +8,7 @@ Content-Type: application/json
   "max_od": 0.38,
   "min_od": 0.36,
   "pump_id": 1,
-  "od_task_id": "od001"
+  "measure_all_task_id": "od001"
 }
 
 ###

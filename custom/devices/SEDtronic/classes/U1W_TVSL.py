@@ -13,7 +13,6 @@ class U1W_TVSL(Connector):
             "4": self.measure_all
         }
 
-
     def get_temperature(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius).
@@ -29,7 +28,7 @@ class U1W_TVSL(Connector):
         if temp_unit is "F":
             temp = temp*9/5+32
 
-        return temp
+        return {'temp': temp}
 
     def get_humidity(self):
         """
@@ -40,7 +39,7 @@ class U1W_TVSL(Connector):
         if sensor.status_code != codes.ok:
             raise Exception(sensor.status_code)
 
-        return float(sensor.json()['humidity'])
+        return {'humidity': float(sensor.json()['humidity'])}
 
     def get_illuminance(self):
         """
@@ -51,7 +50,7 @@ class U1W_TVSL(Connector):
         if sensor.status_code != codes.ok:
             raise Exception(sensor.status_code)
 
-        return float(sensor.json()['vis'])
+        return {'vis': float(sensor.json()['vis'])}
 
     def measure_all(self, temp_unit="C"):
         """

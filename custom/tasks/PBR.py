@@ -42,7 +42,7 @@ class PBRMeasureAll(BaseTask):
             assert self.lower_tol is not None
             assert self.upper_tol is not None
             assert self.od_channel is not None
-            assert self.device_id is not ""
+            assert self.device_id != ""
 
         except AssertionError:
             raise AttributeError("Configuration of PBRMeasureAll task must contain all required attributes")
@@ -96,7 +96,8 @@ class PBRMeasureAll(BaseTask):
     def get_od_for_init(self):
         cmd = Command(self.device_id, "5",
                       [self.od_channel],
-                      self.task_id)
+                      self.task_id,
+                      is_awaited=True)
 
         self.device.post_command(cmd)
         cmd.await_cmd()
@@ -200,8 +201,8 @@ class PBRMeasureAll(BaseTask):
                     od_is_outlier = self.handle_outlier(od)
                     if not od_is_outlier:
                         self.od.value = od
-                    command.response = {'od': od, 'outlier': od_is_outlier}
-                command.save_to_database()
+                    command.response = {'od': od, 'outlier': od_is_outlier, 'channel': self.od_channel}
+                command.save_data_to_db()
 
             sleep(self.sleep_period)
 
@@ -239,7 +240,7 @@ class PBRGeneralPump(BaseTask, Observer):
         self.max_od = None
         self.pump_id = None
         self.device_id: str = ""
-        self.od_task_id: str = ""
+        self.measure_all_task_id: str = ""
         self.pump_on_command = None
         self.pump_off_command = None
 
@@ -249,16 +250,16 @@ class PBRGeneralPump(BaseTask, Observer):
         try:
             assert self.min_od is not None
             assert self.max_od is not None
-            assert self.device_id is not ""
+            assert self.device_id != ""
             assert self.pump_id is not None
-            assert self.od_task_id is not ""
+            assert self.measure_all_task_id != ""
             assert self.pump_on_command is not None
             assert self.pump_off_command is not None
         except AssertionError:
             raise AttributeError("Configuration of PBRGeneralPump task must contain all required attributes")
 
         self.device = DeviceManager().get_device(self.device_id)
-        self.od_task: PBRMeasureAll = TaskManager().get_task(self.od_task_id)
+        self.od_task: PBRMeasureAll = TaskManager().get_task(self.measure_all_task_id)
 
         self.od_task.od.observe(self)
 

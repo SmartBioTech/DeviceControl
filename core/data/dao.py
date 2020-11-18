@@ -2,7 +2,7 @@ from typing import List, Optional, Tuple
 
 import mysql.connector as cn
 
-from core.utils.db import enquote_all
+from core.utils.db import enquote_all, enquote
 from core.utils.singleton import singleton
 
 
@@ -15,19 +15,11 @@ class Dao:
         self._host = host if host is not None else "127.0.0.1"
         self._password = password if password is not None else "&Bioarineo1"
 
-        self.cmd_table = "executed_commands"
-        self.cmd_table_columns: list = [
-            "log_id",
-            "time_issued",
-            "device_id",
-            "command_id",
-            "arguments",
-            "response",
-            "time_executed",
-            "source",
-            "is_valid"
-        ]
-        self._create_table()  # initialize the table
+        self.tables = {'events': ['dev_id', 'event_type', 'time', 'args', 'command', 'response'],
+                       'values': ['time', 'value', 'dev_id', 'var_id', 'channel', 'note'],
+                       'experiments': ['dev_id', 'start'],
+                       'devices': ['id', 'class', 'type', 'address'],
+                       'variables': ['code', 'type']}
 
     def _connect(self):
         """
@@ -38,25 +30,6 @@ class Dao:
                           user=self._user,
                           password=self._password,
                           db=self._database)
-
-    def _create_table(self):
-        """
-        Create the save_to_database table
-        :return: None
-        """
-        query = (f"CREATE TABLE IF NOT EXISTS {self.cmd_table} ("
-                 "log_id int NOT NULL auto_increment,"
-                 "time_issued VARCHAR(255),"
-                 "device_id VARCHAR(255),"
-                 "command_id VARCHAR(255),"
-                 "arguments VARCHAR(255),"
-                 "response VARCHAR(1000),"
-                 "time_executed VARCHAR(255),"
-                 "source VARCHAR(255),"
-                 "is_valid BOOLEAN, "
-                 "PRIMARY KEY (log_id))")
-
-        self._execute_query(query)
 
     def _execute_query(self, query):
         con = self._connect()
@@ -74,41 +47,42 @@ class Dao:
         return result
 
     def select_all(self, table: str) -> str:
-        query = "SELECT * FROM {}".format(table)
+        query = "SELECT * FROM `{}`".format(table)
 
         return self._execute_query(query)
 
-    def select(self, table: str, columns: List[str], where: Optional[List[str]] = None) -> str:
+    def select(self, table: str, where: Optional[List[str]] = None) -> str:
 
         if where:
             where = " WHERE " + " AND ".join(where)
         else:
             where = ""
 
-        query = "SELECT %s FROM %s %s" % (", ".join(columns), table, where)
+        query = "SELECT * FROM `%s` %s" % (table, where)
 
         return self._execute_query(query)
 
-    def insert(self, table: str, column_value_pairs: List[Tuple[str, str]]):
+    def insert(self, table: str, values: list, ignore=False):
+        values = enquote_all(values)
 
-        columns = []
-        values = []
-
-        for pair in column_value_pairs:
-            columns.append(pair[0])
-            values.append(pair[1])
-
-        enquote_all(values)
-
-        columns = ", ".join(columns)
+        columns = ", ".join(self.tables[table])
         values = ", ".join(values)
+        ignore = "IGNORE" if ignore else ""
 
-        query = f"""INSERT INTO {table} ({columns}) VALUES ({values})"""
+        query = "INSERT {} INTO `{}` ({}) VALUES ({})".format(ignore, table, columns, values)
+
+        self._execute_query(query)
+
+    def update(self, table: str, values: dict, where: dict, extra: str = ""):
+        where = " AND ".join(["{} = {}".format(var, enquote(where[var])) for var in where])
+        values = " , ".join(["{} = {}".format(val, enquote(values[val])) for val in values])
+
+        query = "UPDATE `{}` SET {} WHERE {} {}".format(table, values, where, extra)
 
         self._execute_query(query)
 
     def _drop(self, table: str):
-        query = f"DROP TABLE {table}"
+        query = "DROP TABLE `{}`".format(table)
         self._execute_query(query)
 
 

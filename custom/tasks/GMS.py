@@ -18,7 +18,7 @@ class GMSMeasureAll(BaseTask):
 
         try:
             assert self.sleep_period is not None
-            assert self.device_id is not ""
+            assert self.device_id != ""
             assert self.task_id is not None
             
         except AssertionError:

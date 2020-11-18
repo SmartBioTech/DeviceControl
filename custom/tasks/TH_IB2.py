@@ -19,7 +19,7 @@ class MeasureAll(BaseTask):
         try:
             assert self.sleep_period is not None
             assert self.device_id is not None
-            assert self.task_id is not ""
+            assert self.task_id != ""
             
         except AssertionError:
             raise AttributeError("Configuration of MeasureAll task must contain all required attributes")

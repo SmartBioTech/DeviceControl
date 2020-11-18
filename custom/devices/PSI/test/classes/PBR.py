@@ -81,7 +81,7 @@ class PBR(Connector):
             if random() > 0.01:
                 return {'od': self._last_value + sign * step}
         self._last_value += sign * step
-        return {'od': self._last_value}
+        return {'od': self._last_value, "channel": channel}
 
     def get_pump_params(self, pump):
         """
@@ -89,7 +89,7 @@ class PBR(Connector):
         :param pump: Given pump
         :return: The current settings structured in a dictionary.
         """
-        return {"pump_direction": 1, "pump_on": True, "pump_valves": 10,
+        return {"pump_direction": 1, "pump_on": 1, "pump_valves": 10,
                 "pump_flow": 0.3, "pump_min": 0, "pump_max": 100}
 
     def set_pump_params(self, pump, direction, flow):
@@ -121,7 +121,7 @@ class PBR(Connector):
         :param channel: Given channel ID
         :return: The current settings structured in a dictionary.
         """
-        return {"light_intensity": 500, "light_max": 1000, "light_on": True}
+        return {"light_intensity": 500, "light_max": 1000, "light_on": 1, "channel": channel}
 
     def set_light_intensity(self, channel, intensity):
         """
@@ -159,7 +159,7 @@ class PBR(Connector):
                "on": True if stirring is turned on (bool)
         :return: The current settings structured in a dictionary.
         """
-        return {"pwm_pulse": 1, "pwm_min": 0, "pwm_max": 100, "pwm_on": True}
+        return {"pwm_pulse": 1, "pwm_min": 0, "pwm_max": 100, "pwm_on": 1}
 
     def set_pwm(self, value, on):
         """
@@ -210,7 +210,7 @@ class PBR(Connector):
         :param channel: ???
         :return: ???
         """
-        return {'ft_flash': 2816, 'ft_background': 0}
+        return {'ft_flash': 2816, 'ft_background': 0, "channel": channel}
 
     def get_co2(self, raw=True, repeats=5):
         """

@@ -20,15 +20,14 @@ class PBR(JavaDevice):
             "12": self.get_pwm_settings,
             "13": self.set_pwm,
             "14": self.get_o2,
-            "15": self.get_thermoregulator_settings,
-            "16": self.set_thermoregulator_state,
-            "17": self.measure_ft,
-            "18": self.get_co2,
-            "19": self.measure_all,
-            "20": self.measure_AUX,
-            "21": self.flash_LED,
-            "22": self.get_hardware_address,
-            "23": self.get_cluster_name
+            "15": self.set_thermoregulator_state,
+            "16": self.measure_ft,
+            "17": self.get_co2,
+            "18": self.measure_all,
+            "19": self.measure_AUX,
+            "20": self.flash_LED,
+            "21": self.get_hardware_address,
+            "22": self.get_cluster_name
         }
 
     def get_temp_settings(self):
@@ -43,10 +42,10 @@ class PBR(JavaDevice):
             raise Exception(msg.getError())
 
         return {
-            "temp_set": msg.getDoubleParam(0),
+            "temp": msg.getDoubleParam(0),
             "temp_min": msg.getDoubleParam(1),
             "temp_max": msg.getDoubleParam(2),
-            "temp_on": msg.getBoolParam(3)
+            "temp_on": int(msg.getBoolParam(3))
         }
 
     def get_temp(self):
@@ -103,7 +102,7 @@ class PBR(JavaDevice):
         else:
             od = 3.0
 
-        return {'od': od}
+        return {'od': od, 'channel': channel}
 
     def get_pump_params(self, pump):
         """
@@ -117,7 +116,7 @@ class PBR(JavaDevice):
 
         return {
             "pump_direction": msg.getIntParam(0),
-            "pump_on": msg.getBoolParam(1),
+            "pump_on": int(msg.getBoolParam(1)),
             "pump_valves": msg.getIntParam(2),
             "pump_flow": msg.getDoubleParam(3),
             "pump_min": msg.getDoubleParam(4),
@@ -161,7 +160,8 @@ class PBR(JavaDevice):
         return {
             "light_intensity": msg.getDoubleParam(0),
             "light_max": msg.getDoubleParam(1),
-            "light_on": msg.getBoolParam(2)
+            "light_on": int(msg.getBoolParam(2)),
+            "channel": channel
         }
 
     def set_light_intensity(self, channel, intensity):
@@ -184,7 +184,6 @@ class PBR(JavaDevice):
         msg1 = self.device.send("set-actinic-light-intensity", 0, intensity * ratio)        # red
         msg2 = self.device.send("set-actinic-light-intensity", 1, intensity * (1 - ratio))  # blue
         return not msg1.isError() and not msg2.isError()
-
 
     def turn_on_light(self, channel=0, on=True):
         """
@@ -220,6 +219,7 @@ class PBR(JavaDevice):
         """
         Set stirring settings.
         For standard stirrer max (100 %) intensity is 600 rpm.
+
         :param value: desired stirring intensity in %
         :param on: True turns on, False turns off
         :return: True if successful, False otherwise.
@@ -230,10 +230,7 @@ class PBR(JavaDevice):
     def get_o2(self, raw=True, repeats=5, wait=0):
         """
         Checks for concentration of dissociated O2.
-        Items: "pulse": current stirring in %,
-               "min": minimal stirring in %,
-               "max": maximal stirring in %,
-               "on": True if stirring is turned on (bool)
+
         :param raw: True for raw data, False for data calculated according to temperature calibration
         :param repeats: the number of measurement repeats
         :param wait: waiting time between individual repeats
@@ -245,23 +242,6 @@ class PBR(JavaDevice):
             raise Exception(msg.getError())
 
         return {'o2': msg.getDoubleParam(0)}
-
-    def get_thermoregulator_settings(self):
-        """
-        Get current settings of thermoregulator.
-        Items: "temp": current temperature in Celsius degrees,
-               "min": minimal allowed temperature,
-               "max": maximal allowed temperature,
-               "on": state of thermoregulator (1 -> on, 0 -> freeze, -1 -> off)
-        :return: The current settings structured in a dictionary.
-        """
-        msg = self.device.send("get-tr-settings")
-        return {
-            "temp": msg.getDoubleParam(0),
-            "temp_min": msg.getDoubleParam(1),
-            "temp_max": msg.getDoubleParam(2),
-            "temp_on": msg.getIntParam(3),
-        }
 
     def set_thermoregulator_state(self, on=0):
         """
@@ -284,7 +264,8 @@ class PBR(JavaDevice):
 
         return {
             "ft_flash": msg.getIntParam(0),
-            "ft_background": msg.getIntParam(1)
+            "ft_background": msg.getIntParam(1),
+            "channel": channel
         }
 
     def measure_qy(self, channel=0):
@@ -309,11 +290,12 @@ class PBR(JavaDevice):
             # TODO: implement check for extreme / noisy measures that could possibly lead to crazy results in qy calculations
             "qy": ((msg.getIntParam(2) - msg.getIntParam(3)) - (msg.getIntParam(0) - msg.getIntParam(1))) / (
                     msg.getIntParam(2) - msg.getIntParam(3)),
-            "flash-ft": msg.getIntParam(0),
-            "background-ft": msg.getIntParam(1),
-            "flash-fm": msg.getIntParam(2),
-            "background-fm": msg.getIntParam(3),
-            "delay-cycles": msg.getIntParam(4)
+            "ft-flash": msg.getIntParam(0),
+            "ft-background": msg.getIntParam(1),
+            "fm-flash": msg.getIntParam(2),
+            "fm-background": msg.getIntParam(3),
+            "delay-cycles": msg.getIntParam(4),
+            "channel": channel
         }
 
     def get_co2(self, raw=True, repeats=5):

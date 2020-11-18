@@ -15,7 +15,7 @@ def process_time(time):
     if time == None:
         return
     try:
-        processed = datetime.strptime(time, "%Y%m%d%H%M%S")
+        processed = datetime.strptime(time, "%Y%m%d%H%M%S%f")
         return "'" + processed.strftime("%Y-%m-%d %H:%M:%S.%f") + "'"
     except Exception:
         raise SyntaxError("Invalid time format has been provided")

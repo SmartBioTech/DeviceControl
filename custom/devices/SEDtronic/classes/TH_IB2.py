@@ -12,7 +12,6 @@ class TH_IB2(Connector):
             "3": self.measure_all
         }
 
-
     def get_temperature(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius).
@@ -28,7 +27,7 @@ class TH_IB2(Connector):
         if temp_unit is "F":
             temp = temp*9/5+32
 
-        return temp
+        return {'temp': temp}
 
     def get_humidity(self):
         """
@@ -39,7 +38,7 @@ class TH_IB2(Connector):
         if sensor.status_code != codes.ok:
             raise Exception(sensor.status_code)
 
-        return float(sensor.json()['humidity'])
+        return {'humidity': float(sensor.json()['humidity'])}
 
     def measure_all(self, temp_unit="C"):
         """
@@ -58,7 +57,7 @@ class TH_IB2(Connector):
             temp = temp*9/5+32
 
         return True, {
-            "temperature": temp,
+            "temp": temp,
             "humidity": float(sensor.json()['humidity'])
         }
 
