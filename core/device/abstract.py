@@ -96,10 +96,6 @@ class Connector(metaclass=Interface):
         command.executed_on = (self.device_class, self.device_id)
 
         command.resolve()
-
-        if not command.is_awaited:
-            command.save_to_database()
-
         return command
 
     def end(self):
