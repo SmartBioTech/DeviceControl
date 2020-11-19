@@ -210,7 +210,6 @@ class PBRMeasureAll(BaseTask):
         self.is_active = False
 
 
-
 class ePBRMeasureAll(PBRMeasureAll):
     def __init__(self, config):
         super(ePBRMeasureAll, self).__init__(config)
@@ -230,7 +229,6 @@ class ePBRMeasureAll(PBRMeasureAll):
                 "id": "2"
             }
         }
-
 
 
 class PBRGeneralPump(BaseTask, Observer):
@@ -301,8 +299,7 @@ class PBRGeneralPump(BaseTask, Observer):
             command.await_cmd()
 
             if isinstance(command.response['success'], bool) and command.response['success']:
-                # print("pump is {}".format("ON" if state else "OFF"))
-                # print("changing pump state to: {}".format(state))
+                command.save_command_to_db()
                 self.is_pump_on = state
                 return
         raise ConnectionError

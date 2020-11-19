@@ -277,4 +277,4 @@ class PBR(Connector):
         return True
 
     def disconnect(self) -> None:
-        print("Test PBR {} on {} is disconnecting".format(self.device_id, self.address))
+        pass

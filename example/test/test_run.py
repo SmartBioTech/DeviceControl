@@ -137,20 +137,54 @@ assert response.json()["success"]
 assert len(response.json()["data"]) != 0
 
 ############################################################################
-########################## get last ID of values ###########################
+####################### another parallel experiment ########################
 ############################################################################
 
-# TODO: test /data/latest
+# settings for test PBR 2
+PBR_id_2 = 'PBR-PSI-test02'
+test_PBR_device['device_id'] = PBR_id_2
 
-############################################################################
-########################## get last ID of events ###########################
-############################################################################
+response = requests.post('http://localhost:5000/device', json=test_PBR_device)
+assert response.json()["success"]
 
-# TODO: test /data/latest
+# measure all for PBR 2
+measure_all_task_id_2 = 'task-measure-PBR-test-02'
+measure_all_task['task_id'] = measure_all_task_id_2
+measure_all_task['device_id'] = PBR_id_2
+
+response = requests.post('http://localhost:5000/task', json=measure_all_task)
+assert response.json()["success"]
+
+# turbidostat for PBR 2
+
+pump_task_id_2 = 'task-turbidostat-PBR-test-02'
+turbidostat_task['task_id'] = pump_task_id_2
+turbidostat_task['device_id'] = PBR_id_2
+turbidostat_task['measure_all_task_id'] = measure_all_task_id_2
+
+response = requests.post('http://localhost:5000/task', json=turbidostat_task)
+assert response.json()["success"]
+
+time.sleep(30)
 
 ############################################################################
 ########################### end tasks and device ###########################
 ############################################################################
+
+# PBR 2
+
+response = requests.post('http://localhost:5000/end', json={'type': 'task', 'target_id': pump_task_id_2})
+assert response.json()["success"]
+
+response = requests.post('http://localhost:5000/end', json={'type': 'task', 'target_id': measure_all_task_id_2})
+assert response.json()["success"]
+
+response = requests.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id_2})
+assert response.json()["success"]
+
+time.sleep(10)
+
+# PBR 1
 
 response = requests.post('http://localhost:5000/end', json={'type': 'task', 'target_id': pump_task_id})
 assert response.json()["success"]
