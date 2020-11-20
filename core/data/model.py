@@ -9,11 +9,14 @@ class Response:
         self.data = data
         self.success = success
 
+    def __str__(self):
+        return str(self.__dict__)
+
     def to_json(self):
         return jsonify(
             {
                 "success": self.success,
-                "cause": self.cause,
+                "cause": str(self.cause),
                 "data": self.data,
             }
         )

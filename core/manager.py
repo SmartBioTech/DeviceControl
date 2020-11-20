@@ -56,7 +56,7 @@ class AppManager:
             task = self.taskManager.create_task(config)
             task.start()
             return Response(True, None)
-        except (IdError, TypeError) as e:
+        except (IdError, TypeError, AttributeError) as e:
             Log.error(e)
             return Response(False, None, e)
 

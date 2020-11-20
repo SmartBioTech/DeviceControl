@@ -10,27 +10,22 @@ from core.utils.AbstractClass import abstractattribute, Interface
 class Connector(metaclass=Interface):
 
     def __init__(self, config: dict):
-        self.device_id = None
-        self.address = None
         self.setup = {}
         self.scheduler = WorkflowProvider().scheduler
 
         self.__dict__.update(config)
 
-        try:
-            assert self.device_id is not None
-            assert self.address is not None
-        except AssertionError:
-            raise AttributeError("Invalid configuration")
+        required = ['device_id', 'device_type', 'device_class', 'address']
+        self.validate_attributes(required, type(self).__name__)
 
-        # TODO: modify hw classes to accept config as a dict
-        """
-        self._physical_device = get_device_type_from_class(self.device_class,
-                                                           self.device_class)(config)
-        """
         self.is_alive = True
         self._is_queue_check_running = False
         self._queue = PriorityQueue()
+
+    def validate_attributes(self, required, class_name):
+        for att in required:
+            if att not in self.__dict__.keys():
+                raise AttributeError("Device {} must contain attribute {}".format(class_name, att))
 
     @abstractattribute
     def interpreter(self) -> dict:
