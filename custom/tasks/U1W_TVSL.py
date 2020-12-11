@@ -10,19 +10,10 @@ from core.task.abstract import BaseTask
 
 class MeasureAll(BaseTask):
     def __init__(self, config):
-        self.sleep_period = None
-        self.device_id: str = ""
-        self.task_id = None
-
         self.__dict__.update(config)
 
-        try:
-            assert self.sleep_period is not None
-            assert self.device_id is not None
-            assert self.task_id != ""
-            
-        except AssertionError:
-            raise AttributeError("Configuration of MeasureAll task must contain all required attributes")
+        required = ['sleep_period', 'device_id', 'task_id']
+        self.validate_attributes(required, type(self).__name__)
 
         self.device = DeviceManager().get_device(self.device_id)
         super(MeasureAll, self).__init__()

@@ -36,7 +36,7 @@ class Command:
         self.time_executed = now()
         self._resolved.set()
 
-    def save_to_database(self, event=1):
+    def save_command_to_db(self, event=1):
         if not self._saved:
             values = [self.device_id, event, self.time_executed, self.args, self.command_id, self.response]
             DataManager().save_event(values)

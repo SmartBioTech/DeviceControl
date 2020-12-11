@@ -45,6 +45,7 @@ class AppManager:
                 self.deviceManager.get_device(device_id).post_command(cmd, priority=1)
             else:
                 self.deviceManager.get_device(device_id).post_command(cmd)
+            cmd.save_command_to_db()
             return Response(True, None)
         except (IdError, AttributeError) as e:
             Log.error(e)
@@ -55,7 +56,7 @@ class AppManager:
             task = self.taskManager.create_task(config)
             task.start()
             return Response(True, None)
-        except (IdError, TypeError) as e:
+        except (IdError, TypeError, AttributeError) as e:
             Log.error(e)
             return Response(False, None, e)
 
