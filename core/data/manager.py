@@ -69,14 +69,12 @@ class DataManager:
         return result
 
     def get_data(self,
-                 log_id: Optional[int] = None,
-                 last_time: Optional[str] = None,
-                 device_id: Optional[str] = None,
+                 log_id: Optional[int],
+                 last_time: Optional[str],
+                 device_id: Optional[str],
                  data_type: str = 'values'):
 
-        where_conditions = []
-        if device_id is not None:
-            where_conditions.append("dev_id={}".format(enquote(device_id)))
+        where_conditions = ["dev_id={}".format(enquote(device_id))]
 
         if last_time is not None:
             where_conditions.append("TIMESTAMP(time)>TIMESTAMP({})".format(last_time))
