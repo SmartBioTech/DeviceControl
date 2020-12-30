@@ -92,11 +92,7 @@ class Client:
 
         @self.ws.on('command')
         def command(message):
-            device_id = message.get("device_id")
-            cmd_id = message.get("command_id")
-            args = message.get("arguments", "[]")
-            source = message.get("source", "external")
-            return self._job(self.app_manager.command, [device_id, cmd_id, args, source])
+            return self._job(self.app_manager.command, [message])
 
         @self.ws.on('ping')
         def ping():
