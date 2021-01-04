@@ -1,4 +1,3 @@
-
 from datetime import datetime
 
 
@@ -12,10 +11,9 @@ def process_time(time):
     :param time: requested time
     :return: processed time
     """
-    if time == None:
-        return
-    try:
-        processed = datetime.strptime(time, "%Y%m%d%H%M%S%f")
-        return "'" + processed.strftime("%Y-%m-%d %H:%M:%S.%f") + "'"
-    except Exception:
-        raise SyntaxError("Invalid time format has been provided")
+    if time is not None:
+        try:
+            processed = datetime.strptime(time, "%Y%m%d%H%M%S%f")
+            return "'" + processed.strftime("%Y-%m-%d %H:%M:%S.%f") + "'"
+        except Exception:
+            raise SyntaxError("Invalid time format has been provided: {}".format(time))

@@ -15,9 +15,6 @@ class Connector(metaclass=Interface):
 
         self.__dict__.update(config)
 
-        required = ['device_id', 'device_type', 'device_class', 'address']
-        self.validate_attributes(required, type(self).__name__)
-
         self.is_alive = True
         self._is_queue_check_running = False
         self._queue = PriorityQueue()
