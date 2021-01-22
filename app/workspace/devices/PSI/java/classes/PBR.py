@@ -1,4 +1,4 @@
-from custom.devices.PSI.java.abstract.java_device import JavaDevice
+from ..abstract.java_device import JavaDevice
 from math import log10
 
 

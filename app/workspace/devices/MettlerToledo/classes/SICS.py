@@ -1,5 +1,5 @@
-from core.device.abstract import Connector
-from custom.devices.MettlerToledo.libs.Connection import Connection
+from .. import Connector
+from ..libs.Connection import Connection
 
 
 class SICS(Connector):

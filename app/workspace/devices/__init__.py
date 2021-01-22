@@ -1,7 +1,6 @@
-from custom.devices import MettlerToledo
-from custom.devices import Phenometrics
-from custom.devices import SEDtronic
-from custom.devices.PSI import java, test
+from .. import Connector, Log, Command, Scheduler, Job
+from . import MettlerToledo, Phenometrics, SEDtronic
+from .PSI import java, test
 
 classes = {
     "PSI": {

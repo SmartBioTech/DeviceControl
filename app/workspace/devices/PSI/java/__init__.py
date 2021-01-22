@@ -1,7 +1,4 @@
-from custom.devices.PSI.java.classes.GAS import GAS as gas
-from custom.devices.PSI.java.classes.GMS import GMS as gms
-from custom.devices.PSI.java.classes.PBR import PBR as pbr
-
-PBR = pbr
-GAS = gas
-GMS = gms
+from .. import Connector, Command, Log, Scheduler, Job
+from .classes.GAS import GAS
+from .classes.GMS import GMS
+from .classes.PBR import PBR

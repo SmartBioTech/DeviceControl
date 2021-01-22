@@ -1,5 +1,5 @@
 from random import random
-from core.device.abstract import Connector
+from .. import Connector
 
 
 class PBR(Connector):

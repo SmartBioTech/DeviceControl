@@ -1,4 +1,4 @@
-import requests as r
+import requests
 
 
 class Connection:
@@ -9,4 +9,5 @@ class Connection:
         self.device_id = device_id
 
     def read_sensor(self):
-        return (r.get('http://' + self.address + ':' + self.port + '/rest/sensor/' + self.device_id), r.codes)
+        return requests.get('http://' + self.address + ':' + self.port + '/rest/sensor/' + self.device_id), \
+               requests.codes

@@ -1,11 +1,6 @@
 from threading import Thread
 from time import sleep
-
-import requests
-
-from core.data.command import Command
-from core.device.manager import DeviceManager
-from core.task.abstract import BaseTask
+from .. import Command, BaseTask, app_manager
 
 
 class GMSMeasureAll(BaseTask):
@@ -15,7 +10,7 @@ class GMSMeasureAll(BaseTask):
         required = ['sleep_period', 'device_id', 'task_id']
         self.validate_attributes(required, type(self).__name__)
 
-        self.device = DeviceManager().get_device(self.device_id)
+        self.device = app_manager.deviceManager.get_device(self.device_id)
         super(GMSMeasureAll, self).__init__()
 
     def start(self):

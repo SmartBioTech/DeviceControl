@@ -4,7 +4,6 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from config import config
-from .core.app_manager import AppManager
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -13,7 +12,7 @@ db = SQLAlchemy()
 
 
 # will this work?
-app_manager = AppManager()
+app_manager = None
 
 
 def create_app(config_name):
@@ -36,3 +35,7 @@ def create_db(app):
     app_context = app.app_context()
     app_context.push()
     db.create_all()
+
+    from .core.app_manager import AppManager
+    app_manager = AppManager()
+

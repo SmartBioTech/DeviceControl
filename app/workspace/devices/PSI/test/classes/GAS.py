@@ -1,4 +1,4 @@
-from core.device.abstract import Connector
+from .. import Connector
 
 
 class GAS(Connector):

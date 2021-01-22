@@ -2,15 +2,9 @@ from collections import deque
 from threading import Thread
 from time import sleep
 from typing import Dict
-
 import numpy as np
 
-from core.data.command import Command
-from core.device.abstract import Connector
-from core.device.manager import DeviceManager
-from core.task.abstract import BaseTask
-from core.task.manager import TaskManager
-from core.utils.observable import Observable, Observer
+from .. import Command, BaseTask, Observable, Observer, app_manager
 
 
 class PBRMeasureAll(BaseTask):
@@ -25,7 +19,7 @@ class PBRMeasureAll(BaseTask):
         self.latest_values = deque(maxlen=2)
         self.outliers = 0
 
-        self.device: Connector = DeviceManager().get_device(self.device_id)
+        self.device = app_manager.deviceManager.get_device(self.device_id)
         self.average_od = self.measure_initial_od_average()
         self.od = Observable()
 
@@ -225,8 +219,8 @@ class PBRGeneralPump(BaseTask, Observer):
 
         self.is_pump_on = False
 
-        self.device = DeviceManager().get_device(self.device_id)
-        self.od_task: PBRMeasureAll = TaskManager().get_task(self.measure_all_task_id)
+        self.device = app_manager.deviceManager.get_device(self.device_id)
+        self.od_task = app_manager.taskManager.get_task(self.measure_all_task_id)
 
         self.od_task.od.observe(self)
 

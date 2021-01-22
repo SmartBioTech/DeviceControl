@@ -1,13 +1,9 @@
-import threading
 from abc import abstractmethod
-
 import jpype
 import jpype.imports
 
-from core.data.command import Command
-from core.device.abstract import Connector
-from core.log import Log
-from custom.devices.PSI.java.utils.jvm_controller import Controller
+from .. import Command, Connector, Log
+from ..utils.jvm_controller import Controller
 
 
 class JavaDevice(Connector):

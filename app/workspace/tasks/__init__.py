@@ -1,4 +1,5 @@
-from custom.tasks import PBR, GAS, GMS, TH_IB2, U1W_TVSL, SICS
+from .. import Command, BaseTask, Observable, Observer, app_manager
+from . import PBR, GAS, GMS, TH_IB2, U1W_TVSL, SICS
 
 classes = {
     "PSI": {

@@ -1,3 +1,2 @@
-from custom.devices.MettlerToledo.classes.SICS import SICS as sics
-
-SICS = sics
+from .. import Connector
+from .classes.SICS import SICS

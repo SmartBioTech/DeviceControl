@@ -1,16 +1,13 @@
 from threading import Lock
 from time import sleep
 from typing import Callable
-
 import jpype
 # Enable Java imports
 import jpype.imports
 
-from core.flow.workflow import Scheduler, Job
-from core.utils.singleton import singleton
+from .. import Scheduler, Job
 
 
-@singleton
 class Controller:
 
     def __init__(self):

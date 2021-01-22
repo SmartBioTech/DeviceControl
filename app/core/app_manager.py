@@ -1,9 +1,9 @@
-from .data.command import Command
-from app.core.data_manager import DataManager
-from ..models import Response
-from app.core.device_manager import DeviceManager
-from .log import Log
 from app.core.task_manager import TaskManager
+from app.core.data_manager import DataManager
+from app.core.device_manager import DeviceManager
+from ..models import Response
+from .data.command import Command
+from .log import Log
 from .utils.errors import IdError
 from .utils.time import process_time
 

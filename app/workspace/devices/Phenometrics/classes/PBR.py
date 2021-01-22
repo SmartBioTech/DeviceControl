@@ -1,9 +1,8 @@
 from threading import Thread, Event
 from time import sleep
 
-from core.device.abstract import Connector
-from core.log import Logger
-from custom.devices.Phenometrics.libs.communication import Connection
+from .. import Connector, Log
+from ..libs.communication import Connection
 
 
 class PBR(Connector):
@@ -28,7 +27,7 @@ class PBR(Connector):
                         sleep(20)
                         self.success, result = self.connection.send_command(self.device_id, 'setAux2', [0])
                     except Exception as exc:
-                        Logger.error(exc)
+                        Log.error(exc)
                 self.success = None
 
         def start_pump(self):
