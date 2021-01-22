@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="TR-20SL">
+    <include>Thermoregulator</include>
+</set>

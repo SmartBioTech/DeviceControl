@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="photobioreactor/levels">
+    <command name="get-level-register" id="1210">
+        <descr>whole state byte, one bit for each sensor, 1 means on</descr>
+        <return>110</return>
+    </command>
+    
+    <command name="get-level-sensor" id="1211">
+        <descr>
+Level sensor state:
+0 low
+1 medium
+2 high
+3 critical
+everything else is error
+        </descr>
+        <param name="type" type="UINT8">
+            <descr>0 - water in BR, 1 - medium in barrel, 2 - buffer in barrel</descr>
+        </param>
+        <return>110</return>
+        <return>200</return>
+        <return>130</return>
+    </command>
+</set>

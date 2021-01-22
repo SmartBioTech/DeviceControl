@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="Bootloader">
+    <include>boot/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+    
+    <command name="!erase-data-memory" id="1001">
+        <descr>remove 4kB data (EEPROM) memory</descr>
+        <return>100</return>
+    </command>
+    <command name="!erase-program-memory" id="1000">
+        <descr>remove 56kB program memory</descr>
+        <return>100</return>
+    </command>
+    <command name="!write-page" id="1002">
+        <descr>write single page of program</descr>
+        <param name="adress" type="UINT8"/>
+        <param name="data" type="PAGE256"/>
+        <return>100</return>
+        <return>600</return>
+    </command>
+</set>

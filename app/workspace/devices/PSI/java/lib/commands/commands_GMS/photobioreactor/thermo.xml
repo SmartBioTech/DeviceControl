@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="photobioreactor/thermo">
+    <command name="get-tr-settings" id="1081">
+    	<return>2081</return>
+    	<return>130</return>
+    </command>
+    <answer name="tr-settings" id="2081">
+        <param name="temp" type="FLOAT"/>
+        <param name="min-temp" type="FLOAT"/>
+        <param name="max-temp" type="FLOAT"/>
+        <param name="state" type="UINT8"><descr>0 - off, 1 - on, 2 - freeze</descr></param>
+    </answer>
+
+    <command name="set-tr-state" id="1083">
+        <param name="state" type="UINT8"><descr>0 - off, 1 - on, 2 - freeze</descr></param>
+        <return>100</return>
+    </command>
+
+    <command name="get-tr-temp" id="1090">
+        <return>116</return>
+        <return>304</return>
+    </command>
+        
+    <command name="set-tr-temp" id="1082">
+        <param name="temperature" type="FLOAT"/>
+        <return>100</return>
+    </command>
+    
+    <command name="tr-get-fw-version" id="1080">
+        <return>101</return>
+    </command>
+    
+    <command name="tr-who" id="1180">
+        <return>101</return>
+        <return>500</return>
+    </command>
+    
+    <command name="tr-get-tcal" id="1191">
+        <descr>temperature calibration</descr>
+        <return>400</return>
+    </command>
+    
+    <command name="!tr-set-tcal" id="1192">
+        <param name="gain" type="FLOAT"/>
+        <param name="offset" type="FLOAT"/>
+        <return>100</return>
+    </command>
+    
+    
+    <command name="tr-get-fw-info" id="1193">
+        <return>2193</return>    
+    </command>    
+    <answer name="tr-fw-info" id="2193">
+        <param name="gain" type="UINT16"/>
+        <param name="sha" type="STRING"/>
+        <param name="dirty" type="BOOL"/>
+    </answer>
+        
+    <command name="!tr-send-buffer" id="1188">
+        <param name="address" type="UINT8"/>
+        <param name="crc" type="UINT8"/>
+        <return>100</return>
+        <return>500</return>
+    </command>
+    
+    <command name="!tr-fill-page" id="1187">
+        <param name="offset" type="UINT8"/>
+        <param name="data0" type="UINT32"/>
+        <param name="data1" type="UINT32"/>
+        <param name="data2" type="UINT32"/>
+        <param name="data3" type="UINT32"/>
+        <param name="data4" type="UINT32"/>
+        <param name="data5" type="UINT32"/>
+        <param name="data6" type="UINT32"/>
+        <param name="data7" type="UINT32"/>
+        <return>100</return>
+        <return>130</return>
+    </command>
+    
+    <command name="!tr-program-erase" id="1185">
+        <return>100</return>
+        <return>500</return>
+    </command>
+    
+    <command name="!tr-run-userland" id="1184">
+        <return>100</return>
+        <return>500</return>
+    </command>
+    
+    <command name="!tr-programming-completed" id="1181">
+        <return>100</return>
+        <return>500</return>
+    </command>
+    
+    <command name="tr-programming-state" id="1182">
+        <return>100</return>
+        <return>500</return>
+    </command>
+    
+    <command name="!tr-run-bootloader" id="1183">
+        <return>100</return>
+        <return>500</return>
+    </command>    
+</set>

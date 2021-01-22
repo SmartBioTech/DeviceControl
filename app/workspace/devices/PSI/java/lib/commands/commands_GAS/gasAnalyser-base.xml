@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="gasAnalyser-base">
+    <include>userland/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+    <include>userland/events</include>
+    <command name="get-co2-medium" id="1020">
+        <param name="repeats" type="UINT16"/>
+        <param name="raw" type="BOOL"/>
+    </command>
+    <command name="get-co2-calibration" id="1021">
+    </command>
+    <command name="set-co2-calibration" id="1022">
+        <param name="a" type="FLOAT"/>
+        <param name="b" type="FLOAT"/>
+    </command>
+    <command name="get-co2-air" id="1010">
+    </command>
+    <command name="!send-vaisala-disp" id="1011">
+        <param name="param" type="UINT8"/>
+    </command>
+    <command name="set-vaisala-cal-temp" id="1012">
+        <param name="temp" type="FLOAT"/>
+    </command>
+    <command name="set-vaisala-cal-press" id="1013">
+        <param name="press" type="FLOAT"/>
+    </command>
+    <command name="get-o2-medium" id="1030">
+        <param name="repeats" type="UINT16"/>
+        <param name="delay" type="UINT16"/>
+    </command>
+    <command name="get-flow-target" id="1001">
+    </command>
+    <command name="get-flow" id="1000">
+        <param name="repeats" type="UINT16"/>
+    </command>
+    <command name="get-air-o2-value" id="1170">
+        <param name="raw" type="UINT8"/>
+    </command>
+    <command name="get-flow-max" id="1003">
+    </command>
+    <command name="get-temp-br-air-s" id="1051">
+        <param name="repeats" type="UINT16"/>
+    </command>
+    <command name="set-air-o2-calib" id="1171">
+        <param name="calib-pt" type="UINT8"/>
+    </command>
+    <command name="set-flow-target" id="1002">
+        <param name="target" type="FLOAT"/>
+        <return>100</return>
+        <return>302</return>
+        <return>307</return>
+    </command>
+    <command name="get-temp-br-air" id="1050">
+    </command>
+    <command name="!erase-air-o2-caltab" id="1172">
+    </command>
+    <command name="get-temp-chamber-s" id="1053">
+        <param name="repeats" type="UINT16"/>
+    </command>    
+    <command name="get-temp-chamber" id="1052">
+    </command>
+    <command name="set-chamber-target" id="1055">
+        <param name="target" type="FLOAT"/>
+        <return>100</return>
+        <return>307</return>
+    </command>
+    <command name="get-chamber-target" id="1054">
+    </command>    
+
+    <command name="get-air-o2-caltab-cnt" id="1173">
+    </command>
+    
+    <command name="get-air-o2-caltab-item" id="1174">
+        <param name="index" type="UINT8"/>
+        <return>400</return>
+        <return>307</return>
+    </command>
+    <command name="set-air-o2-caltab-item" id="1175">
+        <param name="sen-o2" type="FLOAT"/>
+        <param name="cal-o2" type="FLOAT"/>
+        <return>100</return>
+        <return>307</return>
+    </command>
+    
+    <command name="get-temp-pwm" id="1110">
+    </command>
+    <command name="get-prec-pressure" id="1045">
+        <param name="repeats" type="UINT16"/>
+        <param name="wait" type="UINT16"/>
+    </command>
+    <command name="get-vaisala-pump" id="1130">
+    </command>
+    <command name="!start-Z" id="1070">
+    </command>
+    <command name="set-vaisala-pump" id="1131">
+        <param name="is-on" type="BOOL"/>
+    </command>
+    <command name="!stop-Z" id="1071">
+    </command>
+    <command name="get-temp-medium" id="1056">
+        <param name="repeats" type="UINT16"/>
+        <param name="delay" type="UINT16"/>
+    </command>
+    <command name="get-z-stirrer" id="1120">
+    </command>
+    <command name="get-mode" id="1060">
+    </command>
+    <command name="set-z-stirrer" id="1121">
+        <param name="is-on" type="BOOL"/>
+        <param name="timeout-s" type="UINT8"/>
+    </command>
+    <command name="set-co2-comp-state" id="1151">
+        <param name="is-on" type="BOOL"/>
+    </command>
+    <command name="get-co2-comp-state" id="1150">
+    </command>
+    <command name="set-small-valves" id="1081">
+        <param name="config" type="UINT8"/>
+    </command>
+    <command name="get-small-valves" id="1080">
+    </command>
+    <command name="set-intake-pwm" id="1141">
+        <param name="pwm" type="UINT8"/>
+    </command>
+    <command name="!stop-drain" id="1073">
+    </command>
+    <command name="get-intake-pwm" id="1140">
+    </command>
+    <command name="!start-drain" id="1072">
+        <param name="n-seconds" type="UINT16"/>
+    </command>
+    <command name="!stop-bubbles" id="1180">
+        <return>100</return>
+        <return>302</return>
+    </command>
+    <command name="!resume-bubbles" id="1181">
+        <return>100</return>
+        <return>302</return>
+    </command>
+    <command name="get-bubbles-state" id="1182">
+        <return>102</return>
+        <return>302</return>
+    </command>
+    <answer name="critical-pressure-event" id="11300">
+        <param name="critical" type="BOOL"/>
+    </answer>
+</set>

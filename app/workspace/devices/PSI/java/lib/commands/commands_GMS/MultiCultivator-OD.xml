@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="MultiCultivator-OD">
+    <include>MultiCultivator</include>
+    
+    <command name="measure-od" id="1092">
+        <param name="channel" type="UINT8"/>
+        <param name="led" type="UINT8"/>
+        <param name="repeats" type="UINT16"/>
+        
+        <return>2092</return>
+        <return>302</return>
+        <return>305</return>
+    </command>
+    <answer name="od" id="2092">
+        <param name="flash" type="UINT16"/>
+        <param name="bgr" type="UINT16"/>
+        <param name="od" type="FLOAT"/>
+    </answer>
+    
+    <command name="!calibrate-od" id="1093">
+        <return>100</return>
+        <return>130</return>
+    </command>
+    
+    <command name="measure-od-all" id="1094">
+        <descr>measure all OD channnels and store values. See obtain-od.</descr>
+        <param name="repeats" type="UINT16"/>
+        <return>100</return>
+    </command>
+    
+    <command name="obtain-od" id="1095">
+        <descr>Returns last OD value stored by measure-od-all.</descr>        
+        <param name="channel" type="UINT8"/>
+        <param name="led" type="UINT8"/>
+        
+        <return>2092</return>
+        <return>302</return>
+        <return>305</return>
+    </command>
+    
+    <command name="get-fram-data" id="1090">
+        <param name="page" type="UINT16"/>
+    </command>
+    
+    <command name="get-fram-ptr" id="1091">
+    </command>
+</set>

@@ -1,5 +1,5 @@
 # /bin/bash
-export FLASK_APP=flasky.py
+export FLASK_APP=main.py
 
 # do in a separate install script?
 # create DBs and give rights

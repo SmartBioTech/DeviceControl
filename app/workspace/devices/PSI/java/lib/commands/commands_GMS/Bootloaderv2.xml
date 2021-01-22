@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="Bootloaderv2">
+    <include>boot/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+    
+    <command name="!write-page" id="1100">
+        <descr>write single page of program</descr>
+        <param name="adress" type="UINT16"/>
+        <param name="data" type="PAGE256"/>
+        
+        <return>100</return>
+        <return>600</return>        
+    </command>
+    
+    <command name="!erase-program-memory" id="999">
+        <descr>dummy</descr>    
+    </command>
+</set>

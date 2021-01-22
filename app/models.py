@@ -1,5 +1,25 @@
 from . import db
 import enum
+from flask import jsonify
+
+
+class Response:
+    def __init__(self, success, data, cause):
+        self.cause = cause
+        self.data = data
+        self.success = success
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def to_json(self):
+        return jsonify(
+            {
+                "success": self.success,
+                "cause": str(self.cause),
+                "data": self.data,
+            }
+        )
 
 
 class VariableType(enum.Enum):

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="common/core">
+    <command name="who" id="0">
+    	<descr>obtain device type as STRING</descr>
+    	<return>101</return>
+	</command>
+    <command name="!ping" id="1">
+        <return>100</return>
+    </command>
+    <command name="get-device-id" id="8">
+        <return>112</return>
+    </command>
+    <command name="set-device-id" id="9">
+        <param name="deviceID" type="UINT32"/>
+        <return>100</return>
+    </command>
+    
+    <!-- Simple answers ========================================= -->
+    <answer name="bool" id="102">
+        <param name="val" type="BOOL"/>
+    </answer>
+    <answer name="ok" id="100"/>
+    <answer name="string" id="101">
+        <param name="val" type="STRING"/>
+    </answer>    
+    <answer name="uint8" id="110">
+        <param name="val" type="UINT8"/>
+    </answer>
+    <answer name="uint16" id="111">
+        <param name="val" type="UINT16"/>
+    </answer>    
+    <answer name="uint32" id="112">
+        <param name="val" type="UINT32"/>
+    </answer>
+    <answer name="int8" id="113">
+        <param name="val" type="INT8"/>
+    </answer>
+    <answer name="int16" id="114">
+        <param name="val" type="INT16"/>
+    </answer>
+    <answer name="int32" id="115">
+        <param name="val" type="INT32"/>
+    </answer>    
+    <answer name="float" id="116">
+        <param name="val" type="FLOAT"/>
+    </answer>
+        
+    <!-- Busy/ready events ========================================= -->
+    <answer name="ready" id="10001"/>
+    <answer name="busy" id="10000">
+        <param name="ms" type="UINT16"/>
+    </answer>    
+    
+    <!-- Error answers ============================================= -->
+    <answer name="error" id="130">
+        <param name="message" type="STRING"/>
+    </answer>
+    <answer name="lost-response" id="140">
+        <descr>dummy answer that simulates response to a lost command</descr>
+    </answer>
+    <answer name="no-such-command" id="200"/>
+    <answer name="malformed-struct" id="201"/>
+    
+    <answer name="i2c-comunication-error" id="500">
+        <param name="errno" type="UINT8"/>
+    </answer>    
+</set>

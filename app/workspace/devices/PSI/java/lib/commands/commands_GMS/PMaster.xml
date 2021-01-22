@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="PMaster">
+    <include>userland/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+    <include>userland/events</include>
+    
+    <command name="get-co2" id="1001">
+        <descr>one-wire probe, measured every second</descr>
+        <return>116</return>
+    </command>
+    
+    <command name="get-o2" id="1000">
+        <descr>485 probe, measured on request</descr>
+        <param name="unit-index" type="UINT8">
+            <descr>
+unit index:
+1 - % AIR
+2 - % O2
+3 - mg/L
+4 - ug/L
+5 - ppm
+6 - ppb
+7 - mbar
+            </descr>
+        </param>
+        <return>116</return>
+    </command>
+    
+    <command name="get-temp" id="1003">
+        <descr>one-wire probe, measured every second</descr>
+        <return>116</return>
+    </command>
+    
+    <command name="get-ph" id="1002">
+        <descr>one-wire probe, measured every second</descr>
+        <return>116</return>
+    </command>
+    
+    <command name="get-o2-ow" id="1004">
+        <descr>one-wire probe, measured every second</descr>
+        <return>116</return>
+    </command>
+</set>

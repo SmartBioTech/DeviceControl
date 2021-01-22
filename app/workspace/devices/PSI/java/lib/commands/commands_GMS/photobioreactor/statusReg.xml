@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="photobioreactor/statusReg">
+    <command name="get-error-reg" id="1270">
+        <descr>
+Error register:
+0 - LED overheated
+1 - level sensor - low water
+2 - level sensor - bad sequence        
+        </descr>
+        <return>111</return>
+    </command>
+    
+    <command name="get-cal-info" id="1271">
+        <descr>
+Some info:
+IT_ACTA = 0
+IT_ACTB = 1
+IT_ODA = 2
+IT_ODB = 3
+IT_H2O2 = 4
+IT_PH = 5
+IT_PHTEMP = 6
+IT_CO2 = 7
+IT_DET = 8
+IT_PAR = 9
+VAL_NC = -1
+VAL_DEFCAL = 0
+VAL_CAL = 1
+        </descr>
+        <param name="id" type="UINT8"/>
+        <return>113</return>
+    </command>
+</set>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<set name="Extractor">
+    <include>userland/core</include>
+    <include>common/core</include>
+    <include>common/system</include>
+    <include>userland/events</include>
+    
+    <command name="set-target-pressure" id="1001">
+        <param name="press" type="FLOAT"/>
+        <return>100</return>
+        <return>307</return>
+    </command>
+    
+    <command name="get-target-pressure" id="1000">
+        <descr>100-600kPa</descr>
+        <return>116</return>
+    </command>
+    
+    <command name="get-state" id="1020">
+        <descr>0 idle, 1 filter, 2 clean </descr>
+        <return>110</return>
+    </command>
+    
+    <command name="set-state" id="1021">
+        <param name="state" type="UINT8">
+            <descr>0 - idle. 1 - filter. 2 - clean</descr>
+        </param>
+        <return>100</return>
+    </command>
+    
+    <command name="get-wait-time" id="1010">
+        <descr>time in sec</descr>
+        <param name="timer-index" type="UINT8">
+            <descr>
+            Timer index values:
+            PUMP_OFF = 0
+            WATER_OUT = 1
+            AIR_CLOSE = 2
+            MOTOR = 3
+            FLUSH_OUT = 4
+            PRESS_TGT = 5
+            </descr>
+        </param>
+        <return>111</return>
+        <return>307</return>
+    </command>
+    <command name="set-wait-time" id="1011">
+        <param name="timer-index" type="UINT8">
+            <descr>
+            Timer index values:
+            PUMP_OFF = 0
+            WATER_OUT = 1
+            AIR_CLOSE = 2
+            MOTOR = 3
+            FLUSH_OUT = 4
+            PRESS_TGT = 5
+            </descr>
+        </param>
+        <param name="time" type="UINT16"><descr>time in sec</descr></param>
+        <return>100</return>
+        <return>307</return>
+    </command>
+    
+    <command name="get-pump-pwm" id="1030">
+    </command>
+    
+    <command name="set-pump-pwm" id="1031">
+        <param name="pwm" type="UINT8"/>
+        <return>100</return>
+    </command>
+    
+<!-- ???
+    <command name="do-command" id="1021">
+        <return>307</return>
+    </command>
+ -->    
+    <answer name="press-error" id="11500"/>
+</set>
