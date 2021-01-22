@@ -1,30 +1,9 @@
 from flask import render_template, session, request
-from ..models import Response
+from ..core.utils.response import Response
 from . import main
-from ..email import send_email
-from .. import db, app_manager
+from .. import app_manager
 
-
-# @main.route('/', methods=['GET', 'POST'])
-# def index():
-#     form = NameForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(username=form.name.data).first()
-#         if user is None:
-#             user = User(username=form.name.data)
-#             db.session.add(user)
-#             db.session.commit()
-#             session['known'] = False
-#             if current_app.config['FLASKY_ADMIN']:
-#                 send_email(current_app.config['FLASKY_ADMIN'], 'New User',
-#                            'mail/new_user', user=user)
-#         else:
-#             session['known'] = True
-#         session['name'] = form.name.data
-#         return redirect(url_for('.index'))
-#     return render_template('index.html',
-#                            form=form, name=session.get('name'),
-#                            known=session.get('known', False))
+# PROBLEM WITH app_manager -> not updated !
 
 
 @main.route('/device', methods=["POST"])
@@ -83,3 +62,25 @@ def get_latest_data():
     args = dict(request.args)
     response = app_manager.get_latest_data(args)
     return response.to_json()
+
+
+# @main.route('/', methods=['GET', 'POST'])
+# def index():
+#     form = NameForm()
+#     if form.validate_on_submit():
+#         user = User.query.filter_by(username=form.name.data).first()
+#         if user is None:
+#             user = User(username=form.name.data)
+#             db.session.add(user)
+#             db.session.commit()
+#             session['known'] = False
+#             if current_app.config['FLASKY_ADMIN']:
+#                 send_email(current_app.config['FLASKY_ADMIN'], 'New User',
+#                            'mail/new_user', user=user)
+#         else:
+#             session['known'] = True
+#         session['name'] = form.name.data
+#         return redirect(url_for('.index'))
+#     return render_template('index.html',
+#                            form=form, name=session.get('name'),
+#                            known=session.get('known', False))
