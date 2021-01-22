@@ -25,14 +25,11 @@ def create_app(config_name):
 
     app_context = app.app_context()
     app_context.push()
+    db.create_all()
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     app_manager.init_app()
-
-    app_context = app.app_context()
-    app_context.push()
-    db.create_all()
 
     return app
