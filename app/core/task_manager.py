@@ -1,6 +1,6 @@
 from typing import Dict
 
-from app.core.task.abstract import BaseTask
+from app.core.utils.abstract_task import BaseTask
 from app.core.utils.errors import IdError
 from ..workspace.tasks import classes
 

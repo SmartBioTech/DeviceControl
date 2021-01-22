@@ -1,12 +1,11 @@
 import os
 import click
 from flask_migrate import Migrate
-from app import create_app, db, create_db
+from app import create_app, db
 from app.models import Device, Variable, Event, EventType, Value, Experiment
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
-create_db(app)
 
 
 @app.cli.command()

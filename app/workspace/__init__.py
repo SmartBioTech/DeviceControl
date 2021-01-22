@@ -1,7 +1,7 @@
-from ..core import app_manager
-from ..core.data.command import Command
-from ..core.task.abstract import BaseTask
+from ..main import app_manager
+from ..command import Command
+from ..core.utils.abstract_device import Connector
 from ..core.utils.observable import Observable, Observer
-from ..core.device.abstract import Connector
-from ..core.log import Log
-from ..core.flow.workflow import Scheduler, Job
+from ..core.utils.abstract_task import BaseTask
+from ..core.utils import Log
+from ..core.utils.workflow import Scheduler, Job

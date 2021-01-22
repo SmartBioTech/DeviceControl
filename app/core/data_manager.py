@@ -1,5 +1,5 @@
 from .utils import time
-from .data.dao import Dao
+from .. import db
 from .utils.time import from_string
 from ..models import Variable, Device, Experiment, Value, Event
 
@@ -12,26 +12,33 @@ class DataManager:
         self.variables = self.load_variables()
         self.experiments = dict()
 
+    @staticmethod
+    def insert(item, item_class):
+        exists = item_class.query.filter_by(id=item.id).first()
+        if not exists:
+            db.session.add(item)
+            db.session.commit()
+
     def load_variables(self):
-        return [var.code for var in Variable.query.all()]
+        return [var.id for var in Variable.query.all()]
 
     def save_value(self, value):
         if value.variable not in self.variables:
             self.save_variable(value.variable)
             self.variables.append(value.variable)
-        Dao.insert(value)
+        self.insert(value, Value)
 
     def save_variable(self, variable):
-        variable = Variable(code=variable, type='measured')
-        Dao.insert(variable)
+        variable = Variable(id=variable, type='measured')
+        self.insert(variable, Variable)
 
     def save_event(self, event):
-        Dao.insert(event)
+        self.insert(event, Event)
 
     def save_device(self, connector):
         device = Device(id=connector.device_id, device_class=connector.device_class,
                         device_type=connector.device_type, address=connector.address)
-        Dao.insert(device)
+        self.insert(device, Device)
 
         # TEMPORAL HACK !!!
         self.save_experiment(device.id)
@@ -40,14 +47,15 @@ class DataManager:
     def save_experiment(self, device_id):
         current_time = time.now()
         experiment = Experiment(dev_id=device_id, start=current_time)
-        Dao.insert(experiment)
+        self.insert(experiment, Experiment)
         self.experiments[device_id] = experiment
 
     # TEMPORAL HACK !!!
     def update_experiment(self, device_id):
         experiment = self.experiments.pop(device_id)
         experiment.end = time.now()
-        Dao.insert(experiment)
+        # TODO: probably update needed
+        self.insert(experiment, Experiment)
 
     def post_process(self, query_results, data_type, device_id):
         result = {}

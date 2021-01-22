@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from ..utils.AbstractClass import Interface, abstractattribute
+from .AbstractClass import Interface, abstractattribute
 
 
 class BaseTask(metaclass=Interface):

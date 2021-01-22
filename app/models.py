@@ -23,14 +23,14 @@ class Value(db.Model):
     time = db.Column(db.DateTime, nullable=False)
     value = db.Column(db.Float, nullable=False)
     dev_id = db.Column(db.String(100), db.ForeignKey('devices.id'), nullable=False)
-    var_id = db.Column(db.String(100), db.ForeignKey('variables.code'), nullable=False)
+    var_id = db.Column(db.String(100), db.ForeignKey('variables.id'), nullable=False)
     channel = db.Column(db.Integer, default=None)
     note = db.Column(db.String(100), default=None)
 
 
 class Variable(db.Model):
     __tablename__ = 'variables'
-    code = db.Column(db.String(30), primary_key=True)
+    id = db.Column(db.String(30), primary_key=True)
     name = db.Column(db.String(100))
     type = db.Column(db.Enum(VariableType), nullable=True, default=None)
     unit = db.Column(db.Integer, nullable=True, default=None)

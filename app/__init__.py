@@ -4,15 +4,13 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from config import config
+from .main.app_manager import AppManager
 
 bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
-
-
-# will this work?
-app_manager = None
+app_manager = AppManager()
 
 
 def create_app(config_name):
@@ -25,17 +23,16 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
 
+    app_context = app.app_context()
+    app_context.push()
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    return app
+    app_manager.init_app()
 
-
-def create_db(app):
     app_context = app.app_context()
     app_context.push()
     db.create_all()
 
-    from .core.app_manager import AppManager
-    app_manager = AppManager()
-
+    return app

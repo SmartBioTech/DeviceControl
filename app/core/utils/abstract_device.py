@@ -1,10 +1,9 @@
 from abc import abstractmethod
 from threading import Thread
 
-from ..flow.workflow import Job, WorkflowProvider
-from ..log import Log
-from ..data.command import Command
-from ..utils.AbstractClass import abstractattribute, Interface
+from .workflow import Job, WorkflowProvider
+from . import Log
+from .AbstractClass import abstractattribute, Interface
 
 
 class Connector(metaclass=Interface):
@@ -55,12 +54,12 @@ class Connector(metaclass=Interface):
             result[key] = func.__name__, arguments
         return result
 
-    def _post_command(self, cmd: Command, priority=0):
+    def _post_command(self, cmd, priority=0):
         cmd.device_id = self.device_id
         job = Job(task=self._execute_command, args=[cmd])
         self.scheduler.schedule_job(job)
 
-    def post_command(self, cmd: Command, priority=2):
+    def post_command(self, cmd, priority=2):
         cmd.device_id = self.device_id
         self._queue.put(cmd, priority)
         if not self._is_queue_check_running:
@@ -73,7 +72,7 @@ class Connector(metaclass=Interface):
             self._execute_command(self._queue.get())
         self._is_queue_check_running = False
 
-    def _execute_command(self, command: Command):
+    def _execute_command(self, command):
         try:
             validity = True
             response = self.get_command_reference(command.command_id)(*command.args)
@@ -99,7 +98,7 @@ class PriorityQueue:
     def __init__(self):
         self._items = []
 
-    def put(self, command: Command, priority: int):
+    def put(self, command, priority: int):
         self._items.append((priority, command))
         self._items.sort(key=self._sort_by_priority)
 

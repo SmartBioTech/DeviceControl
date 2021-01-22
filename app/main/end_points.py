@@ -1,14 +1,12 @@
 from flask import render_template, session, request
 from ..core.utils.response import Response
 from . import main
-from .. import app_manager
-
-# PROBLEM WITH app_manager -> not updated !
 
 
 @main.route('/device', methods=["POST"])
 def initiate():
     device_config = request.get_json()
+    from .. import app_manager
     response = app_manager.register_device(device_config)
     return response.to_json()
 
@@ -18,6 +16,7 @@ def end():
     data = request.get_json()
     _type = data.get("type", None)
     target_id = data.get("target_id", None)
+    from .. import app_manager
     if _type == "device":
         response = app_manager.end_device(target_id)
     elif _type == "task":
@@ -32,12 +31,14 @@ def end():
 
 @main.route('/ping')
 def ping():
+    from .. import app_manager
     response = app_manager.ping()
     return response.to_json()
 
 
 @main.route('/command', methods=["POST"])
 def command():
+    from .. import app_manager
     data: dict = request.get_json()
     response = app_manager.command(data)
     return response.to_json()
@@ -45,6 +46,7 @@ def command():
 
 @main.route('/task', methods=["POST"])
 def task():
+    from .. import app_manager
     data: dict = request.get_json()
     response = app_manager.register_task(data)
     return response.to_json()
@@ -52,6 +54,7 @@ def task():
 
 @main.route('/data', methods=["GET"])
 def get_data():
+    from .. import app_manager
     args = dict(request.args)
     response = app_manager.get_data(args)
     return response.to_json()
@@ -59,6 +62,7 @@ def get_data():
 
 @main.route('/data/latest', methods=['GET'])
 def get_latest_data():
+    from .. import app_manager
     args = dict(request.args)
     response = app_manager.get_latest_data(args)
     return response.to_json()

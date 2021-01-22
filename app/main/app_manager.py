@@ -1,11 +1,7 @@
-from app.core.task_manager import TaskManager
-from app.core.data_manager import DataManager
-from app.core.device_manager import DeviceManager
-from .utils.response import Response
-from .data.command import Command
-from .log import Log
-from .utils.errors import IdError
-from .utils.time import process_time
+from app.core.utils.response import Response
+from app.core.utils import Log
+from app.core.utils.errors import IdError
+from app.core.utils.time import process_time
 
 
 def validate_attributes(required, attributes, class_name):
@@ -18,7 +14,11 @@ def validate_attributes(required, attributes, class_name):
 
 
 class AppManager:
-    def __init__(self):
+    def init_app(self):
+        from app.core.task_manager import TaskManager
+        from app.core.data_manager import DataManager
+        from app.core.device_manager import DeviceManager
+
         self.taskManager = TaskManager()
         self.deviceManager = DeviceManager()
         self.dataManager = DataManager()
@@ -31,7 +31,7 @@ class AppManager:
         except (IdError, ModuleNotFoundError, AttributeError) as e:
             Log.error(e)
             return Response(False, None, e)
-        return Response(device is not None, None)
+        return Response(device is not None, None, None)
 
     def end_device(self, device_id: str) -> Response:
         try:
@@ -40,7 +40,7 @@ class AppManager:
             # TEMPORAL HACK !!!
             self.dataManager.update_experiment(device_id)
 
-            return Response(True, None)
+            return Response(True, None, None)
         except AttributeError:
             exc = IdError('Connector with given ID: %s was not found' % device_id)
             Log.error(exc)
@@ -56,10 +56,11 @@ class AppManager:
             source = config.get('source', 'external')
             priority = 1 if config.get('priority', False) else 2
 
+            from ..command import Command
             cmd = Command(device_id, command_id, eval(args), source)
             self.deviceManager.get_device(device_id).post_command(cmd, priority=priority)
             cmd.save_command_to_db()
-            return Response(True, None)
+            return Response(True, None, None)
         except AttributeError as e:
             Log.error(e)
             return Response(False, None, e)
@@ -69,7 +70,7 @@ class AppManager:
             validate_attributes(['task_id', 'task_class', 'task_type'], config, 'Task')
             task = self.taskManager.create_task(config)
             task.start()
-            return Response(True, None)
+            return Response(True, None, None)
         except (IdError, TypeError, AttributeError) as e:
             Log.error(e)
             return Response(False, None, e)
@@ -77,7 +78,7 @@ class AppManager:
     def end_task(self, task_id) -> Response:
         try:
             self.taskManager.remove_task(task_id)
-            return Response(True, None)
+            return Response(True, None, None)
         except IdError as e:
             Log.error(e)
             return Response(False, None, e)
@@ -119,4 +120,4 @@ class AppManager:
     def end(self) -> Response:
         self.deviceManager.end()
         self.taskManager.end()
-        return Response(True, None)
+        return Response(True, None, None)
