@@ -1,7 +1,7 @@
 from threading import Event
 
 from . import app_manager
-from .core.utils.time import now
+from .src.utils.time import now
 from .models import Value
 from .models import Event as DBevent
 
@@ -39,8 +39,8 @@ class Command:
 
     def save_command_to_db(self, event=1):
         if not self._saved:
-            event = DBevent(dev_id=self.device_id, event_type=event, time=self.time_executed, args=self.args,
-                            command=self.command_id, response=self.response)
+            event = DBevent(dev_id=self.device_id, event_type=event, time=self.time_executed, args=str(self.args),
+                            command=self.command_id, response=str(self.response))
             app_manager.dataManager.save_event(event)
         self._saved = True
 
@@ -53,8 +53,8 @@ class Command:
                               var_id=variable, channel=channel, note=note)
                 app_manager.dataManager.save_value(value)
         else:
-            event = DBevent(dev_id=self.device_id, event_type=2, time=self.time_executed, args=self.args,
-                            command=self.command_id, response=self.response)
+            event = DBevent(dev_id=self.device_id, event_type=2, time=self.time_executed, args=str(self.args),
+                            command=self.command_id, response=str(self.response))
             app_manager.dataManager.save_event(event)
 
     def to_dict(self) -> dict:

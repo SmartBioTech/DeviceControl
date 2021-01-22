@@ -1,5 +1,5 @@
 from flask import render_template, session, request
-from ..core.utils.response import Response
+from ..src.utils.response import Response
 from . import main
 
 
@@ -68,7 +68,7 @@ def get_latest_data():
     return response.to_json()
 
 
-# @main.route('/', methods=['GET', 'POST'])
+# @core.route('/', methods=['GET', 'POST'])
 # def index():
 #     form = NameForm()
 #     if form.validate_on_submit():

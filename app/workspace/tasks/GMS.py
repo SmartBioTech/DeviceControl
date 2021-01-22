@@ -1,6 +1,7 @@
 from threading import Thread
 from time import sleep
-from .. import Command, BaseTask, app_manager
+from .. import Command, BaseTask
+from ... import app_manager
 
 
 class GMSMeasureAll(BaseTask):

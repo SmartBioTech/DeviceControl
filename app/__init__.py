@@ -4,7 +4,7 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from config import config
-from .main.app_manager import AppManager
+from .core.app_manager import AppManager
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -23,13 +23,16 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
 
+    from .core import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    return app
+
+
+def setup_app_manager(app):
     app_context = app.app_context()
     app_context.push()
     db.create_all()
 
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
     app_manager.init_app()
-
-    return app
+    app_manager.dataManager.store_permanent()

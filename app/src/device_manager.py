@@ -1,6 +1,6 @@
 from typing import Dict
 
-from app.core.utils.abstract_device import Connector
+from app.src.utils.abstract_device import Connector
 from .utils.errors import IdError
 from ..workspace.devices import classes
 

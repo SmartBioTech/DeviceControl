@@ -4,7 +4,8 @@ from time import sleep
 from typing import Dict
 import numpy as np
 
-from .. import Command, BaseTask, Observable, Observer, app_manager
+from .. import Command, BaseTask, Observable, Observer
+from ... import app_manager
 
 
 class PBRMeasureAll(BaseTask):

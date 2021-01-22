@@ -1,7 +1,7 @@
 from typing import Dict
 
-from app.core.utils.abstract_task import BaseTask
-from app.core.utils.errors import IdError
+from app.src.utils.abstract_task import BaseTask
+from app.src.utils.errors import IdError
 from ..workspace.tasks import classes
 
 
@@ -19,10 +19,6 @@ class TaskManager:
             return task
         else:
             raise IdError("Task with requested ID {} already exists".format(task_id))
-
-    @staticmethod
-    def load_class(task_class: str, task_type: str) -> BaseTask.__class__:
-        return classes.get(task_class, {}).get(task_type)
 
     def remove_task(self, task_id):
         if task_id in self.tasks:
@@ -47,3 +43,7 @@ class TaskManager:
             result[key] = task.is_active
 
         return result
+
+    @staticmethod
+    def load_class(task_class: str, task_type: str) -> BaseTask.__class__:
+        return classes.get(task_class, {}).get(task_type)

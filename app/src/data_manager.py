@@ -1,7 +1,8 @@
 from .utils import time
+from .utils.permanent_data import EVENT_TYPES, VARIABLES
 from .. import db
 from .utils.time import from_string
-from ..models import Variable, Device, Experiment, Value, Event
+from ..models import Variable, Device, Experiment, Value, Event, EventType
 
 
 class DataManager:
@@ -12,20 +13,28 @@ class DataManager:
         self.variables = self.load_variables()
         self.experiments = dict()
 
+    def store_permanent(self):
+        for item in EVENT_TYPES:
+            self.insert(EventType(id=item[0], type=item[1]), EventType)
+        for item in VARIABLES:
+            self.insert(Variable(id=item[0], name=item[1], type=item[2]), Variable)
+
     @staticmethod
     def insert(item, item_class):
-        exists = item_class.query.filter_by(id=item.id).first()
-        if not exists:
-            db.session.add(item)
-            db.session.commit()
+        from main import app
+        with app.app_context():
+            exists = item_class.query.filter_by(id=item.id).first()
+            if not exists:
+                db.session.add(item)
+                db.session.commit()
 
     def load_variables(self):
         return [var.id for var in Variable.query.all()]
 
     def save_value(self, value):
-        if value.variable not in self.variables:
-            self.save_variable(value.variable)
-            self.variables.append(value.variable)
+        if value.var_id not in self.variables:
+            self.save_variable(value.var_id)
+            self.variables.append(value.var_id)
         self.insert(value, Value)
 
     def save_variable(self, variable):
@@ -75,15 +84,21 @@ class DataManager:
 
         if last_time is not None:
             last_time = from_string(last_time)
-            return self.post_process(cls.query.filter_by(dev_id=device_id).filter(cls.time > last_time).all(),
-                                     data_type, device_id)
+            from main import app
+            with app.app_context():
+                return self.post_process(cls.query.filter_by(dev_id=device_id).filter(cls.time > last_time).all(),
+                                         data_type, device_id)
         else:
             if log_id is None:
                 log_id = self.last_seen_id[data_type].get(device_id, 0)
-            return self.post_process(cls.query.filter_by(dev_id=device_id).filter(cls.id > log_id).all(),
-                                     data_type, device_id)
+            from main import app
+            with app.app_context():
+                return self.post_process(cls.query.filter_by(dev_id=device_id).filter(cls.id > log_id).all(),
+                                         data_type, device_id)
 
     def get_latest_data(self, device_id, data_type: str = 'values'):
         cls = Value if data_type == 'values' else Event
 
-        return cls.query.filter_by(dev_id=device_id).order_by(cls.id.desc()).first()
+        from main import app
+        with app.app_context():
+            return cls.query.filter_by(dev_id=device_id).order_by(cls.id.desc()).first()

@@ -1,7 +1,7 @@
-from app.core.utils.response import Response
-from app.core.utils import Log
-from app.core.utils.errors import IdError
-from app.core.utils.time import process_time
+from app.src.utils.response import Response
+from app.src.utils import Log
+from app.src.utils.errors import IdError
+from app.src.utils.time import process_time
 
 
 def validate_attributes(required, attributes, class_name):
@@ -15,9 +15,9 @@ def validate_attributes(required, attributes, class_name):
 
 class AppManager:
     def init_app(self):
-        from app.core.task_manager import TaskManager
-        from app.core.data_manager import DataManager
-        from app.core.device_manager import DeviceManager
+        from app.src.task_manager import TaskManager
+        from app.src.data_manager import DataManager
+        from app.src.device_manager import DeviceManager
 
         self.taskManager = TaskManager()
         self.deviceManager = DeviceManager()
@@ -87,7 +87,7 @@ class AppManager:
         return Response(True, {
             'devices': self.deviceManager.ping(),
             'tasks': self.taskManager.ping()
-        })
+        }, None)
 
     def get_data(self, config) -> Response:
         try:
@@ -100,7 +100,7 @@ class AppManager:
 
             time = process_time(time)
 
-            return Response(True, self.dataManager.get_data(log_id, time, device_id, data_type))
+            return Response(True, self.dataManager.get_data(log_id, time, device_id, data_type), None)
             
         except (IdError, AttributeError, SyntaxError) as e:
             Log.error(e)
@@ -111,7 +111,7 @@ class AppManager:
             validate_attributes(['device_id', 'type'], config, 'GetData')
             device_id = config.get('device_id')
             data_type = config.get('type')  # (events/values)
-            return Response(True, self.dataManager.get_latest_data(device_id, data_type))
+            return Response(True, self.dataManager.get_latest_data(device_id, data_type), None)
 
         except (IdError, AttributeError) as e:
             Log.error(e)
