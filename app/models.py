@@ -1,5 +1,6 @@
 from . import db
 import enum
+from sqlalchemy.dialects.mysql import DATETIME
 
 
 class VariableType(enum.Enum):
@@ -20,7 +21,7 @@ class Device(db.Model):
 class Value(db.Model):
     __tablename__ = 'values'
     id = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime, nullable=False)
+    time = db.Column(DATETIME(fsp=3), nullable=False)
     value = db.Column(db.Float, nullable=False)
     dev_id = db.Column(db.String(100), db.ForeignKey('devices.id'), nullable=False)
     var_id = db.Column(db.String(100), db.ForeignKey('variables.id'), nullable=False)
@@ -41,7 +42,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dev_id = db.Column(db.String(100), db.ForeignKey('devices.id'))
     event_type = db.Column(db.Integer, db.ForeignKey('event_types.id'))
-    time = db.Column(db.DateTime)
+    time = db.Column(DATETIME(fsp=3))
     args = db.Column(db.String(100))
     command = db.Column(db.String(100))
     response = db.Column(db.String(100))
