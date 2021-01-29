@@ -28,6 +28,13 @@ class DataManager:
                 db.session.add(item)
                 db.session.commit()
 
+    @staticmethod
+    def update(item):
+        from main import app
+        with app.app_context():
+            db.session.add(item)
+            db.session.commit()
+
     def load_variables(self):
         return [var.id for var in Variable.query.all()]
 
@@ -63,8 +70,7 @@ class DataManager:
     def update_experiment(self, device_id):
         experiment = self.experiments.pop(device_id)
         experiment.end = time.now()
-        # TODO: probably update needed
-        self.insert(experiment, Experiment)
+        self.update(experiment)
 
     def post_process(self, query_results, data_type, device_id):
         result = {}

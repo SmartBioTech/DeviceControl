@@ -59,6 +59,6 @@ class Experiment(db.Model):
     __tablename__ = 'experiments'
     id = db.Column(db.Integer, primary_key=True)
     dev_id = db.Column(db.String(100), db.ForeignKey('devices.id'))
-    start = db.Column(db.DateTime)
-    end = db.Column(db.DateTime, nullable=True, default=None)
+    start = db.Column(DATETIME(fsp=3))
+    end = db.Column(DATETIME(fsp=3), nullable=True, default=None)
     description = db.Column(db.String(100), nullable=True, default=None)
