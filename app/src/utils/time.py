@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 def now():
-    return str(datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f"))
+    return datetime.utcnow()
 
 
 def process_time(time):
@@ -13,11 +13,6 @@ def process_time(time):
     """
     if time is not None:
         try:
-            processed = datetime.strptime(time, "%Y%m%d%H%M%S%f")
-            return "'" + processed.strftime("%Y-%m-%d %H:%M:%S.%f") + "'"
+            return datetime.strptime(time, "%Y%m%d%H%M%S%f")
         except Exception:
             raise SyntaxError("Invalid time format has been provided: {}".format(time))
-
-
-def from_string(time):
-    return datetime.strptime(time, "%Y%m%d%H%M%S%f")

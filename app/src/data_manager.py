@@ -1,7 +1,6 @@
 from .utils import time
 from .utils.permanent_data import EVENT_TYPES, VARIABLES
 from .. import db
-from .utils.time import from_string
 from ..models import Variable, Device, Experiment, Value, Event, EventType
 
 
@@ -85,7 +84,6 @@ class DataManager:
         cls = Value if data_type == 'values' else Event
 
         if last_time is not None:
-            last_time = from_string(last_time)
             from main import app
             with app.app_context():
                 return self.post_process(cls.query.filter_by(dev_id=device_id).filter(cls.time > last_time).all(),
