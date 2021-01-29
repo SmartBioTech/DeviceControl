@@ -72,6 +72,8 @@ class DataManager:
         for obj in query_results:
             row = obj.__dict__  # PROBABLY WONT WORK !!!
             log_id = row.pop('id')
+            if "_sa_instance_state" in row:
+                del row['_sa_instance_state']
             result[log_id] = row
 
         if device_id is not None:
