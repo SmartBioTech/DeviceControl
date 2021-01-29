@@ -1,7 +1,7 @@
 from app.src.utils.response import Response
 from app.src.utils import Log
 from app.src.utils.errors import IdError
-from app.src.utils.time import process_time
+from app.src.utils.time import time_from_string
 
 
 def validate_attributes(required, attributes, class_name):
@@ -98,7 +98,7 @@ class AppManager:
             log_id = config.get('log_id', None)
             time = config.get('time', None)
 
-            time = process_time(time)
+            time = time_from_string(time)
 
             return Response(True, self.dataManager.get_data(log_id, time, device_id, data_type), None)
             

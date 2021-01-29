@@ -5,9 +5,9 @@ def now():
     return datetime.utcnow()
 
 
-def process_time(time):
+def time_from_string(time):
     """
-    Processes the input string to a format the database can work with.
+    Processes the input string to datetime format DB can work with.
     :param time: requested time
     :return: processed time
     """
@@ -16,3 +16,12 @@ def process_time(time):
             return datetime.strptime(time, "%Y%m%d%H%M%S%f")
         except Exception:
             raise SyntaxError("Invalid time format has been provided: {}".format(time))
+
+
+def time_to_string(time):
+    """
+    Processes the input datetime to standard string representation.
+    :param time: requested time
+    :return: processed time
+    """
+    return datetime.strftime(time, "%Y%m%d%H%M%S%f")

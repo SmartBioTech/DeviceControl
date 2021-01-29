@@ -1,5 +1,6 @@
 from .utils import time
 from .utils.permanent_data import EVENT_TYPES, VARIABLES
+from .utils.time import time_to_string
 from .. import db
 from ..models import Variable, Device, Experiment, Value, Event, EventType
 
@@ -69,8 +70,9 @@ class DataManager:
         result = {}
 
         for obj in query_results:
-            row = obj.__dict__  # PROBABLY WONT WORK !!!
+            row = obj.__dict__
             log_id = row.pop('id')
+            row['time'] = time_to_string(row['time'])
             if "_sa_instance_state" in row:
                 del row['_sa_instance_state']
             result[log_id] = row
