@@ -26,6 +26,8 @@ class MeasureWeight(BaseTask):
         while self.is_active:
             cmd = Command(self.device_id, "1", [], self.task_id)
             self.device.post_command(cmd)
+            cmd.await_cmd()
+            cmd.save_data_to_db()
             sleep(int(self.sleep_period))
 
     def end(self):
