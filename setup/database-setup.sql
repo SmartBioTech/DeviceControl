@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `experiments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `dev_id` varchar(100) NOT NULL,
   `start` TIMESTAMP(3) NOT NULL,
-  `end` TIMESTAMP(3) DEFAULT NULL,
+  `end` TIMESTAMP(3) NULL DEFAULT NULL,
   `description` varchar(255),
   PRIMARY KEY (`id`),
   FOREIGN KEY (`dev_id`) REFERENCES `devices`(`id`)
