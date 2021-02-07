@@ -11,7 +11,7 @@ class SICS(Connector):
             '2': self.get_info
         }
 
-   def get_weight(self):
+    def get_weight(self):
         """
         Get actual measured weight in set units.
 
