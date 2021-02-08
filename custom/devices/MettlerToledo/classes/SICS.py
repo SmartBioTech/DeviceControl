@@ -27,7 +27,7 @@ class SICS(Connector):
                 result['value'] *= 28.34952
             elif result['unit'] == "t":
                 result['value'] *= 1000000
-        return {'weight': result['value']}
+        return {'weight': result['value'], 'channel': int(result['stable'])}
 
     def get_info(self):
         """
