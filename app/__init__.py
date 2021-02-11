@@ -9,7 +9,7 @@ from .core.app_manager import AppManager
 bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={'expire_on_commit': False})
 app_manager = AppManager()
 
 
