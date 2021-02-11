@@ -3,7 +3,7 @@
 DBuser=$1
 PASSWDDB=$2
 # store them in a config which will use also the app
-echo "USER=${DBuser}\nPASSWORD=${PASSWDDB}" > CONFIG
+echo "USER=\"${DBuser}\"\nPASSWORD=\"${PASSWDDB}\"" > DB_CONFIG
 
 # setup all DBs
 mysql -u root<<MYSQL_SCRIPT
