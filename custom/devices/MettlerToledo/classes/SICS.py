@@ -15,19 +15,17 @@ class SICS(Connector):
         """
         Get actual measured weight in set units.
 
+        WARNING: can raise Exception("Unknown unit %s")
+
         :return: Current weight in grams.
         """
+        units = {"kg": 1000, "lb": 453.5924, "g": 1, "oz": 28.34952, "t": 1000000}
         result = self.connection.get_weight()
-        if result['unit'] != "g":
-            if result['unit'] == "kg":
-                result['value'] *= 1000
-            elif result['unit'] == "lb":
-                result['value'] *= 453.5924
-            elif result['unit'] == "oz":
-                result['value'] *= 28.34952
-            elif result['unit'] == "t":
-                result['value'] *= 1000000
-        return {'weight': result['value'], 'channel': int(result['stable'])}
+
+        try:
+            return {'weight': result['value'] * units[result['unit']], 'channel': int(result['stable'])}
+        except KeyError:
+            raise Exception("Unknown unit {}".format(result['unit']))
 
     def get_info(self):
         """
