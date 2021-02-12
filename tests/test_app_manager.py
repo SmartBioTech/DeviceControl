@@ -1,7 +1,5 @@
-import sys
 import unittest
 from unittest import mock
-from flask import current_app
 
 from app.command import Command
 from app.src.utils.errors import IdError

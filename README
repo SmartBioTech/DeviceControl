@@ -4,8 +4,10 @@ sudo -E env "PATH=$PATH" ./setup.sh "<username>" "<password>"
 # to run the tool
 ./run.sh
 
-# to run tests:
+# to run tests all tests:
 tests/run_tests.sh
+# to run a single test case
+tests/run_tests.sh tests.<file name without .py>
 
 # to migrate database
 migrations/migrate.sh

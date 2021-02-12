@@ -6,9 +6,8 @@ from ..models import Variable, Device, Experiment, Value, Event, EventType
 
 
 class DataManager:
-    def __init__(self, ws_client=None):
+    def __init__(self):
         self.last_seen_id = {'values': {}, 'events': {}}
-        self.ws_client = ws_client
 
         self.variables = self.load_variables()
         self.experiments = dict()
