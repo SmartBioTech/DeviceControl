@@ -26,5 +26,5 @@ python3 -m pip install Flask Flask-Bootstrap Flask-Mail Flask-Migrate Flask-Mome
                        JPype1 Flask-RESTful pycrypto pyserial mettler_toledo_device requests
 
 # init DB? then migrate in run script? (resp. upgrade)
-export FLASK_APP=main.py
-flask db init
+#export FLASK_APP=main.py
+#flask db init
