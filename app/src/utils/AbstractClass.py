@@ -1,4 +1,5 @@
 from abc import ABCMeta
+from copy import deepcopy
 
 
 class DummyAttribute:
@@ -31,3 +32,22 @@ class Interface(ABCMeta):
             )
 
         return instance
+
+
+class AbstractModel:
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            a, b = deepcopy(self.__dict__), deepcopy(other.__dict__)
+            # compare based on equality our attributes, ignoring SQLAlchemy internal stuff
+            a.pop('_sa_instance_state', None)
+            b.pop('_sa_instance_state', None)
+            return a == b
+        return False
+
+    def __str__(self):
+        attrs = deepcopy(self.__dict__)
+        attrs.pop('_sa_instance_state', None)
+        return "{} ({})".format(self.__class__, ", ".join(["{}: {}".format(item, attrs[item]) for item in attrs]))
+
+    def __repr__(self):
+        return str(self)

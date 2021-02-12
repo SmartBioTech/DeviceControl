@@ -59,8 +59,7 @@ class DataManager:
         self.save_experiment(device.id)
 
     # TEMPORAL HACK !!!
-    def save_experiment(self, device_id):
-        current_time = time.now()
+    def save_experiment(self, device_id, current_time=time.now()):
         experiment = Experiment(dev_id=device_id, start=current_time)
         self.insert(experiment, Experiment)
         self.experiments[device_id] = experiment
