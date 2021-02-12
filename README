@@ -1,1 +1,8 @@
+# to install the tool:
 sudo -E env "PATH=$PATH" ./setup.sh "<username>" "<password>"
+
+# to run tests:
+tests/run_tests.sh
+
+# to run the tool
+./run.sh

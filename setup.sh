@@ -8,13 +8,14 @@ echo "USER=\"${DBuser}\"\nPASSWORD=\"${PASSWDDB}\"" > DB_CONFIG
 # setup all DBs
 mysql -u root<<MYSQL_SCRIPT
 CREATE USER if not exists ${DBuser}@'localhost' IDENTIFIED BY '${PASSWDDB}';
+CREATE USER if not exists 'TestUser'@'localhost' IDENTIFIED BY 'pass';
 
 CREATE DATABASE if not exists device_control;
 GRANT ALL PRIVILEGES ON device_control.* TO ${DBuser}@'localhost';
 CREATE DATABASE if not exists device_control_devel;
 GRANT ALL PRIVILEGES ON device_control_devel.* TO ${DBuser}@'localhost';
 CREATE DATABASE if not exists device_control_test;
-GRANT ALL PRIVILEGES ON device_control_test.* TO ${DBuser}@'localhost';
+GRANT ALL PRIVILEGES ON device_control_test.* TO 'TestUser'@'localhost';
 FLUSH PRIVILEGES;
 MYSQL_SCRIPT
 
