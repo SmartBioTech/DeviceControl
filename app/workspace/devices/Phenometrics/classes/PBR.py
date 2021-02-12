@@ -127,17 +127,17 @@ class PBR(Connector):
             raise Exception(result)
         return {'pH': float(result)}
 
-    def measure_od(self, channel=0):
+    def measure_od(self, attribute=0):
         """
         Measure current Optical Density (OD, dimensionless).
-        :param channel: which channel should be measured
+        :param attribute: which attribute should be measured
         :return: Measured OD
         """
         variant = ["measureOD1", "measureOD2"]
-        success, result = self.connection.send_command(self.device_id, variant[channel], [])
+        success, result = self.connection.send_command(self.device_id, variant[attribute], [])
         if not success:
             raise Exception(result)
-        return {'od': float(result), "channel": channel}
+        return {'od': float(result), "attribute": attribute}
 
     def get_pump_params(self, pump):
         """
@@ -167,21 +167,21 @@ class PBR(Connector):
         result = self.pump_manager.start_pump() if on else self.pump_manager.stop_pump()
         return {'success': result}
 
-    def get_light_intensity(self, channel):
+    def get_light_intensity(self, attribute):
         """
         Checks for current (max?) light intensity.
         Items: "intensity": current light intensity (float) in μE,
                "max": maximal intensity (float) in μE,
                "on": True if light is turned on (bool)
-        :param channel: Given channel device_id
+        :param attribute: Given attribute device_id
         :return: The current settings structured in a dictionary.
         """
         raise NotImplementedError("The method not implemented")
 
-    def set_light_intensity(self, channel, intensity):
+    def set_light_intensity(self, attribute, intensity):
         """
         Control LED panel on photobioreactor.
-        :param channel: Given channel (0 for red light, 1 for blue light)
+        :param attribute: Given attribute (0 for red light, 1 for blue light)
         :param intensity: Desired intensity
         :return: True if was successful, False otherwise.
         """
@@ -190,10 +190,10 @@ class PBR(Connector):
             raise Exception(result)
         return {'success': float(result) == float(intensity)}
 
-    def turn_on_light(self, channel, on):
+    def turn_on_light(self, attribute, on):
         """
         Turn on/off LED panel on photobioreactor.
-        :param channel: Given channel
+        :param attribute: Given attribute
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
         """
@@ -213,7 +213,7 @@ class PBR(Connector):
     def set_pwm(self, value, on):
         """
         Set stirring settings.
-        Channel: 0 red and 1 blue according to PBR configuration.
+        attribute: 0 red and 1 blue according to PBR configuration.
         :param value: desired stirring pulse
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
@@ -248,10 +248,10 @@ class PBR(Connector):
             raise Exception(result)
         return {'success': result == "stopTemperatureControl"}
 
-    def measure_ft(self, channel):
+    def measure_ft(self, attribute):
         """
         ???
-        :param channel: ???
+        :param attribute: ???
         :return: ???
         """
         raise NotImplementedError("The method not implemented")
@@ -265,10 +265,10 @@ class PBR(Connector):
         """
         raise NotImplementedError("The method not implemented")
 
-    def measure_all(self, ft_channel=5, pump_id=5):
+    def measure_all(self, ft_attribute=5, pump_id=5):
         """
         Measures all basic measurable values.
-        :param ft_channel: channel for ft_measure
+        :param ft_attribute: attribute for ft_measure
         :param pump_id: id of particular pump
         :return: dictionary of all measured values
         """
@@ -304,17 +304,17 @@ class PBR(Connector):
 
         return measure_all_dictionary
 
-    def measure_AUX(self, channel):
+    def measure_AUX(self, attribute):
         """
         Values of AUX auxiliary input voltage.
-        :param channel: ???
+        :param attribute: ???
         :return: ???
         """
         variant = ["measureAux1", "measureAux2"]
-        success, result = self.connection.send_command(self.device_id, variant[channel], [])
+        success, result = self.connection.send_command(self.device_id, variant[attribute], [])
         if not success:
             raise Exception(result)
-        return {'aux': float(result), "channel": channel}
+        return {'aux': float(result), "attribute": attribute}
 
     def flash_LED(self):
         """

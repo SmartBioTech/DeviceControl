@@ -12,7 +12,7 @@ class PBRMeasureAll(BaseTask):
     def __init__(self, config):
         self.__dict__.update(config)
 
-        required = ['sleep_period', 'lower_tol', 'upper_tol', 'od_channel',
+        required = ['sleep_period', 'lower_tol', 'upper_tol', 'od_attribute',
                     'max_outliers', 'device_id', 'pump_id']
 
         self.validate_attributes(required, type(self).__name__)
@@ -72,7 +72,7 @@ class PBRMeasureAll(BaseTask):
 
     def get_od_for_init(self):
         cmd = Command(self.device_id, "5",
-                      [self.od_channel],
+                      [self.od_attribute],
                       self.task_id,
                       is_awaited=True)
 
@@ -156,7 +156,7 @@ class PBRMeasureAll(BaseTask):
 
     def _run(self):
         self.average_od = self.measure_initial_od_average()
-        od_variant = 'od_1' if self.od_channel == 1 else 'od_0'
+        od_variant = 'od_1' if self.od_attribute == 1 else 'od_0'
 
         while self.is_active:
             commands = []
@@ -178,7 +178,7 @@ class PBRMeasureAll(BaseTask):
                     od_is_outlier = self.handle_outlier(od)
                     if not od_is_outlier:
                         self.od.value = od
-                    command.response = {'od': od, 'outlier': od_is_outlier, 'channel': self.od_channel}
+                    command.response = {'od': od, 'outlier': od_is_outlier, 'attribute': self.od_attribute}
                 command.save_data_to_db()
 
             sleep(self.sleep_period)

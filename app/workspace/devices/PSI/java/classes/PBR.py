@@ -81,14 +81,14 @@ class PBR(JavaDevice):
 
         return {'pH': msg.getDoubleParam(0)}
 
-    def measure_od(self, channel=0, repeats=5):
+    def measure_od(self, attribute=0, repeats=5):
         """
         Measure current Optical Density (OD, dimensionless).
-        :param channel: Optical path to be measured ()
+        :param attribute: Optical path to be measured ()
         :param repeats: The number of measurement repeats
         :return: Measured OD
         """
-        msg = self.device.send("measure-od", channel, repeats)
+        msg = self.device.send("measure-od", attribute, repeats)
         if msg.isError():
             raise Exception(msg.getError())
 
@@ -102,7 +102,7 @@ class PBR(JavaDevice):
         else:
             od = 3.0
 
-        return {'od': od, 'channel': channel}
+        return {'od': od, 'attribute': attribute}
 
     def get_pump_params(self, pump):
         """
@@ -144,16 +144,16 @@ class PBR(JavaDevice):
         msg = self.device.send("set-pump-state", pump, on)
         return {'success': not msg.isError()}
 
-    def get_light_intensity(self, channel=0):
+    def get_light_intensity(self, attribute=0):
         """
         Checks for current (max?) light intensity.
         Items: "intensity": current light intensity (float) in μE,
                "max": maximal intensity (float) in μE,
                "on": True if light is turned on (bool)
-        :param channel: Given channel ID
+        :param attribute: Given attribute ID
         :return: The current settings structured in a dictionary.
         """
-        msg = self.device.send("get-actinic-light-settings", channel)
+        msg = self.device.send("get-actinic-light-settings", attribute)
         if msg.isError():
             raise Exception(msg.getError())
 
@@ -161,17 +161,17 @@ class PBR(JavaDevice):
             "light_intensity": msg.getDoubleParam(0),
             "light_max": msg.getDoubleParam(1),
             "light_on": int(msg.getBoolParam(2)),
-            "channel": channel
+            "attribute": attribute
         }
 
-    def set_light_intensity(self, channel, intensity):
+    def set_light_intensity(self, attribute, intensity):
         """
         Control LED panel on photobioreactor.
-        :param channel: Given channel (0 for red light, 1 for blue light)
+        :param attribute: Given attribute (0 for red light, 1 for blue light)
         :param intensity: Desired intensity
         :return: True if was successful, False otherwise.
         """
-        msg = self.device.send("set-actinic-light-intensity", channel, intensity)
+        msg = self.device.send("set-actinic-light-intensity", attribute, intensity)
         return {'success': not msg.isError()}
 
     def set_ratio_light_intensity(self, intensity, ratio=0.5):
@@ -185,14 +185,14 @@ class PBR(JavaDevice):
         msg2 = self.device.send("set-actinic-light-intensity", 1, intensity * (1 - ratio))  # blue
         return not msg1.isError() and not msg2.isError()
 
-    def turn_on_light(self, channel=0, on=True):
+    def turn_on_light(self, attribute=0, on=True):
         """
         Turn on/off photobioreactor LED panel.
-        :param channel: Given channel
+        :param attribute: Given attribute
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
         """
-        msg = self.device.send("set-actinic-light-state", channel, on)
+        msg = self.device.send("set-actinic-light-state", attribute, on)
         return {'success': not msg.isError()}
 
     def get_pwm_settings(self):
@@ -252,28 +252,28 @@ class PBR(JavaDevice):
         msg = self.device.send("set-tr-state", on)
         return {'success': not msg.isError()}
 
-    def measure_ft(self, channel=0):
+    def measure_ft(self, attribute=0):
         """
         Measure steady-state terminal fluorescence.
-        :param channel: 0 -> blue (455 nm) measuring LEDs, 1 -> red (627 nm) measuring LEDs
+        :param attribute: 0 -> blue (455 nm) measuring LEDs, 1 -> red (627 nm) measuring LEDs
         :return: fluorescence value in arbitrary units
         """
-        msg = self.device.send("measure-ft", channel)
+        msg = self.device.send("measure-ft", attribute)
         if msg.isError():
             raise Exception(msg.getError())
 
         return {
             "ft_flash": msg.getIntParam(0),
             "ft_background": msg.getIntParam(1),
-            "channel": channel
+            "attribute": attribute
         }
 
-    def measure_qy(self, channel=0):
+    def measure_qy(self, attribute=0):
         """ Measure steady-state terminal and maximal fluorescence and calculate quantum yield
         !This measure NOT to be included with measure_all
 
         Arguments:
-            channel {int} -- measuring light channel
+            attribute {int} -- measuring light attribute
         Returns:
             qy {real} -- quantum yield calculated as (fm-ft)/fm
             ft-flash {int} -- steady-state terminal fluorescence
@@ -282,7 +282,7 @@ class PBR(JavaDevice):
             fm-background {int} -- maximal fluorescence background signal
             sp-delay-cycles {int} -- ?number of cycles before reaching stable signal?
         """
-        msg = self.device.send("measure-qy", channel)
+        msg = self.device.send("measure-qy", attribute)
         if msg.isError():
             raise Exception(msg.getError())
 
@@ -295,7 +295,7 @@ class PBR(JavaDevice):
             "fm-flash": msg.getIntParam(2),
             "fm-background": msg.getIntParam(3),
             "delay-cycles": msg.getIntParam(4),
-            "channel": channel
+            "attribute": attribute
         }
 
     def get_co2(self, raw=True, repeats=5):
@@ -314,7 +314,7 @@ class PBR(JavaDevice):
     def measure_all(self, pump_id=5):
         """
         Measures all basic measurable values.
-        :param ft_channel: channel for ft_measure
+        :param ft_attribute: attribute for ft_measure
         :param pump_id: id of particular pump
         :return: dictionary of all measured values
         """
@@ -381,10 +381,10 @@ class PBR(JavaDevice):
 
         return measure_all_dictionary
 
-    def measure_AUX(self, channel):
+    def measure_AUX(self, attribute):
         """
         Values of AUX auxiliary input voltage.
-        :param channel: ???
+        :param attribute: ???
         :return: ???
         """
         raise NotImplementedError("The method not implemented")

@@ -46,11 +46,11 @@ class Command:
 
     def save_data_to_db(self):
         if self.is_valid:
-            channel = self.response.pop("channel", None)
+            channel = self.response.pop("attribute", None)
             note = self.response.pop("outlier", None)
             for variable in self.response:
                 value = Value(time=self.time_executed, value=self.response[variable], dev_id=self.device_id,
-                              var_id=variable, channel=channel, note=note)
+                              var_id=variable, attribute=channel, note=note)
                 app_manager.dataManager.save_value(value)
         else:
             event = DBevent(dev_id=self.device_id, event_type=2, time=self.time_executed, args=str(self.args),

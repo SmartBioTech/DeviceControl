@@ -95,7 +95,7 @@ class GMS(JavaDevice):
             "valve_flow_current": msg.getDoubleParam(0),
             "valve_flow_set": msg.getDoubleParam(1),
             "warning": int(msg.getBoolParam(2)),
-            "channel": valve
+            "attribute": valve
         }
 
     def set_valve_flow(self, valve, value):
@@ -123,7 +123,7 @@ class GMS(JavaDevice):
             "valve_max_flow": msg.getDoubleParam(0),
             "valve_gas_type": msg.getIntParam(1),
             "user_gas_type": msg.getIntParam(2),
-            "channel": valve
+            "attribute": valve
         }
 
     def measure_all(self):

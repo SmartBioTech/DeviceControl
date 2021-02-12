@@ -65,10 +65,10 @@ class PBR(Connector):
         """
         return {'pH': 7}
 
-    def measure_od(self, channel=0, repeats=5):
+    def measure_od(self, attribute=0, repeats=5):
         """
         Measure current Optical Density (OD, dimensionless).
-        :param channel: which channel should be measured
+        :param attribute: which attribute should be measured
         :param repeats: the number of measurement repeats
         :return: Measured OD
         """
@@ -81,7 +81,7 @@ class PBR(Connector):
             if random() > 0.01:
                 return {'od': self._last_value + sign * step}
         self._last_value += sign * step
-        return {'od': self._last_value, "channel": channel}
+        return {'od': self._last_value, "attribute": attribute}
 
     def get_pump_params(self, pump):
         """
@@ -112,21 +112,21 @@ class PBR(Connector):
         self._increasing = not bool(on)
         return {'success': True}
 
-    def get_light_intensity(self, channel):
+    def get_light_intensity(self, attribute):
         """
         Checks for current (max?) light intensity.
         Items: "intensity": current light intensity (float) in μE,
                "max": maximal intensity (float) in μE,
                "on": True if light is turned on (bool)
-        :param channel: Given channel ID
+        :param attribute: Given attribute ID
         :return: The current settings structured in a dictionary.
         """
-        return {"light_intensity": 500, "light_max": 1000, "light_on": 1, "channel": channel}
+        return {"light_intensity": 500, "light_max": 1000, "light_on": 1, "attribute": attribute}
 
-    def set_light_intensity(self, channel, intensity):
+    def set_light_intensity(self, attribute, intensity):
         """
         Control LED panel on photobioreactor.
-        :param channel: Given channel (0 for red light, 1 for blue light)
+        :param attribute: Given attribute (0 for red light, 1 for blue light)
         :param intensity: Desired intensity
         :return: True if was successful, False otherwise.
         """
@@ -141,10 +141,10 @@ class PBR(Connector):
         """
         return True
 
-    def turn_on_light(self, channel, on):
+    def turn_on_light(self, attribute, on):
         """
         Turn on/off LED panel on photobioreactor.
-        :param channel: Given channel
+        :param attribute: Given attribute
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
         """
@@ -164,7 +164,7 @@ class PBR(Connector):
     def set_pwm(self, value, on):
         """
         Set stirring settings.
-        Channel: 0 red and 1 blue according to PBR configuration.
+        attribute: 0 red and 1 blue according to PBR configuration.
         :param value: desired stirring pulse
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
@@ -204,13 +204,13 @@ class PBR(Connector):
         """
         return {'success': True}
 
-    def measure_ft(self, channel):
+    def measure_ft(self, attribute):
         """
         ???
-        :param channel: ???
+        :param attribute: ???
         :return: ???
         """
-        return {'ft_flash': 2816, 'ft_background': 0, "channel": channel}
+        return {'ft_flash': 2816, 'ft_background': 0, "attribute": attribute}
 
     def get_co2(self, raw=True, repeats=5):
         """
@@ -221,10 +221,10 @@ class PBR(Connector):
         """
         return {'co2': 5}
 
-    def measure_all(self, ft_channel=5, pump_id=5):
+    def measure_all(self, ft_attribute=5, pump_id=5):
         """
         Measures all basic measurable values.
-        :param ft_channel: channel for ft_measure
+        :param ft_attribute: attribute for ft_measure
         :param pump_id: id of particular pump
         :return: dictionary of all measured values
         """
@@ -239,15 +239,15 @@ class PBR(Connector):
         result["pump"] = True, self.get_pump_params(pump_id)
         result["o2"] = True, self.get_o2()
         result["co2"] = False, "Cannot get co2"
-        result["ft_0"] = True, self.measure_ft(ft_channel)
-        result["ft_1"] = True, self.measure_ft(ft_channel)
+        result["ft_0"] = True, self.measure_ft(ft_attribute)
+        result["ft_1"] = True, self.measure_ft(ft_attribute)
 
         return result
 
-    def measure_AUX(self, channel):
+    def measure_AUX(self, attribute):
         """
         Values of AUX auxiliary input voltage.
-        :param channel: ???
+        :param attribute: ???
         :return: ???
         """
         return {'aux': 10}

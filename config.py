@@ -25,14 +25,14 @@ class Config:
 
 
 class TestingConfig(Config):
-    FLASK_DEBUG = True
+    DEBUG = True
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'mysql://TestUser:pass@localhost/device_control_test'.format(Config.DB_USERNAME,
                                                                                            Config.DB_PASSWORD)
 
 
 class DevelopmentConfig(Config):
-    FLASK_DEBUG = True
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@localhost/device_control_devel'.format(Config.DB_USERNAME,
                                                                                     Config.DB_PASSWORD)
 
