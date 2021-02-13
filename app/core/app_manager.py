@@ -28,7 +28,7 @@ class AppManager:
             validate_attributes(['device_id', 'device_class', 'device_type', 'address'], config, 'Connector')
             device = self.deviceManager.new_device(config)
             self.dataManager.save_device(device)
-        except (IdError, ModuleNotFoundError, AttributeError) as e:
+        except (IdError, ModuleNotFoundError, AttributeError, KeyError) as e:
             Log.error(e)
             return Response(False, None, e)
         return Response(device is not None, None, None)

@@ -11,11 +11,15 @@ class Connector(metaclass=Interface):
         self.setup = {}
         self.scheduler = WorkflowProvider().scheduler
 
+        self.config = config
         self.__dict__.update(config)
 
         self.is_alive = True
         self._is_queue_check_running = False
         self._queue = PriorityQueue()
+
+    def __eq__(self, other):
+        return self.config == other.config
 
     def validate_attributes(self, required, class_name):
         for att in required:
@@ -27,10 +31,10 @@ class Connector(metaclass=Interface):
         pass
 
     def __str__(self):
-        return "{} @ {}".format(self.device_id, self.address)
+        return "Connector({})".format(self.__dict__)
 
     def __repr__(self):
-        return "Connector({}, {})".format(self.device_id, self.address)
+        return str(self)
 
     @abstractmethod
     def disconnect(self) -> None:
@@ -111,3 +115,6 @@ class PriorityQueue:
 
     def has_items(self):
         return len(self._items) != 0
+
+    def __eq__(self, other):
+        return self._items == other._items

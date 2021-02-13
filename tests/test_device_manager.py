@@ -1,12 +1,10 @@
 import unittest
 from unittest import mock
 
-from app.models import Device, Value, Variable, VariableType, Experiment
 from app.src.device_manager import DeviceManager
 from app import create_app, db
-from app.src.utils.permanent_data import VARIABLES
-from app.src.utils.time import now
-from app.workspace.devices.PSI import java
+from app.src.utils.errors import IdError
+from app.workspace.devices.PSI import test
 
 
 class DataManagerTestCases(unittest.TestCase):
@@ -25,34 +23,42 @@ class DataManagerTestCases(unittest.TestCase):
 
     def test_load_class(self):
         # correct case
-        device_class = 'PSI'
+        device_class = 'test'
         device_type = 'PBR'
 
-        expected_class = java.PBR
+        expected_class = test.PBR
         result = self.DM.load_class(device_class, device_type)
         self.assertEqual(expected_class, result)
 
         # unknown class
         device_class = 'Magic'
         device_type = 'PBR'
-        self.assertRaises(AttributeError, self.DM.load_class, device_class, device_type)
+        self.assertRaises(KeyError, self.DM.load_class, device_class, device_type)
 
         # unknown type
-        device_class = 'PBR'
+        device_class = 'PSI'
         device_type = 'Magic'
-        self.assertRaises(AttributeError, self.DM.load_class, device_class, device_type)
+        self.assertRaises(KeyError, self.DM.load_class, device_class, device_type)
 
     def test_new_device(self):
-        self.fail()
+        config = {"device_class": 'PSI', "device_type": 'PBR', "device_id": 'my_id_23'}
+        correct_device = test.PBR(config)
+        self.DM.load_class = mock.Mock(return_value=test.PBR)
+        device = self.DM.new_device(config)
+        self.assertEqual(correct_device, device)
 
-    def test_remove_device(self):
-        self.fail()
-
-    def test_get_device(self):
-        self.fail()
-
-    def test_end(self):
-        self.fail()
-
-    def test_ping(self):
-        self.fail()
+        self.assertRaises(IdError, self.DM.new_device, config)
+        # correct_device.scheduler.join(timeout=1)
+        # correct_device.end()
+    #
+    # def test_remove_device(self):
+    #     self.fail()
+    #
+    # def test_get_device(self):
+    #     self.fail()
+    #
+    # def test_end(self):
+    #     self.fail()
+    #
+    # def test_ping(self):
+    #     self.fail()
