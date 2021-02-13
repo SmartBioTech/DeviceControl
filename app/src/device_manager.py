@@ -42,4 +42,4 @@ class DeviceManager:
 
     @staticmethod
     def load_class(device_class: str, device_type: str) -> Connector.__class__:
-        return classes.get(device_class, {}).get(device_type)
+        return classes.get(device_class).get(device_type)
