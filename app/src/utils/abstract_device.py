@@ -93,6 +93,7 @@ class Connector(metaclass=Interface):
         return command
 
     def end(self):
+        self.scheduler.is_active = False
         self.is_alive = False
         self.disconnect()
 

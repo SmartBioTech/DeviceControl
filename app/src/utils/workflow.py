@@ -42,7 +42,7 @@ class Scheduler(Thread):
 
     def run(self):
         while self.is_active:
-            self.has_jobs.wait()
+            self.has_jobs.wait(timeout=5)
             while self.jobs:
                 self.execute(self.jobs.pop(0))
             self.has_jobs.clear()
@@ -50,6 +50,6 @@ class Scheduler(Thread):
 
 class WorkflowProvider:
     def __init__(self):
-
         self.scheduler = Scheduler()
         self.scheduler.start()
+

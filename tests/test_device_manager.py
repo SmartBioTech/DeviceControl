@@ -17,6 +17,7 @@ class DataManagerTestCases(unittest.TestCase):
         self.DM = DeviceManager()
 
     def tearDown(self):
+        self.DM.end()
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
@@ -48,17 +49,37 @@ class DataManagerTestCases(unittest.TestCase):
         self.assertEqual(correct_device, device)
 
         self.assertRaises(IdError, self.DM.new_device, config)
-        # correct_device.scheduler.join(timeout=1)
-        # correct_device.end()
-    #
-    # def test_remove_device(self):
-    #     self.fail()
-    #
-    # def test_get_device(self):
-    #     self.fail()
-    #
-    # def test_end(self):
-    #     self.fail()
-    #
-    # def test_ping(self):
-    #     self.fail()
+        correct_device.end()
+
+    def test_remove_device(self):
+        config = {"device_class": 'PSI', "device_type": 'PBR', "device_id": 'my_id_23'}
+        device = test.PBR(config)
+        self.DM._devices[config["device_id"]] = device
+        self.DM.remove_device(config["device_id"])
+        self.assertEqual(self.DM._devices, dict())
+
+    def test_get_device(self):
+        config = {"device_class": 'PSI', "device_type": 'PBR', "device_id": 'my_id_23'}
+        device = test.PBR(config)
+        self.DM._devices[config["device_id"]] = device
+        self.assertEqual(self.DM.get_device(config["device_id"]), device)
+
+        self.assertRaises(IdError, self.DM.get_device, '23')
+
+    def test_end(self):
+        config = {"device_class": 'PSI', "device_type": 'PBR', "device_id": 'my_id_23'}
+        device = test.PBR(config)
+        self.DM._devices[config["device_id"]] = device
+
+        self.DM.end()
+        self.assertEqual(self.DM._devices, dict())
+
+    def test_ping(self):
+        config = {"device_class": 'PSI', "device_type": 'PBR', "device_id": 'my_id_23'}
+        device = test.PBR(config)
+        self.DM._devices[config["device_id"]] = device
+
+        result = {config["device_id"]: True}
+
+        self.assertEqual(self.DM.ping(), result)
+        device.end()
