@@ -47,7 +47,7 @@ class AppManagerTestCases(unittest.TestCase):
 
         # exception in progress
         e = IdError('Connector with given ID: %s was not found' % device_id)
-        app_manager.deviceManager.remove_device = mock.Mock(side_effect=AttributeError)
+        app_manager.deviceManager.remove_device = mock.Mock(side_effect=KeyError)
         result = Response(False, None, e)
         self.assertEqual(app_manager.end_device(device_id), result)
 
@@ -96,9 +96,9 @@ class AppManagerTestCases(unittest.TestCase):
         self.assertEqual(app_manager.end_task(task_id), result)
 
         # exception in progress
-        e = IdError("Kill unsuccessful.")
+        e = IdError("Task with requested ID: 23 was not found")
         result = Response(False, None, e)
-        app_manager.taskManager.remove_task = mock.Mock(side_effect=e)
+        app_manager.taskManager.remove_task = mock.Mock(side_effect=KeyError)
         self.assertEqual(app_manager.end_task(task_id), result)
 
     def test_ping(self):

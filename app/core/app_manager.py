@@ -41,7 +41,7 @@ class AppManager:
             self.dataManager.update_experiment(device_id)
 
             return Response(True, None, None)
-        except AttributeError:
+        except KeyError:
             exc = IdError('Connector with given ID: %s was not found' % device_id)
             Log.error(exc)
             return Response(False, None, exc)
@@ -79,9 +79,10 @@ class AppManager:
         try:
             self.taskManager.remove_task(task_id)
             return Response(True, None, None)
-        except IdError as e:
-            Log.error(e)
-            return Response(False, None, e)
+        except KeyError:
+            exc = IdError('Task with requested ID: %s was not found' % task_id)
+            Log.error(exc)
+            return Response(False, None, exc)
 
     def ping(self) -> Response:
         return Response(True, {

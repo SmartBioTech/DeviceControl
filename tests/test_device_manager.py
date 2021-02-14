@@ -7,7 +7,7 @@ from app.src.utils.errors import IdError
 from app.workspace.devices.PSI import test
 
 
-class DataManagerTestCases(unittest.TestCase):
+class DeviceManagerTestCases(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
@@ -57,6 +57,8 @@ class DataManagerTestCases(unittest.TestCase):
         self.DM._devices[config["device_id"]] = device
         self.DM.remove_device(config["device_id"])
         self.assertEqual(self.DM._devices, dict())
+
+        self.assertRaises(KeyError, self.DM.remove_device, '23')
 
     def test_get_device(self):
         config = {"device_class": 'PSI', "device_type": 'PBR', "device_id": 'my_id_23'}
