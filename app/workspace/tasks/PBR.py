@@ -24,7 +24,7 @@ class PBRMeasureAll(BaseTask):
         self.average_od = self.measure_initial_od_average()
         self.od = Observable()
 
-        super(PBRMeasureAll, self).__init__()
+        super(PBRMeasureAll, self).__init__(config)
 
         self.commands_to_execute: Dict[str, dict] = {
             "pwm_settings": {
@@ -209,7 +209,6 @@ class ePBRMeasureAll(PBRMeasureAll):
 
 
 class PBRGeneralPump(BaseTask, Observer):
-
     def __init__(self, config):
         self.__dict__.update(config)
 
@@ -225,7 +224,7 @@ class PBRGeneralPump(BaseTask, Observer):
 
         self.od_task.od.observe(self)
 
-        super(PBRGeneralPump, self).__init__()
+        super(PBRGeneralPump, self).__init__(config)
 
     def get_pump_command(self, state: bool) -> Command:
         if state:

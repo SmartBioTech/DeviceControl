@@ -13,7 +13,7 @@ class MeasureAll(BaseTask):
         self.validate_attributes(required, type(self).__name__)
 
         self.device = app_manager.deviceManager.get_device(self.device_id)
-        super(MeasureAll, self).__init__()
+        super(MeasureAll, self).__init__(config)
 
     def start(self):
         t = Thread(target=self._run)

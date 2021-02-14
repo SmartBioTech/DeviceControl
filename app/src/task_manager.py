@@ -21,11 +21,8 @@ class TaskManager:
             raise IdError("Task with requested ID {} already exists".format(task_id))
 
     def remove_task(self, task_id):
-        if task_id in self.tasks:
-            task = self.tasks.pop(task_id)
-            task.end()
-        else:
-            raise IdError("Task with requested ID {} does not exist".format(task_id))
+        task = self.tasks.pop(task_id)
+        task.end()
 
     def get_task(self, task_id):
         task = self.tasks.get(task_id)
@@ -46,4 +43,4 @@ class TaskManager:
 
     @staticmethod
     def load_class(task_class: str, task_type: str) -> BaseTask.__class__:
-        return classes.get(task_class, {}).get(task_type)
+        return classes[task_class][task_type]

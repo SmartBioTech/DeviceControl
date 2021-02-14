@@ -13,7 +13,7 @@ class MeasureWeight(BaseTask):
         self.validate_attributes(required, type(self).__name__)
 
         self.device = app_manager.deviceManager.get_device(self.device_id)
-        super(MeasureWeight, self).__init__()
+        super(MeasureWeight, self).__init__(config)
 
     def start(self):
         t = Thread(target=self._run)

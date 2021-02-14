@@ -5,8 +5,12 @@ from .AbstractClass import Interface, abstractattribute
 
 class BaseTask(metaclass=Interface):
 
-    def __init__(self):
+    def __init__(self, config):
         self.is_active = True
+        self.config = config
+
+    def __eq__(self, other):
+        return self.config == other.config
 
     def validate_attributes(self, required, class_name):
         for att in required:
