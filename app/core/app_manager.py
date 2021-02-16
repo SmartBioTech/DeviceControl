@@ -56,8 +56,7 @@ class AppManager:
             source = config.get('source', 'external')
             priority = 1 if config.get('priority', False) else 2
 
-            from ..command import Command
-            cmd = Command(device_id, command_id, eval(args), source)
+            cmd = self.create_command(device_id, command_id, args, source)
             self.deviceManager.get_device(device_id).post_command(cmd, priority=priority)
             cmd.save_command_to_db()
             return Response(True, None, None)
@@ -117,6 +116,11 @@ class AppManager:
         except (IdError, AttributeError) as e:
             Log.error(e)
             return Response(False, None, e)
+
+    @staticmethod
+    def create_command(device_id, command_id, args, source):
+        from ..command import Command
+        return Command(device_id, command_id, eval(args), source)
 
     def end(self) -> Response:
         self.deviceManager.end()
