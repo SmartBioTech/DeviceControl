@@ -74,8 +74,17 @@ class DataManagerTestCases(unittest.TestCase):
         # new value
         value = Value(id=1, time=now(), value=23, dev_id='dev_id_23', var_id='od', attribute=1, note=None)
         self.DM.save_value(value)
-        result = Value.query.filter_by(dev_id='dev_id_23').first()
+        result = Value.query.filter_by(var_id='od').first()
         self.assertEqual(result, value)
+
+        # new value with non-existing variable
+        value = Value(id=2, time=now(), value=32, dev_id='dev_id_23', var_id='new_var', attribute=1, note=None)
+        self.DM.save_value(value)
+        result = Value.query.filter_by(var_id='new_var').first()
+        self.assertEqual(result, value)
+
+        # check variables
+        self.assertIn('new_var', set(self.DM.load_variables()))
 
     def test_save_variable(self):
         variable = "new_var"
