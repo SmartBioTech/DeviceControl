@@ -22,13 +22,7 @@ class Command:
         self._saved = False
 
     def __str__(self):
-        return "SOURCE:{} DEVICE: {} ID: {},  IS VALID: {}  RESPONSE: {}".format(
-            self.source,
-            self.device_id,
-            self.command_id,
-            self.is_valid,
-            self.response
-        )
+        return "Command: {}".format(self.to_dict())
 
     def await_cmd(self, timeout=None) -> bool:
         return self._resolved.wait(timeout=timeout)

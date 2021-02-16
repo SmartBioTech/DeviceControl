@@ -1,10 +1,10 @@
 import unittest
-from unittest import mock
 
 from sqlalchemy import exc
 
 from app import create_app, db, app_manager
 from app.command import Command
+from app.models import Event
 
 
 class CommandTestCases(unittest.TestCase):
@@ -16,6 +16,7 @@ class CommandTestCases(unittest.TestCase):
 
         dev_config = {"device_class": 'test', "device_type": 'PBR', "device_id": '2', 'address': "home"}
         app_manager.register_device(dev_config)
+        app_manager.dataManager.store_permanent()
 
     def tearDown(self):
         app_manager.end_device('2')
@@ -24,7 +25,6 @@ class CommandTestCases(unittest.TestCase):
         self.app_context.pop()
 
     def test_save_command_to_db(self):
-        app_manager.dataManager.store_permanent()
         command = Command('2', '23', [1, 2, 3], 'me', is_awaited=False)
 
         self.assertRaises(exc.OperationalError, command.save_command_to_db)
@@ -36,5 +36,15 @@ class CommandTestCases(unittest.TestCase):
         self.assertTrue(command._saved)
 
     def test_save_data_to_db(self):
-        # command = Command('2', '23', [1, 2, 3], 'me', is_awaited=False)
-        self.fail()
+        command = Command('2', '23', [1, 2, 3], 'me', is_awaited=False)
+        command.resolve()
+        command.response = {'od': 0.4, 'outlier': False}
+
+        # invalid command = event
+        command.save_data_to_db()
+        self.assertIsNotNone(Event.query.filter_by(dev_id='2').first())
+
+        # valid command = value
+        command.is_valid = True
+        command.save_data_to_db()
+        self.assertIsNotNone(Event.query.filter_by(dev_id='2').first())
