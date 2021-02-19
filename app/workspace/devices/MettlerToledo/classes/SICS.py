@@ -15,15 +15,23 @@ class SICS(Connector):
         """
         Get actual measured weight in set units.
 
-        :return: Current weight value.
+        WARNING: can raise Exception("Unknown unit %s")
+
+        :return: Current weight in grams.
         """
-        return {'weight': self.connection.get_weight()}
+        units = {"kg": 1000, "lb": 453.5924, "g": 1, "oz": 28.34952, "t": 1000000}
+        result = self.connection.get_weight()
+
+        try:
+            return {'weight': result['value'] * units[result['unit']], 'channel': int(result['stable'])}
+        except KeyError:
+            raise Exception("Unknown unit {}".format(result['unit']))
 
     def get_info(self):
         """
-        Get sensor humidity (relative humidity in %).
+        Get the balance available info.
 
-        :return: Current humidity value.
+        :return: Model, SN, SW, capacity and unit.
         """
         return self.connection.get_info()
 

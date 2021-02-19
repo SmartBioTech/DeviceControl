@@ -9,7 +9,7 @@ class Connection:
 
     def get_weight(self):
         weight = self.dev.get_weight()
-        return {'value': weight[0], 'unit': weight[1], 'stable': True if weight[2] is 'S' else False}
+        return {'value': weight[0], 'unit': weight[1], 'stable': True if weight[2] == 'S' else False}
 
     def get_info(self):
         data = self.dev.get_balance_data()
