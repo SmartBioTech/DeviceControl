@@ -16,7 +16,7 @@ class U1W_TVSL(Connector):
     def get_temperature(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius).
-        :param unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
+        :param temp_unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
         :return: Current temperature value in selected unit.
         """
         sensor, codes = self.connection.read_sensor()
@@ -25,7 +25,7 @@ class U1W_TVSL(Connector):
 
         temp = float(sensor.json()['temp'])
 
-        if temp_unit is "F":
+        if temp_unit == "F":
             temp = temp*9/5+32
 
         return {'temp': temp}
@@ -55,7 +55,7 @@ class U1W_TVSL(Connector):
     def measure_all(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius), humidity in % and illuminance in lux.
-        :param unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
+        :param temp_unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
         :return: Current temperature and humidity values in selected unit.
         """
         sensor, codes = self.connection.read_sensor()
@@ -64,7 +64,7 @@ class U1W_TVSL(Connector):
 
         temp = float(sensor.json()['temp'])
 
-        if temp_unit is "F":
+        if temp_unit == "F":
             temp = temp*9/5+32
 
         return True, {
