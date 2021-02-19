@@ -1,9 +1,0 @@
-POST http://localhost:5000/device
-Content-Type: application/json
-
-{"device_id": "001",
-  "device_class": "test_PBR",
-  "address": "home"
-}
-
-###
