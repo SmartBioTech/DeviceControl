@@ -1,6 +1,6 @@
 from math import gcd
 from functools import reduce
-from threading import Thread
+from threading import Thread, Event
 from time import sleep
 
 from .. import Command, BaseTask
@@ -57,3 +57,45 @@ class MeasureAllDesync(BaseTask):
 
     def end(self):
         self.active = False
+
+
+class PeriodicRegime(BaseTask):
+    def __init__(self, config):
+        self.intervals = []
+        self.commands = []
+        self.device_id: str = ""
+
+        self.__dict__.update(config)
+        super(PeriodicRegime, self).__init__(config)
+
+        self.device = app_manager.deviceManager.get_device(self.device_id)
+        self.waiting = Event()
+
+    def start(self):
+        t = Thread(target=self._run)
+        t.start()
+
+    def _run(self):
+        phase = 0
+        while not self.waiting.is_set():
+            self.execute_commands(self.commands[phase])
+            self.waiting.wait(self.intervals[phase]*3600)  # to get seconds
+            phase = (phase + 1) % len(self.intervals)
+
+    def execute_commands(self, commands):
+        executed_commands = []
+        for item in commands:
+            command = Command(self.device_id,
+                              item.get("id"),
+                              item.get("args", []),
+                              self.task_id,
+                              is_awaited=True)
+            executed_commands.append(command)
+            self.device.post_command(command, 1)
+
+        for command in executed_commands:
+            command.await_cmd()
+            command.save_data_to_db()
+
+    def end(self):
+        self.waiting.set()

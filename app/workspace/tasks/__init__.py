@@ -21,5 +21,6 @@ classes = {
     "General": {
         "PBR_general_pump": PBR.PBRGeneralPump,
         "measure_all_desync": general.MeasureAllDesync,
+        "periodic_regime": general.PeriodicRegime
     }
 }

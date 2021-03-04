@@ -1,5 +1,5 @@
 from collections import deque
-from threading import Thread
+from threading import Thread, Event
 from time import sleep
 from typing import Dict
 import numpy as np
