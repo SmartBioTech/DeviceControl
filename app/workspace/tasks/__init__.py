@@ -1,5 +1,5 @@
 from .. import Command, BaseTask, Observable, Observer
-from . import PBR, GAS, GMS, TH_IB2, U1W_TVSL, SICS
+from . import PBR, GAS, GMS, TH_IB2, U1W_TVSL, SICS, general
 
 classes = {
     "PSI": {
@@ -20,6 +20,6 @@ classes = {
 
     "General": {
         "PBR_general_pump": PBR.PBRGeneralPump,
-
+        "measure_all_desync": general.MeasureAllDesync,
     }
 }
