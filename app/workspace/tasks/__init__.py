@@ -1,13 +1,12 @@
 from .. import Command, BaseTask, Observable, Observer
-from . import PBR, GAS, GMS, TH_IB2, U1W_TVSL, SICS
+from . import PBR, GAS, GMS, TH_IB2, U1W_TVSL, SICS, general
 
 classes = {
     "PSI": {
         "PBR_measure_all": PBR.PBRMeasureAll,
         "GAS_measure_all": GAS.GASMeasureAll,
         "PBR_pump": PBR.PBRGeneralPump,
-        "GMS_measure_all": GMS.GMSMeasureAll,
-        "PBR_measure_all_desync": PBR.PBRMeasureAllDesync,
+        "GMS_measure_all": GMS.GMSMeasureAll
     },
 
     "MettlerToledo": {
@@ -21,6 +20,6 @@ classes = {
 
     "General": {
         "PBR_general_pump": PBR.PBRGeneralPump,
-
+        "measure_all_desync": general.MeasureAllDesync,
     }
 }

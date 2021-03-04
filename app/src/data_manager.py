@@ -81,7 +81,7 @@ class DataManager:
                 del row['_sa_instance_state']
             result[log_id] = row
 
-        if device_id is not None:
+        if device_id is not None and len(result) != 0:
             self.last_seen_id[data_type][device_id] = max(list(map(int, result.keys())))
 
         return result
