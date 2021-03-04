@@ -1,8 +1,0 @@
-POST http://192.168.17.51:5000/end
-Content-Type: application/json
-
-{
-  "type": "all"
-}
-
-###
