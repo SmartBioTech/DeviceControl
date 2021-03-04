@@ -62,9 +62,8 @@ class MeasureAllDesync(BaseTask):
 class PeriodicRegime(BaseTask):
     def __init__(self, config):
         self.intervals = []
-        self.lights = []
+        self.commands = []
         self.device_id: str = ""
-        self.od_task_id: str = ""
 
         self.__dict__.update(config)
         super(PeriodicRegime, self).__init__(config)
@@ -79,20 +78,24 @@ class PeriodicRegime(BaseTask):
     def _run(self):
         phase = 0
         while not self.waiting.is_set():
-            self.change_light_intensity(self.lights[phase])
+            self.execute_commands(self.commands[phase])
             self.waiting.wait(self.intervals[phase]*3600)  # to get seconds
             phase = (phase + 1) % len(self.intervals)
 
-    def change_light_intensity(self, intensity: bool):
-        for try_n in range(5):
-            command = Command(self.device_id, "10", [0, intensity], self.task_id)
+    def execute_commands(self, commands):
+        executed_commands = []
+        for item in commands:
+            command = Command(self.device_id,
+                              item.get("id"),
+                              item.get("args", []),
+                              self.task_id,
+                              is_awaited=True)
+            executed_commands.append(command)
             self.device.post_command(command, 1)
-            command.await_cmd()
 
-            if isinstance(command.response['success'], bool) and command.response['success']:
-                return
-        raise ConnectionError
+        for command in executed_commands:
+            command.await_cmd()
+            command.save_data_to_db()
 
     def end(self):
         self.waiting.set()
-

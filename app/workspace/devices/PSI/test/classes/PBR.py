@@ -122,7 +122,7 @@ class PBR(Connector):
         :param attribute: Given attribute ID
         :return: The current settings structured in a dictionary.
         """
-        return {"light_intensity": self.light, "light_max": 1000, "light_on": True}
+        return {"light_intensity": self.light, "light_max": 1000, "light_on": True, "attribute": attribute}
 
     def set_light_intensity(self, attribute, intensity):
         """
@@ -279,4 +279,4 @@ class PBR(Connector):
         return True
 
     def disconnect(self) -> None:
-        print("Test PBR {} on {} is disconnecting".format(self.device_id, self.address))
+        pass

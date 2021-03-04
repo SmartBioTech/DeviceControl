@@ -2,7 +2,6 @@ import unittest
 import time
 from datetime import datetime
 
-
 from app import create_app, db, app_manager
 
 
@@ -48,17 +47,17 @@ class IntegrationTestCases(unittest.TestCase):
         # settings for periodical measurement task
         measure_all_task_id = 'task-measure-PBR-test-01'
         measure_all_task = {
-                            'task_id': measure_all_task_id,
-                            'task_class': 'PSI',
-                            'task_type': 'PBR_measure_all',
-                            'device_id': PBR_id,
-                            'sleep_period': 0.01,
-                            'max_outliers': 6,
-                            'pump_id': 5,
-                            'lower_tol': 5,
-                            'upper_tol': 5,
-                            'od_attribute': 1
-                           }
+            'task_id': measure_all_task_id,
+            'task_class': 'PSI',
+            'task_type': 'PBR_measure_all',
+            'device_id': PBR_id,
+            'sleep_period': 0.01,
+            'max_outliers': 6,
+            'pump_id': 5,
+            'lower_tol': 5,
+            'upper_tol': 5,
+            'od_attribute': 1
+        }
 
         response = self.client.post('http://localhost:5000/task', json=measure_all_task)
         self.assertTrue(response.json["success"])
@@ -70,17 +69,17 @@ class IntegrationTestCases(unittest.TestCase):
         # settings for turbidostat task
         pump_task_id = 'task-turbidostat-PBR-test-01'
         turbidostat_task = {
-                            'task_id': pump_task_id,
-                            'task_class': 'PSI',
-                            'task_type': 'PBR_pump',
-                            'device_id': PBR_id,
-                            'min_od': 0.4,
-                            'max_od': 0.6,
-                            'pump_id': 5,
-                            'measure_all_task_id': measure_all_task_id,
-                            'pump_on_command': {'command_id': '8', 'arguments': '[5, True]'},
-                            'pump_off_command': {'command_id': '8', 'arguments': '[5, False]'}
-                           }
+            'task_id': pump_task_id,
+            'task_class': 'PSI',
+            'task_type': 'PBR_pump',
+            'device_id': PBR_id,
+            'min_od': 0.4,
+            'max_od': 0.6,
+            'pump_id': 5,
+            'measure_all_task_id': measure_all_task_id,
+            'pump_on_command': {'command_id': '8', 'arguments': '[5, True]'},
+            'pump_off_command': {'command_id': '8', 'arguments': '[5, False]'}
+        }
 
         response = self.client.post('http://localhost:5000/task', json=turbidostat_task)
         self.assertTrue(response.json["success"])
@@ -194,7 +193,8 @@ class IntegrationTestCases(unittest.TestCase):
         response = self.client.post('http://localhost:5000/end', json={'type': 'task', 'target_id': pump_task_id_2})
         self.assertTrue(response.json["success"])
 
-        response = self.client.post('http://localhost:5000/end', json={'type': 'task', 'target_id': measure_all_task_id_2})
+        response = self.client.post('http://localhost:5000/end',
+                                    json={'type': 'task', 'target_id': measure_all_task_id_2})
         self.assertTrue(response.json["success"])
 
         response = self.client.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id_2})
@@ -207,7 +207,8 @@ class IntegrationTestCases(unittest.TestCase):
         response = self.client.post('http://localhost:5000/end', json={'type': 'task', 'target_id': pump_task_id})
         self.assertTrue(response.json["success"])
 
-        response = self.client.post('http://localhost:5000/end', json={'type': 'task', 'target_id': measure_all_task_id})
+        response = self.client.post('http://localhost:5000/end',
+                                    json={'type': 'task', 'target_id': measure_all_task_id})
         self.assertTrue(response.json["success"])
 
         response = self.client.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id})
@@ -269,7 +270,7 @@ class IntegrationTestCases(unittest.TestCase):
 
         self.assertEqual(o2_count, 1)
         self.assertEqual(pH_count, 2)
-        self.assertTrue(4 < od_count <= 6)
+        self.assertTrue(4 <= od_count <= 6)
 
         ############################################################################
         ########################### end task and device ############################
@@ -277,6 +278,105 @@ class IntegrationTestCases(unittest.TestCase):
 
         response = self.client.post('http://localhost:5000/end',
                                     json={'type': 'task', 'target_id': measure_all_task_id})
+        self.assertTrue(response.json["success"])
+
+        response = self.client.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id})
+        self.assertTrue(response.json["success"])
+
+    def test_regime(self):
+        ############################################################################
+        ############################# start a device ###############################
+        ############################################################################
+
+        PBR_id = 'PBR-PSI-test01'
+        test_PBR_device = {
+            'device_id': PBR_id,
+            'device_class': 'test',
+            'device_type': 'PBR',
+            'address': 'null',
+        }
+
+        response = self.client.post('http://localhost:5000/device', json=test_PBR_device)
+        self.assertTrue(response.json["success"])
+
+        ############################################################################
+        ########################## start measure task ##############################
+        ############################################################################
+
+        # settings for periodical measurement task
+        measure_all_task_id = 'task-measure-PBR-test-01'
+        measure_all_task = {
+            'task_id': measure_all_task_id,
+            'task_class': 'PSI',
+            'task_type': 'PBR_measure_all',
+            'device_id': PBR_id,
+            'sleep_period': 1,
+            'max_outliers': 6,
+            'pump_id': 5,
+            'lower_tol': 5,
+            'upper_tol': 5,
+            'od_attribute': 1
+        }
+
+        response = self.client.post('http://localhost:5000/task', json=measure_all_task)
+        self.assertTrue(response.json["success"])
+
+        ############################################################################
+        ########################## start regime tasks ##############################
+        ############################################################################
+
+        light_regime_task_id = '001DayNightRegime'
+        light_regime_task = {
+            'task_id': light_regime_task_id,
+            'task_class': 'General',
+            'task_type': 'periodic_regime',
+            'device_id': PBR_id,
+            'intervals': [8 / 3600, 16 / 3600],  # to use seconds instead of hours
+            'commands': [[{'id': '10', 'args': [0, 20]}, {'id': '10', 'args': [1, 20]}],  # night
+                         [{'id': '10', 'args': [0, 200]}, {'id': '10', 'args': [1, 200]}]]  # day
+        }
+
+        response = self.client.post('http://localhost:5000/task', json=light_regime_task)
+        self.assertTrue(response.json["success"])
+
+        time.sleep(30)
+
+        ############################################################################
+        ####################### check for light changes ############################
+        ############################################################################
+
+        # ask for all values
+        response = self.client.get('http://localhost:5000/data?device_id={}&type=values'.format(PBR_id))
+        self.assertTrue(response.json["success"])
+        self.assertTrue(len(response.json["data"]) != 0)
+
+        data = response.json["data"]
+        light_data = list(filter(lambda item: item['var_id'] == 'light_intensity', data.values()))
+
+        middle = [light_data[len(light_data) // 2 - 1]['value'],
+                  light_data[len(light_data) // 2]['value'],
+                  light_data[len(light_data) // 2 + 1]['value']]
+
+        self.assertEqual(light_data[0]['value'], 20)
+        self.assertIn(200, middle)
+        self.assertEqual(light_data[-1]['value'], 20)
+
+        light_data_20 = len(list(filter(lambda item: item['value'] == 20, data.values()))) // 2
+        light_data_200 = len(list(filter(lambda item: item['value'] == 200, data.values()))) // 2
+
+        self.assertTrue(10 < light_data_20 < 20)
+        self.assertTrue(10 < light_data_200 < 20)
+
+        ############################################################################
+        ########################### end tasks and device ###########################
+        ############################################################################
+
+        response = self.client.post('http://localhost:5000/end',
+                                    json={'type': 'task', 'target_id': measure_all_task_id})
+        self.assertTrue(response.json["success"])
+
+        response = self.client.post('http://localhost:5000/end',
+                                    json={'type': 'task', 'target_id': light_regime_task_id})
         self.assertTrue(response.json["success"])
 
         response = self.client.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id})
