@@ -8,6 +8,17 @@ from ... import app_manager
 
 
 class MeasureAllDesync(BaseTask):
+    """
+    Asynchronous periodical measurement of chosen variables.
+
+    It is necessary to provide a dictionary, where for each time period particular variables are given
+      'frequency_to_commands': {time_period_1: {"variable_X": command_X, "variable_Y": command_Y, ...},
+                                time_period_2: {"variable_Z": command_Z, "variable_W": command_W, ...},
+                                ...}
+
+    Additional extra parameters:
+    'device_id': str - ID of target device
+    """
     def __init__(self, config):
         self.frequency_to_commands = {}
         self.device_id: str = ""
@@ -60,6 +71,19 @@ class MeasureAllDesync(BaseTask):
 
 
 class PeriodicRegime(BaseTask):
+    """
+    Periodically call specified commands to change a regime.
+
+    Fully customisable by two parameters:
+    1. intervals - specifies periods when next set of commands should be called
+        e.g. 'intervals': [8, 16],  # change regime after 8 hours and then after 16 hours
+    2. commands  - list of commands for each regime change which should be executed
+        e.g. 'commands': [[{'id': '10', 'args': [0, 20]}, {'id': '10', 'args': [1, 20]}],   # night
+                         [{'id': '10', 'args': [0, 200]}, {'id': '10', 'args': [1, 200]}]]  # day
+
+    Additional extra parameters:
+    'device_id': str - ID of target device
+    """
     def __init__(self, config):
         self.intervals = []
         self.commands = []

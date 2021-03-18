@@ -9,6 +9,20 @@ from ... import app_manager
 
 
 class PBRMeasureAll(BaseTask):
+    """
+    Measures all measurable values and saves them to database.
+
+    Automatically detects outliers for optical density.
+
+    Extra parameters:
+    'device_id': str - ID of target device,
+    'sleep_period': float - measurement period,
+    'max_outliers': int - maximum number of outliers on row,
+    'pump_id': int - control pump ID,
+    'lower_tol': int - lower outlier tolerance,
+    'upper_tol': int - upper outlier tolerance,
+    'od_attribute': int - OD channel to be used
+    """
     def __init__(self, config):
         self.__dict__.update(config)
 
@@ -188,6 +202,13 @@ class PBRMeasureAll(BaseTask):
 
 
 class ePBRMeasureAll(PBRMeasureAll):
+    """
+    Measures all measurable values and saves them to database.
+
+    Extra parameters:
+    'device_id': str - ID of target device,
+    'sleep_period': float - measurement period
+    """
     def __init__(self, config):
         super(ePBRMeasureAll, self).__init__(config)
         self.commands_to_execute: Dict[str, dict] = {
@@ -209,6 +230,19 @@ class ePBRMeasureAll(PBRMeasureAll):
 
 
 class PBRGeneralPump(BaseTask, Observer):
+    """
+    Turbidostat task based on optical density (OD) values.
+
+    Turns on/off (by specifying command for that) when OD reaches max_od/min_od value.
+
+    Extra parameters:
+    'min_od': int - lowed OD bound,
+    'max_od': int - upper OD bound,
+    'device_id': str - ID of target device,
+    'measure_all_task_id': str - associated measurement task,
+    'pump_on_command': dict- command to turn on pump,
+    'pump_off_command': dict - command to turn off pump
+    """
     def __init__(self, config):
         self.__dict__.update(config)
 

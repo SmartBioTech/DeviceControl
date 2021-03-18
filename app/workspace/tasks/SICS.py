@@ -6,6 +6,13 @@ from ... import app_manager
 
 
 class MeasureWeight(BaseTask):
+    """
+    Measures weight and saves it to database.
+
+    Extra parameters:
+    'device_id': str - ID of target device,
+    'sleep_period': float - measurement period
+    """
     def __init__(self, config):
         self.__dict__.update(config)
 
