@@ -212,8 +212,8 @@ class PBRGeneralPump(BaseTask, Observer):
     def __init__(self, config):
         self.__dict__.update(config)
 
-        required = ['min_od', 'max_od', 'pump_id', 'device_id',
-                    'measure_all_task_id', 'pump_on_command', 'pump_off_command']
+        required = ['min_od', 'max_od', 'device_id', 'measure_all_task_id',
+                    'pump_on_command', 'pump_off_command']
 
         self.validate_attributes(required, type(self).__name__)
 

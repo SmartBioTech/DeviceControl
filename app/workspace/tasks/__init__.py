@@ -5,7 +5,6 @@ classes = {
     "PSI": {
         "PBR_measure_all": PBR.PBRMeasureAll,
         "GAS_measure_all": GAS.GASMeasureAll,
-        "PBR_pump": PBR.PBRGeneralPump,
         "GMS_measure_all": GMS.GMSMeasureAll
     },
 

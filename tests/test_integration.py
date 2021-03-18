@@ -70,12 +70,11 @@ class IntegrationTestCases(unittest.TestCase):
         pump_task_id = 'task-turbidostat-PBR-test-01'
         turbidostat_task = {
             'task_id': pump_task_id,
-            'task_class': 'PSI',
-            'task_type': 'PBR_pump',
+            'task_class': 'General',
+            'task_type': 'PBR_general_pump',
             'device_id': PBR_id,
             'min_od': 0.4,
             'max_od': 0.6,
-            'pump_id': 5,
             'measure_all_task_id': measure_all_task_id,
             'pump_on_command': {'command_id': '8', 'arguments': '[5, True]'},
             'pump_off_command': {'command_id': '8', 'arguments': '[5, False]'}
