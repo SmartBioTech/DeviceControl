@@ -21,21 +21,37 @@ class GASMeasureAll(BaseTask):
         self.device = app_manager.deviceManager.get_device(self.device_id)
         super(GASMeasureAll, self).__init__(config)
 
+        self.commands_to_execute = {
+            "co2_air": {
+                "id": "7"
+            },
+            "flow": {
+                "id": "1"
+            },
+        }
+
     def start(self):
         t = Thread(target=self._run)
         t.start()
 
     def _run(self):
         while self.is_active:
-            command_msg = {
-                "device_id": self.device_id,
-                "command_id": "6",
-                "source": self.task_id
-            }
+            commands = []
 
-            cmd = Command(self.device_id, "6", [], self.task_id)
-            self.device.post_command(cmd)
-            sleep(int(self.sleep_period))
+            for _name, _command in self.commands_to_execute.items():
+                command = Command(self.device_id,
+                                  _command.get("id"),
+                                  _command.get("args", []),
+                                  self.task_id,
+                                  is_awaited=True)
+                commands.append((_name, command))
+                self.device.post_command(command, 1)
+
+            for name, command in commands:
+                command.await_cmd()
+                command.save_data_to_db()
+
+            sleep(self.sleep_period)
 
     def end(self):
         self.is_active = False

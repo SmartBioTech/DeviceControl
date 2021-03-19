@@ -128,11 +128,8 @@ class GMS(JavaDevice):
 
     def measure_all(self):
         """
-        Gives information about the valve
-        :param valve: ID of the valve (0 for CO2, 1 for Air)
-        :return: A dictionary with gas type and maximal allowed flow.
+        TBA
         """
-
         msg = self.device.send("get-valve-flow", 0)
         if msg.isError():
             raise Exception(msg.getError())

@@ -23,7 +23,7 @@ class GAS(Connector):
 
         :return: measured CO2 in air
         """
-        return 5.5
+        return {'co2-air': 5.5}
 
     def get_small_valves(self):
         """
@@ -35,7 +35,7 @@ class GAS(Connector):
 
         :return: byte representation of vents settings.
         """
-        return "11111111"
+        return {'small-valves': "11111111"}
 
     def set_small_valves(self, mode):
         """
@@ -53,7 +53,7 @@ class GAS(Connector):
         :param mode: chosen mode (0 to 3)
         :return: True if was successful, False otherwise.
         """
-        return True
+        return {'success': True}
 
     def get_flow(self, repeats):
         """
@@ -62,7 +62,7 @@ class GAS(Connector):
         :param repeats: the number of measurement repeats
         :return: The current flow in L/min.
         """
-        return 0.2
+        return {'flow': 0.2}
 
     def get_flow_target(self):
         """
@@ -70,7 +70,7 @@ class GAS(Connector):
 
         :return: The desired flow in L/min.
         """
-        return 0.5
+        return {'flow-target': 0.5}
 
     def set_flow_target(self, flow):
         """
@@ -79,7 +79,7 @@ class GAS(Connector):
         :param flow: flow in L/min we want to achieve (max given by get_flow_max)
         :return: True if was successful, False otherwise.
         """
-        return True
+        return {'success': True}
 
     def get_flow_max(self):
         """
@@ -87,7 +87,7 @@ class GAS(Connector):
 
         :return: The maximal flow in L/min
         """
-        return 1.0
+        return {'flow-max': 1.0}
 
     def get_pressure(self, repeats=5, wait=0):
         """
@@ -97,7 +97,7 @@ class GAS(Connector):
         :param wait: waiting time between individual repeats
         :return: Current pressure in ???
         """
-        return 10
+        return {'pressure': 10}
 
     def measure_all(self):
         """
