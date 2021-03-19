@@ -3,7 +3,7 @@ from ..abstract.java_device import JavaDevice
 
 class GMS(JavaDevice):
     def __init__(self, config: dict):
-        super(GMS, self).__init__(config, "custom/devices/PSI/java/lib/config/device_GMS.config")
+        super(GMS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GMS.config")
         self.interpreter = {
             "1": self.get_info,
             "9": self.measure_all,

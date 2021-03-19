@@ -4,7 +4,7 @@ from math import log10
 
 class PBR(JavaDevice):
     def __init__(self, config: dict):
-        super(PBR, self).__init__(config, "custom/devices/PSI/java/lib/config/device_PBR.config")
+        super(PBR, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_PBR.config")
         self.interpreter = {
             "1": self.get_temp_settings,
             "2": self.get_temp,

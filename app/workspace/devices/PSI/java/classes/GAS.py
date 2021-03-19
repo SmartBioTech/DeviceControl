@@ -3,7 +3,7 @@ from ..abstract.java_device import JavaDevice
 
 class GAS(JavaDevice):
     def __init__(self, config: dict):
-        super(GAS, self).__init__(config, "custom/devices/PSI/java/lib/config/device_GAS.config")
+        super(GAS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GAS.config")
         self.interpreter = {
             "1": self.get_flow,
             "2": self.get_flow_target,
