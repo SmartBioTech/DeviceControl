@@ -36,8 +36,6 @@ class JavaDevice(Connector):
         pass
 
     def get_command_reference(self, cmd_id):
-        print("JAVA SPECIFIC COMMAND REFERENCE GETTER CALLED")
-
         return super(JavaDevice, self).get_command_reference(cmd_id)
 
     def _execute_command(self, command: Command):
