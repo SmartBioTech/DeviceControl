@@ -14,9 +14,13 @@ class Controller:
         self.lock = Lock()
         self.commander_connector = None
         self.plugins_loaded = False
+        self.is_started = False
+
+    def start_controller(self):
         self.scheduler = Scheduler()
         self.scheduler.start()
         self.execute_command(self.start_jvm, [])
+        self.is_started = True
 
     def start_jvm(self):
         self.lock.acquire()

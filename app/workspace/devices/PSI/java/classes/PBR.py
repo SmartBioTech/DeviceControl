@@ -212,7 +212,7 @@ class PBR(JavaDevice):
             "pwm_pulse": msg.getIntParam(0),
             "pwm_min": msg.getIntParam(1),
             "pwm_max": msg.getIntParam(2),
-            "pwm_on": msg.getParam(3),
+            "pwm_on": int(msg.getParam(3)),
         }
 
     def set_pwm(self, value, on):

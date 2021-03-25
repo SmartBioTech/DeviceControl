@@ -3,17 +3,20 @@ import jpype
 import jpype.imports
 
 from .. import Command, Connector, Log
-from ..utils.jvm_controller import Controller
+from ..utils import controller
 
 
 class JavaDevice(Connector):
     def __init__(self, config, java_config_path):
         super(JavaDevice, self).__init__(config)
-        self.controller = Controller()
+        self.controller = controller
         self.device = self.connect(java_config_path)
         self.interpreter = {}
 
     def connect(self, java_config_path):
+        if not self.controller.is_started:
+            self.controller.start_controller()
+
         def _connect(path):
             if not jpype.isThreadAttachedToJVM():
                 jpype.attachThreadToJVM()
