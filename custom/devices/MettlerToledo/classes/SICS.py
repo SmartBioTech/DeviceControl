@@ -13,11 +13,11 @@ class SICS(Connector):
 
     def get_weight(self):
         """
-        Get actual measured weight in set units.
+        Get actual measured weight.
 
         WARNING: can raise Exception("Unknown unit %s")
 
-        :return: Current weight in grams.
+        :return: Current weight in grams and stability of measured weight (1 - stable, 0 - dynamic).
         """
         units = {"kg": 1000, "lb": 453.5924, "g": 1, "oz": 28.34952, "t": 1000000}
         result = self.connection.get_weight()
