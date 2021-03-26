@@ -2,7 +2,9 @@
 `sudo -E env "PATH=$PATH" ./setup.sh "<username>" "<password>"`
 
 ### to run the tool
-`./run.sh`
+`./run.sh -h '<host>' -p <port>`
+
+with given optional `host` (default localhost) and `port` (default 5000). 
 
 ### to run tests all tests (including integration tests):
 `tests/run_tests.sh`

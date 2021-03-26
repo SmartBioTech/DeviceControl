@@ -14,7 +14,21 @@ if [ -f "$FILE" ]; then
 
     export FLASK_APP=main.py
     flask db upgrade
-    flask run
+
+    HOST="localhost"
+    PORT=5000
+    while getopts ":h:p:" opt; do
+      case $opt in
+        h) HOST="$OPTARG"
+        ;;
+        p) PORT=$OPTARG
+        ;;
+        \?) echo "Invalid option -$OPTARG" >&2
+        ;;
+      esac
+    done
+
+    flask run --host=$HOST --port=$PORT
 else
     echo "$FILE file does not exist."
 fi
