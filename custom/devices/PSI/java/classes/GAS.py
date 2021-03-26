@@ -60,9 +60,9 @@ class GAS(JavaDevice):
 
     def get_flow(self, repeats=5):
         """
-        Actual flow being send from GAS to the PBR.
-        :param repeats: the number of measurement repeats
-        :return: The current flow in L/min.
+        Actual flow being channeled from GAS to PBR.
+        :param repeats: the number of measurements to be averaged
+        :return: Current flow in L/min.
         """
         msg = self.device.send("get-flow", repeats)
         if msg.isError():
