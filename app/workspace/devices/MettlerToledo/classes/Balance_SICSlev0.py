@@ -1,5 +1,5 @@
 from .. import Connector
-from ..libs.commMTSICS_level0 import Connection
+from ..libs.comm_MTSICS_level0 import Connection
 
 
 class Balance_SICSlev0(Connector):

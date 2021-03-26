@@ -16,7 +16,6 @@ class Connection:
         data = self.dev.get_balance_data()
         sw = self.dev.get_software_version()
         sn = self.dev.get_serial_number()
-        sw_id = self.dev.get_software_id()
         if len(data) > 3:
             info = {
                 'sics-levels': levels[0],
@@ -26,19 +25,17 @@ class Connection:
                 'unit': data[3],
                 'sn': sn,
                 'sw-version': sw[0],
-                'sw-type': sw[1],
-                'sw-id': sw_id
+                'sw-type': sw[1]
             }
         else:
             info = {
                 'sics-levels': levels[0],
                 'model': data[0],
                 'capacity': data[1],
-                'unit': data[2]
+                'unit': data[2],
                 'sn': sn,
                 'sw-version': sw[0],
-                'sw-type': sw[1],
-                'sw-id': sw_id
+                'sw-type': sw[1]
             }
         return info
 
