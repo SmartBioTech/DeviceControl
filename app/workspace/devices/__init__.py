@@ -25,6 +25,7 @@ classes = {
     },
 
     "MettlerToledo": {
-        "SICS": MettlerToledo.SICS
+        "SICS": MettlerToledo.SICS,
+        "BalSICS0": MettlerToledo.Balance_SICSlev0   
     }
 }
