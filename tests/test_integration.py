@@ -97,6 +97,16 @@ class IntegrationTestCases(unittest.TestCase):
                }
         response = self.client.post('http://localhost:5000/command', json=cmd)
         self.assertTrue(response.json["success"])
+        self.assertIsNone(response.json["data"])
+
+        cmd = {'device_id': PBR_id,
+               'command_id': '2',
+               'await': True
+               }
+
+        response = self.client.post('http://localhost:5000/command', json=cmd)
+        self.assertTrue(response.json["success"])
+        self.assertEqual(response.json["data"], {'temp': 25})
 
         ############################################################################
         ############################## get all values ##############################
