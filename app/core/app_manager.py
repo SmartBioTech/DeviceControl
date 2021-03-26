@@ -57,8 +57,7 @@ class AppManager:
             priority = 1 if config.get('priority', False) else 2
 
             cmd = self.create_command(device_id, command_id, args, source)
-            self.deviceManager.get_device(device_id).post_command(cmd, priority=priority)
-            cmd.save_command_to_db()
+            self.deviceManager.get_device(device_id).post_manual_command(cmd, priority=priority)
             return Response(True, None, None)
         except AttributeError as e:
             Log.error(e)

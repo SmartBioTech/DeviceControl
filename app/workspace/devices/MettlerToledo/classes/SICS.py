@@ -23,9 +23,9 @@ class SICS(Connector):
         result = self.connection.get_weight()
 
         try:
-            return {'weight': result['value'] * units[result['unit']], 'channel': int(result['stable'])}
+            return {'weight': result['value'] * units[result['unit']], 'attribute': int(result['stable'])}
         except KeyError:
-            raise Exception("Unknown unit {}".format(result['unit']))
+            self.raise_error(self.whoami(), "Unknown unit {}".format(result['unit']))
 
     def get_info(self):
         """

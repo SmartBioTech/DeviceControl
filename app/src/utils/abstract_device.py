@@ -71,6 +71,15 @@ class Connector(metaclass=Interface):
             t = Thread(target=self._queue_new_item)
             t.start()
 
+    def post_manual_command(self, cmd, priority=0):
+        cmd.device_id = self.device_id
+        self._queue.put(cmd, priority)
+        if not self._is_queue_check_running:
+            t = Thread(target=self._queue_new_item)
+            t.start()
+        cmd.await_cmd()
+        cmd.save_command_to_db()
+
     def _queue_new_item(self):
         self._is_queue_check_running = True
         while self._queue.has_items():
