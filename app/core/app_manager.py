@@ -54,12 +54,16 @@ class AppManager:
             command_id = config.get('command_id')
             args = config.get('arguments', '[]')
             source = config.get('source', 'external')
-            priority = 1 if config.get('priority', False) else 2
+            await_result = config.get('await', False)
 
             cmd = self.create_command(device_id, command_id, args, source)
-            self.deviceManager.get_device(device_id).post_command(cmd, priority=priority)
-            cmd.save_command_to_db()
-            return Response(True, None, None)
+            if await_result:
+                self.deviceManager.get_device(device_id).post_command(cmd)
+                cmd.await_cmd()
+                return Response(True, cmd.response, None)
+            else:
+                self.deviceManager.get_device(device_id).post_manual_command(cmd)
+                return Response(True, None, None)
         except AttributeError as e:
             Log.error(e)
             return Response(False, None, e)

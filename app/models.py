@@ -47,7 +47,7 @@ class Event(db.Model, AbstractModel):
     time = db.Column(DATETIME(fsp=6), nullable=False)
     args = db.Column(db.String(100), nullable=False)
     command = db.Column(db.String(100), nullable=False)
-    response = db.Column(db.String(100), nullable=False)
+    response = db.Column(db.String(1023), nullable=False)
 
 
 class EventType(db.Model, AbstractModel):
