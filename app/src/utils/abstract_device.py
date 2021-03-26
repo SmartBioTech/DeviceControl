@@ -1,3 +1,4 @@
+import sys
 from abc import abstractmethod
 from threading import Thread
 
@@ -96,6 +97,17 @@ class Connector(metaclass=Interface):
         self.scheduler.is_active = False
         self.is_alive = False
         self.disconnect()
+
+    def whoami(self):
+        """
+        Identify name of calling function
+
+        :return: name of calling function
+        """
+        return sys._getframe(1).f_code.co_name
+
+    def raise_error(self, function, message):
+        raise Exception(function + ": " + str(message))
 
 
 class PriorityQueue:

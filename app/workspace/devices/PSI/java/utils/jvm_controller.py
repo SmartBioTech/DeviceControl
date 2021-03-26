@@ -53,4 +53,4 @@ class Controller:
         if job.success:
             return job.data
         else:
-            return job.cause
+            raise Exception(job.cause)

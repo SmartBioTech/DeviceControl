@@ -23,7 +23,7 @@ class GAS(JavaDevice):
         """
         msg = self.device.send("get-co2-air")
         if msg.isError():
-            raise Exception(msg.getError())
+            self.raise_error(self.whoami(), msg.getError())
 
         return {'co2-air': msg.getParam(0)}
 
@@ -38,7 +38,7 @@ class GAS(JavaDevice):
 
         msg = self.device.send("get-small-valves")
         if msg.isError():
-            raise Exception(msg.getError())
+            self.raise_error(self.whoami(), msg.getError())
 
         return {'small-valves': msg.getParam(0)}
 
@@ -66,7 +66,7 @@ class GAS(JavaDevice):
         """
         msg = self.device.send("get-flow", repeats)
         if msg.isError():
-            raise Exception(msg.getError())
+            self.raise_error(self.whoami(), msg.getError())
 
         return {'flow': msg.getDoubleParam(0)}
 
@@ -77,7 +77,7 @@ class GAS(JavaDevice):
         """
         msg = self.device.send("get-flow-target")
         if msg.isError():
-            raise Exception(msg.getError())
+            self.raise_error(self.whoami(), msg.getError())
 
         return {'flow-target': msg.getDoubleParam(0)}
 
@@ -97,7 +97,7 @@ class GAS(JavaDevice):
         """
         msg = self.device.send("get-flow-max")
         if msg.isError():
-            raise Exception(msg.getError())
+            self.raise_error(self.whoami(), msg.getError())
 
         return {'flow-max': msg.getDoubleParam(0)}
 
@@ -110,7 +110,7 @@ class GAS(JavaDevice):
         """
         msg = self.device.send("get-pressure", repeats, wait)
         if msg.isError():
-            raise Exception(msg.getError())
+            self.raise_error(self.whoami(), msg.getError())
 
         return {'pressure': msg.getDoubleParam(0)}
 
