@@ -28,6 +28,7 @@ class AppManager:
             validate_attributes(['device_id', 'device_class', 'device_type', 'address'], config, 'Connector')
             device = self.deviceManager.new_device(config)
             self.dataManager.save_device(device)
+            self.dataManager.event_device_start(config)
         except (IdError, ModuleNotFoundError, AttributeError, KeyError) as e:
             Log.error(e)
             return Response(False, None, e)
@@ -36,6 +37,7 @@ class AppManager:
     def end_device(self, device_id: str) -> Response:
         try:
             self.deviceManager.remove_device(device_id)
+            self.dataManager.event_device_end(device_id)
 
             # TEMPORAL HACK !!!
             self.dataManager.update_experiment(device_id)
@@ -73,6 +75,7 @@ class AppManager:
             validate_attributes(['task_id', 'task_class', 'task_type'], config, 'Task')
             task = self.taskManager.create_task(config)
             task.start()
+            self.dataManager.event_task_start(config)
             return Response(True, None, None)
         except (IdError, TypeError, AttributeError) as e:
             Log.error(e)
@@ -80,7 +83,8 @@ class AppManager:
 
     def end_task(self, task_id) -> Response:
         try:
-            self.taskManager.remove_task(task_id)
+            device_id = self.taskManager.remove_task(task_id)
+            self.dataManager.event_task_end(device_id, task_id)
             return Response(True, None, None)
         except KeyError:
             exc = IdError('Task with requested ID: %s was not found' % task_id)

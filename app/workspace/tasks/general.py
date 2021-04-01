@@ -119,7 +119,7 @@ class PeriodicRegime(BaseTask):
 
         for command in executed_commands:
             command.await_cmd()
-            command.save_data_to_db()
+            command.save_command_to_db()
 
     def end(self):
         self.waiting.set()

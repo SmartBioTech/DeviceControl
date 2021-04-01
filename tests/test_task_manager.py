@@ -20,6 +20,7 @@ class TaskManagerTestCases(unittest.TestCase):
                        'device_id': '2', 'pump_id': 5}
 
         dev_config = {"device_class": 'test', "device_type": 'PBR', "device_id": '2', 'address': "home"}
+        app_manager.dataManager.store_permanent()
         app_manager.register_device(dev_config)
 
     def tearDown(self):

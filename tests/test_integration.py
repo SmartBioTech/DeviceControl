@@ -373,8 +373,8 @@ class IntegrationTestCases(unittest.TestCase):
         light_data_20 = len(list(filter(lambda item: item['value'] == 20, data.values()))) // 2
         light_data_200 = len(list(filter(lambda item: item['value'] == 200, data.values()))) // 2
 
-        self.assertTrue(10 < light_data_20 < 20)
-        self.assertTrue(10 < light_data_200 < 20)
+        self.assertTrue(5 < light_data_20 < 20)
+        self.assertTrue(5 < light_data_200 < 20)
 
         ############################################################################
         ########################### end tasks and device ###########################

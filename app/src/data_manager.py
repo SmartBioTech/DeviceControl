@@ -108,3 +108,26 @@ class DataManager:
         from main import app
         with app.app_context():
             return cls.query.filter_by(dev_id=device_id).order_by(cls.id.desc()).first()
+
+    def event_task_start(self, config):
+        args = {'task_class': config['task_class'],
+                'task_id': config['task_id'],
+                'task_type': config['task_type']}
+        event = Event(dev_id=config['device_id'], event_type=3, time=time.now(), args=str(args),
+                      command='start task', response=str(True))
+        self.save_event(event)
+
+    def event_task_end(self, device_id, task_id):
+        event = Event(dev_id=device_id, event_type=4, time=time.now(), args=str(task_id),
+                      command='end task', response=str(True))
+        self.save_event(event)
+
+    def event_device_start(self, config):
+        event = Event(dev_id=config['device_id'], event_type=3, time=time.now(), args=str(config),
+                      command='start device', response=str(True))
+        self.save_event(event)
+
+    def event_device_end(self, device_id):
+        event = Event(dev_id=device_id, event_type=4, time=time.now(), args=str(device_id),
+                      command='end device', response=str(True))
+        self.save_event(event)

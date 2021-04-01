@@ -1,6 +1,8 @@
 EVENT_TYPES = [
     (1, 'command executed'),
-    (2, 'measurement not successful')
+    (2, 'measurement not successful'),
+    (3, 'device/task activated'),
+    (4, 'device/task terminated')
     ]
 
 VARIABLES = [

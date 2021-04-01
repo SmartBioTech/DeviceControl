@@ -28,6 +28,7 @@ class AppManagerTestCases(unittest.TestCase):
         device = mock.Mock()
         self.AM.deviceManager.new_device = mock.Mock(return_value=device)
         self.AM.dataManager.save_device = mock.Mock()
+        self.AM.dataManager.event_device_start = mock.Mock()
 
         # correct behaviour
         result = Response(True, None, None)
@@ -44,6 +45,7 @@ class AppManagerTestCases(unittest.TestCase):
         device_id = 23
         self.AM.deviceManager.remove_device = mock.Mock()
         self.AM.dataManager.update_experiment = mock.Mock()
+        self.AM.dataManager.event_device_end = mock.Mock()
 
         # correct behaviour
         result = Response(True, None, None)
@@ -82,6 +84,7 @@ class AppManagerTestCases(unittest.TestCase):
         task = mock.Mock()
         task.start = mock.Mock()
         self.AM.taskManager.create_task = mock.Mock(return_value=task)
+        self.AM.dataManager.event_task_start = mock.Mock()
 
         # correct behaviour
         result = Response(True, None, None)
@@ -96,6 +99,7 @@ class AppManagerTestCases(unittest.TestCase):
     def test_end_task(self):
         task_id = 23
         self.AM.taskManager.remove_task = mock.Mock()
+        self.AM.dataManager.event_task_end = mock.Mock()
 
         # correct behaviour
         result = Response(True, None, None)

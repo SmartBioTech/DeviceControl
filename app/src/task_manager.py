@@ -22,7 +22,9 @@ class TaskManager:
 
     def remove_task(self, task_id):
         task = self.tasks.pop(task_id)
+        dev_id = task.device_id
         task.end()
+        return dev_id
 
     def get_task(self, task_id):
         task = self.tasks.get(task_id)

@@ -45,7 +45,7 @@ class Event(db.Model, AbstractModel):
     dev_id = db.Column(db.String(100), db.ForeignKey('devices.id'), nullable=False)
     event_type = db.Column(db.Integer, db.ForeignKey('event_types.id'), nullable=False)
     time = db.Column(DATETIME(fsp=6), nullable=False)
-    args = db.Column(db.String(100), nullable=False)
+    args = db.Column(db.String(200), nullable=False)
     command = db.Column(db.String(100), nullable=False)
     response = db.Column(db.String(1023), nullable=False)
 
