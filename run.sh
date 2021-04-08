@@ -4,7 +4,7 @@ FILE=DB_CONFIG
 if [ -f "$FILE" ]; then
     # set all environ variables needed (using DB_CONFIG)
     . $FILE
-    export USERNAME="$USER"
+    export USERNAME="$USERNAME"
     export PASSWORD="$PASSWORD"
 
     if [ "$#" -eq 1 ]; then
