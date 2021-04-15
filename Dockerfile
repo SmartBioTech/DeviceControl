@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM python:3.8-alpine
 
 ENV FLASK_APP main.py
 ENV FLASK_CONFIG production
@@ -9,11 +9,12 @@ COPY requirements.txt requirements.txt
 
 ENV TZ=Europe/Prague
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt-get update && apt-get install -y default-mysql-server python3-mysqldb python3-dateutil \
-                                         python3-editor libatlas3-base default-jre curl python3-dev gcc
+RUN apk --update --no-cache add python3-dev libffi-dev gcc musl-dev make libevent-dev build-base curl
+RUN apk add --no-cache mariadb-dev openjdk8-jre
 
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
+RUN python3 -m pip install mysqlclient
 RUN python3 -m pip install -r requirements.txt
 
 COPY app app
