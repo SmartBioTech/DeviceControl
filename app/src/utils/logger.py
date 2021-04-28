@@ -4,7 +4,7 @@ import logging
 class Logger:
     def __init__(self):
         logging.basicConfig(level=logging.DEBUG,
-                            filename="device_control.log",
+                            filename="log/device_control.log",
                             format='%(asctime)s %(levelname)s:%(message)s')
 
     @staticmethod
