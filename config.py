@@ -15,8 +15,10 @@ class Config:
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    DB_USERNAME = os.environ.get('USERNAME')
-    DB_PASSWORD = os.environ.get('PASSWORD')
+    DB_USERNAME = os.environ.get('USERNAME').strip('"')
+    DB_PASSWORD = os.environ.get('PASSWORD').strip('"')
+
+    DB_HOST = os.environ.get('database', 'database')
 
     @staticmethod
     def init_app(app):
@@ -26,19 +28,20 @@ class Config:
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'mysql://TestUser:pass@database/device_control_test'.format(Config.DB_USERNAME,
-                                                                                            Config.DB_PASSWORD)
+    SQLALCHEMY_DATABASE_URI = 'mysql://TestUser:pass@{}/device_control_test'.format(Config.DB_HOST)
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@database/device_control_devel'.format(Config.DB_USERNAME,
-                                                                                     Config.DB_PASSWORD)
+    SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@{}/device_control_devel'.format(Config.DB_USERNAME,
+                                                                             Config.DB_PASSWORD,
+                                                                             Config.DB_HOST)
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@database/device_control'.format(Config.DB_USERNAME,
-                                                                               Config.DB_PASSWORD)
+    SQLALCHEMY_DATABASE_URI = 'mysql://{}:{}@{}/device_control'.format(Config.DB_USERNAME,
+                                                                       Config.DB_PASSWORD,
+                                                                       Config.DB_HOST)
 
 
 class DockerConfig(ProductionConfig):
