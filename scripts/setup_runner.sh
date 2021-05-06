@@ -19,10 +19,6 @@ GRANT ALL PRIVILEGES ON device_control_test.* TO 'TestUser'@'%';
 FLUSH PRIVILEGES;
 MYSQL_SCRIPT
 
-# install all requirements
-apt-get install -y default-mysql-server python3-mysqldb python3-dateutil python3-editor libatlas3-base default-jre
-python3 -m pip install -r requirements.txt
-
 #- allow port
 # sudo ufw allow 3306
 # but change to less wide (problem with source IP)

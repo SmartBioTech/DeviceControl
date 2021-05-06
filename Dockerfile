@@ -20,7 +20,7 @@ RUN python3 -m pip install -r requirements.txt
 
 COPY app app
 COPY migrations migrations
-COPY main.py config.py boot.sh DB_CONFIG ./
+COPY main.py config.py boot.sh ./
 
 # run-time configuration
 EXPOSE 5000
