@@ -5,6 +5,8 @@ PASSWDDB=$2
 # store them in a config which will use also the app
 echo "USERNAME=\"${DBuser}\"\nPASSWORD=\"${PASSWDDB}\"" > DB_CONFIG
 
+apt-get install -y default-mysql-server
+
 # setup all DBs
 mysql -u root<<MYSQL_SCRIPT
 CREATE USER if not exists ${DBuser}@'%' IDENTIFIED BY '${PASSWDDB}';
