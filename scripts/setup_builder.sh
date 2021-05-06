@@ -5,12 +5,14 @@ curl -fsSL 'https://get.docker.com' -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker bioarineo
 
+# TODO
 # enable other platforms - TBD some of these commands are needed
 apt-get install qemu binfmt-support qemu-user-static
 docker run --rm --privileged linuxkit/binfmt:v0.8
 docker run --rm --privileged multiarch/qemu-user-static --reset
 docker run --privileged --rm tonistiigi/binfmt --install all
 
+# TODO
 # install buildx plugin
 # to ~/.docker/config.json add "experimental": "enabled"
 # needs to be done programmatically, (jq?)

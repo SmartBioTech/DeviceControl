@@ -19,7 +19,7 @@ GRANT ALL PRIVILEGES ON device_control_test.* TO 'TestUser'@'%';
 FLUSH PRIVILEGES;
 MYSQL_SCRIPT
 
-#- allow port
+# TODO allow port
 # sudo ufw allow 3306
 # but change to less wide (problem with source IP)
 # sudo ufw allow from 172.17.0.1 to any port 3306
