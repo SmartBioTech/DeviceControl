@@ -17,3 +17,20 @@ class Logger:
     @staticmethod
     def info(msg: str):
         logging.info("  " + msg)
+
+
+def log_initialise(func):
+    def wrapper(self, config):
+        result = func(self, config)
+        print("storing to DB")
+        # TODO: store log to DB
+        return result
+    return wrapper
+
+
+def log_terminate(func):
+    def wrapper():
+        func()
+        print("removing from DB")
+        # TODO: store log to DB
+    return wrapper

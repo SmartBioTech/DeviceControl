@@ -12,6 +12,11 @@ class VariableType(enum.Enum):
     AGGREGATED = 'aggregate'
 
 
+class LogType(enum.Enum):
+    DEVICE = 'device'
+    TASK = 'task'
+
+
 class Device(db.Model, AbstractModel):
     __tablename__ = 'devices'
     id = db.Column(db.String(100), primary_key=True)
@@ -54,6 +59,13 @@ class EventType(db.Model, AbstractModel):
     __tablename__ = 'event_types'
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(50), nullable=False)
+
+
+class Log(db.Model, AbstractModel):
+    __tablename__ = 'log'
+    id = db.Column(db.String(100), primary_key=True)
+    type = db.Column(db.Enum(LogType), nullable=False)
+    config = db.Column(db.Text(), nullable=False)
 
 
 # TEMPORAL HACK !!!

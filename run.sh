@@ -6,7 +6,6 @@ if [ -f "$FILE" ]; then
     . $FILE
     export USERNAME="$USERNAME"
     export PASSWORD="$PASSWORD"
-
     export database="localhost"
 
     if [ "$#" -eq 1 ]; then
