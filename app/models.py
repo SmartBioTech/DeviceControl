@@ -65,7 +65,7 @@ class Log(db.Model, AbstractModel):
     __tablename__ = 'log'
     id = db.Column(db.String(100), primary_key=True)
     type = db.Column(db.Enum(LogType), nullable=False)
-    config = db.Column(db.Text(), nullable=False)
+    config = db.Column(db.JSON(), nullable=False)
 
 
 # TEMPORAL HACK !!!

@@ -2,7 +2,7 @@ from .utils import time
 from .utils.permanent_data import EVENT_TYPES, VARIABLES
 from .utils.time import time_to_string
 from .. import db
-from ..models import Variable, Device, Experiment, Value, Event, EventType
+from ..models import Variable, Device, Experiment, Value, Event, EventType, Log
 
 
 class DataManager:
@@ -33,6 +33,16 @@ class DataManager:
         with app.app_context():
             db.session.add(item)
             db.session.commit()
+
+    @staticmethod
+    def delete_log(log_id=None):
+        from main import app
+        with app.app_context():
+            if log_id:
+                Log.query.filter_by(id=log_id).delete()
+            else:
+                db.session.query(Log).delete()
+                db.session.commit()
 
     def load_variables(self):
         return [var.id for var in Variable.query.all()]
@@ -131,3 +141,16 @@ class DataManager:
         event = Event(dev_id=device_id, event_type=4, time=time.now(), args=str(device_id),
                       command='end device', response=str(True))
         self.save_event(event)
+
+    def store_log(self, init_type, config):
+        value = Log(id=config[init_type + '_id'], type=init_type, config=config)
+        self.insert(value, Log)
+
+    def remove_log(self, id):
+        self.delete_log(id)
+
+    def remove_all_logs(self):
+        self.delete_log()
+
+    def load_log(self):
+        return Log.query.all()

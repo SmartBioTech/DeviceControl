@@ -36,3 +36,4 @@ def setup_app_manager(app):
 
     app_manager.init_app()
     app_manager.dataManager.store_permanent()
+    app_manager.restore_session()

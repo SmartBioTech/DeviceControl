@@ -1,3 +1,4 @@
+from app.src.utils.logger import log_initialise, log_terminate, log_terminate_all
 from app.src.utils.response import Response
 from app.src.utils import Log
 from app.src.utils.errors import IdError
@@ -23,6 +24,7 @@ class AppManager:
         self.deviceManager = DeviceManager()
         self.dataManager = DataManager()
 
+    @log_initialise('device')
     def register_device(self, config: dict) -> Response:
         try:
             validate_attributes(['device_id', 'device_class', 'device_type', 'address'], config, 'Connector')
@@ -34,6 +36,7 @@ class AppManager:
             return Response(False, None, e)
         return Response(device is not None, None, None)
 
+    @log_terminate
     def end_device(self, device_id: str) -> Response:
         try:
             self.deviceManager.remove_device(device_id)
@@ -70,6 +73,7 @@ class AppManager:
             Log.error(e)
             return Response(False, None, e)
 
+    @log_initialise('task')
     def register_task(self, config) -> Response:
         try:
             validate_attributes(['task_id', 'task_class', 'task_type'], config, 'Task')
@@ -81,6 +85,7 @@ class AppManager:
             Log.error(e)
             return Response(False, None, e)
 
+    @log_terminate
     def end_task(self, task_id) -> Response:
         try:
             device_id = self.taskManager.remove_task(task_id)
@@ -130,7 +135,16 @@ class AppManager:
         from ..command import Command
         return Command(device_id, command_id, eval(args), source)
 
+    @log_terminate_all
     def end(self) -> Response:
-        self.deviceManager.end()
         self.taskManager.end()
+        self.deviceManager.end()
         return Response(True, None, None)
+
+    def restore_session(self):
+        for log in self.dataManager.load_log():
+            from app.models import LogType
+            if log.type == LogType.DEVICE:
+                self.register_device(log.config)
+            else:
+                self.register_task(log.config)
