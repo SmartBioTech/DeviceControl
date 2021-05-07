@@ -153,4 +153,5 @@ class DataManager:
         self.delete_log()
 
     def load_log(self):
-        return Log.query.all()
+        with db.app.app_context():
+            return Log.query.all()
