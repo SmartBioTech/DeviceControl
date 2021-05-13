@@ -42,7 +42,7 @@ class DataManager:
                 Log.query.filter_by(id=log_id).delete()
             else:
                 db.session.query(Log).delete()
-                db.session.commit()
+            db.session.commit()
 
     def load_variables(self):
         return [var.id for var in Variable.query.all()]
