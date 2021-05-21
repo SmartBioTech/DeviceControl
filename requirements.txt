@@ -5,6 +5,7 @@ Flask-Mail
 Flask-Migrate
 Flask-Moment
 Flask-SQLAlchemy
+flask-apscheduler
 Flask-WTF
 alembic
 click

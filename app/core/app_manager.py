@@ -142,9 +142,15 @@ class AppManager:
         return Response(True, None, None)
 
     def restore_session(self):
+        # first start devices
+        tasks = []
         for log in self.dataManager.load_log():
             from app.models import LogType
             if log.type == LogType.DEVICE:
                 self.register_device(log.config)
             else:
-                self.register_task(log.config)
+                tasks.append(log)
+
+        # finally start tasks
+        for task in tasks:
+            self.register_task(task.config)
