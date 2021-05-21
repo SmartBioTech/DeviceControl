@@ -14,4 +14,4 @@ __pycache__/
 *.py[cod]
 
 ### DeviceControl log ###
-device_control.log
+log/*

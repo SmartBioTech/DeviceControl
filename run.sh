@@ -6,6 +6,7 @@ if [ -f "$FILE" ]; then
     . $FILE
     export USERNAME="$USERNAME"
     export PASSWORD="$PASSWORD"
+    export database="localhost"
 
     export database="localhost"
 
