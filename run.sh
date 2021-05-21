@@ -8,6 +8,8 @@ if [ -f "$FILE" ]; then
     export PASSWORD="$PASSWORD"
     export database="localhost"
 
+    export database="localhost"
+
     if [ "$#" -eq 1 ]; then
       export FLASK_CONFIG="$1"
       export FLASK_ENV="$1"

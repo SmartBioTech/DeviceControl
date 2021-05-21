@@ -2,10 +2,10 @@ from collections import deque
 from threading import Thread, Event
 from time import sleep
 from typing import Dict
-import numpy as np
 
 from .. import Command, BaseTask, Observable, Observer
 from ... import app_manager
+from ...src.utils.mathlib import mean, median
 
 
 class PBRMeasureAll(BaseTask):
@@ -109,19 +109,18 @@ class PBRMeasureAll(BaseTask):
 
         # calculate the average OD from the measured data
         while not computed:
-
-            mean = np.mean(data)
-            median = np.median(data)
+            mean_value = mean(data)
+            median_value = median(data)
 
             if len(data) < 2:
                 computed = True
                 average = data[0]
 
-            if mean / median <= 1:
+            if mean_value / median_value <= 1:
 
-                if mean / median >= 0.9:
+                if mean_value / median_value >= 0.9:
                     computed = True
-                    average = mean
+                    average = mean_value
                 else:
                     data = data[1:]
             else:
