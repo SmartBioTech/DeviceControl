@@ -48,7 +48,6 @@ class JavaDevice(Connector):
         except Exception as e:
             validity = False
             response = e
-            Log.error(e)
 
         command.response = response
         command.is_valid = validity
