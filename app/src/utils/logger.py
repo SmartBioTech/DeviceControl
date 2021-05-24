@@ -16,7 +16,8 @@ def log_initialise(init_type):
         def wrapped_f(self, config):
             result = func(self, config)
             from ... import app_manager
-            app_manager.dataManager.store_log(init_type, config)
+            if result.success:
+                app_manager.dataManager.store_log(init_type, config)
             return result
         return wrapped_f
     return wrapper
@@ -26,7 +27,8 @@ def log_terminate(func):
     def wrapper(self, id):
         result = func(self, id)
         from ... import app_manager
-        app_manager.dataManager.remove_log(id)
+        if result.success:
+            app_manager.dataManager.remove_log(id)
         return result
     return wrapper
 
