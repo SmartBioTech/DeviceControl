@@ -4,15 +4,11 @@ import logging
 class Logger:
     def __init__(self):
         logging.basicConfig(level=logging.DEBUG,
-                            format='%(asctime)s %(levelname)s:%(message)s')
+                            format='%(asctime)s %(levelname)s: %(message)s')
 
     @staticmethod
     def error(exc: Exception):
         logging.error(exc, exc_info=True)
-
-    @staticmethod
-    def info(msg: str):
-        logging.info("  " + msg)
 
 
 def log_initialise(init_type):
