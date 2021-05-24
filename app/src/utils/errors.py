@@ -4,3 +4,7 @@ class IdError(Exception):
 
     def __eq__(self, other):
         return self.message == other.message
+
+
+class ClassError(IdError):
+    pass

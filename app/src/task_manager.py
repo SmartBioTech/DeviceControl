@@ -1,7 +1,7 @@
 from typing import Dict
 
 from app.src.utils.abstract_task import BaseTask
-from app.src.utils.errors import IdError
+from app.src.utils.errors import IdError, ClassError
 from ..workspace.tasks import classes
 
 
@@ -14,7 +14,10 @@ class TaskManager:
         task_class = config.get('task_class')
         task_type = config.get('task_type')
         if task_id not in self.tasks:
-            task = self.load_class(task_class, task_type)(config)
+            try:
+                task = self.load_class(task_class, task_type)(config)
+            except KeyError:
+                raise ClassError("Unknown task class/type: {}/{}".format(task_class, task_type))
             self.tasks[task_id] = task
             return task
         else:

@@ -1,7 +1,7 @@
 from typing import Dict
 
 from app.src.utils.abstract_device import Connector
-from .utils.errors import IdError
+from .utils.errors import IdError, ClassError
 from ..workspace.devices import classes
 
 
@@ -14,7 +14,10 @@ class DeviceManager:
         device_type = config.get("device_type")
         if self._devices.get(config.get("device_id")) is not None:
             raise IdError("Connector with given ID already exists")
-        device = self.load_class(device_class, device_type)(config)
+        try:
+            device = self.load_class(device_class, device_type)(config)
+        except KeyError:
+            raise ClassError("Unknown device class/type: {}/{}".format(device_class, device_type))
         self._devices[device.device_id] = device
         return device
 
