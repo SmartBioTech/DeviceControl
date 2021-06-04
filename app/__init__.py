@@ -31,7 +31,7 @@ def create_app(config_name):
 
     scheduler.init_app(app)
     scheduler.add_job(func=app_manager.restore_session, id='load_session',
-                      run_date=datetime.now() + timedelta(seconds=5))
+                      run_date=datetime.now() + timedelta(seconds=30))
     scheduler.start()
 
     from .core import main as main_blueprint
