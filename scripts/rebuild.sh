@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # requires to be logged in with Docker
 git checkout master
 git pull

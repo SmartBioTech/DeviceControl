@@ -10,7 +10,9 @@ Runner is a machine where `DeviceControl` will run in `docker` container. This m
 
 3. start docker image:
 
-`cd scripts && ./redeploy.sh`
+`cd scripts/ && ./redeploy.sh`
+
+> Optionally install package `requests` for your local `python` installation to try the API locally. 
 
 ---
 

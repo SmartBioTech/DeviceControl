@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # notify RPI4 to rebuild
 ssh -p 10909 pi@localhost '~/Downloads/DeviceControl/scripts/rebuild.sh'
 
