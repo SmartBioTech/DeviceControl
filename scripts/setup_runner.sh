@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sh ./install_docker.sh
+
 DBuser=$1
 PASSWDDB=$2
 # store them in a config which will use also the app
@@ -20,9 +22,3 @@ CREATE DATABASE if not exists device_control_test;
 GRANT ALL PRIVILEGES ON device_control_test.* TO 'TestUser'@'%';
 FLUSH PRIVILEGES;
 MYSQL_SCRIPT
-
-# TODO
-# allow DB access
-# sudo ufw allow 3306 (probably not needed on Neurons)
-# but it is necessary to allow users connect from outside of localhost
-# maybe /etc/mysql/mariadb.conf.d/50-server.cnf on Neurons
