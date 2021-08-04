@@ -1,13 +1,13 @@
 #!/bin/sh
 
-sh ./install_docker.sh
+sh scripts/install_docker.sh
 
 DBuser=$1
 PASSWDDB=$2
 # store them in a config which will use also the app
 echo "USERNAME=\"${DBuser}\"\nPASSWORD=\"${PASSWDDB}\"" > DB_CONFIG
 
-apt-get install -y default-mysql-server
+apt-get install -y default-mysql-server python3-pip
 
 # setup all DBs
 mysql -u root<<MYSQL_SCRIPT
