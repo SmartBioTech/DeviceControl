@@ -8,6 +8,7 @@ PASSWDDB=$2
 echo "USERNAME=\"${DBuser}\"\nPASSWORD=\"${PASSWDDB}\"" > DB_CONFIG
 
 apt-get install -y default-mysql-server python3-pip
+python3 -m pip install requests
 
 # setup all DBs
 mysql -u root<<MYSQL_SCRIPT
