@@ -2,19 +2,26 @@
 
 Runner is a machine where `DeviceControl` will run in `docker` container. This machine first needs to be prepared for this task. It includes:
 
-1. install `docker` (we recommend [these](https://phoenixnap.com/kb/docker-on-raspberry-pi) instructions)
-2. run runner installation script (which prepares local database):
+1.  run runner installation script (which prepares local database):
 
 `sudo -E env "PATH=$PATH" scripts/setup_runner.sh "<username>" "<password>"`
 
-3. enable connections to your mySQL database from outside of localhost (might even require to open firewall for port 3306)
+2. enable connections to your mySQL database from outside of localhost (might even require to open firewall for port 3306)
+
+3. start docker image:
+
+`cd scripts/ && ./redeploy.sh`
+
+> Optionally install package `requests` for your local `python` installation to try the API locally. 
 
 ---
 
 ## Builder
-`sudo -E env "PATH=$PATH" scripts/setup_builder.sh`
 
-### Build new Docker image
+### Install builder
+`sudo -E env "PATH=$PATH" scripts/install_docker.sh`
+
+### Build new docker image
 `scripts/rebuild.sh`
 
 ---
@@ -25,6 +32,9 @@ Runner is a machine where `DeviceControl` will run in `docker` container. This m
 `./run.sh -h '<host>' -p <port>`
 
 with given optional `host` (default localhost) and `port` (default 5000).
+Note that first you need to locally install requirements:
+
+`python3 -m pip install -r requirements.txt`
 
 ### to run tests all tests (including integration tests):
 `tests/run_tests.sh`
