@@ -15,7 +15,8 @@ jobs:
     - name: Setup mySQL database
       run: sudo -E env "PATH=$PATH" scripts/setup_runner.sh "user" "password"
     - name: Install libmysqlclient-dev
-    - name: sudo apt-get install -y libmysqlclient-dev
+      run: sudo apt-get install -y libmysqlclient-dev
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
