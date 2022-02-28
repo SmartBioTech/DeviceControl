@@ -7,7 +7,7 @@ PASSWDDB=$2
 # store them in a config which will use also the app
 echo "USERNAME=\"${DBuser}\"\nPASSWORD=\"${PASSWDDB}\"" > DB_CONFIG
 
-apt-get install -y default-mysql-server python3-pip
+apt-get install -y mysql-server
 python3 -m pip install requests
 
 # setup all DBs
