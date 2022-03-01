@@ -14,7 +14,7 @@ RUN apt-get install -y --reinstall build-essential
 RUN apt-get install -y default-mysql-server python3-mysqldb \
     python3-distutils python3-dateutil python3-editor libatlas3-base default-jre curl gcc python3-dev
 
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN curl https://bootstrap.pypa.io/pip/3.6/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 RUN python3 -m pip install -r requirements.txt
 
