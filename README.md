@@ -1,3 +1,9 @@
+[![Python Package](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml)
+
+# DeviceControl
+
+TBA description
+
 ## Runner
 
 Runner is a machine where `DeviceControl` will run in `docker` container. This machine first needs to be prepared for this task. It includes:
