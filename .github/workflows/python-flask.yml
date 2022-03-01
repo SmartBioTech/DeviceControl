@@ -12,8 +12,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Activate mySQL
+      run: sudo /etc/init.d/mysql start
     - name: Setup mySQL database
-      run: sudo -E env "PATH=$PATH" scripts/setup_runner.sh "user" "password"
+      run: sudo -E env "PATH=$PATH" scripts/setup_database.sh "user" "password"
     - name: Install libmysqlclient-dev
       run: sudo apt-get install -y libmysqlclient-dev
     - name: Set up Python 3.8
