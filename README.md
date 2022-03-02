@@ -1,15 +1,15 @@
 [![Python Package](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml)
+[![Docker](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml)
 
 # DeviceControl
 
-TBA description
-
-see [wiki](https://github.com/SmartBioTech/DeviceControl/wiki)
+`DeviceControl` is a tool to provide unified interface to control and measure data in specific cultivation device.
+We recommend reading [wiki](https://github.com/SmartBioTech/DeviceControl/wiki) to get started with the tool.
 
 ## Installation
 
-`DeviceControl` runs in a `Docker` container with locally install database.
-This decision was made in order to make data more persistent and prone to unintentional deletion.
+`DeviceControl` runs in a [`Docker` container](https://hub.docker.com/r/bioarineo/devicecontrol) with locally installed database.
+The reason for installation of database locally is to make data more persistent and prone to unintentional deletion.
 
 1. Before we start, it is necessary to install `mySQL` database and `docker`:
 
