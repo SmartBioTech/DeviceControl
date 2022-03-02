@@ -45,20 +45,30 @@ Inspect and execute `scripts/example_run.py` to see demonstration of tool's usab
 
 ---
 
-## Developers only
+## Quick start
 
-### Run in devel mode
-`./run.sh -h '<host>' -p <port>`
+Assuming `DeviceControl` is properly installed and running, follow these steps to quickly setup a device and execute a measurement:
 
-with given optional `host` (default localhost) and `port` (default 5000).
-Note that first you need to locally install requirements:
+```python
+import requests
 
-`python3 -m pip install -r requirements.txt`
+# device configuration
+test_PBR_device = {
+    'device_id': PBR_id,
+    'device_class': 'test',
+    'device_type': 'PBR',
+    'address': 'null',
+}
 
-### to run tests all tests (including integration tests):
-`tests/run_tests.sh`
-#### to run a single test case
-`tests/run_tests.sh tests.<file name without .py>`
+# register the device
+requests.post('http://localhost:5000/device', json=test_PBR_device)
 
-### to migrate database
-`migrations/migrate.sh`
+# configuration of a command for measurement of temperature
+cmd = {'device_id': PBR_id,
+       'command_id': '2',
+       'await': True
+      }
+
+response = requests.post('http://localhost:5000/command', json=cmd)
+print("The current temperature is", response.json()['data']['temp'])
+```
