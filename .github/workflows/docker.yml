@@ -1,8 +1,7 @@
 name: Docker Build and Publish Image
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
+  release:
+    types: [published]
     paths:
       - 'boot.sh'
       - 'Dockerfile'
@@ -12,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE: bioarineo/devicecontrol
-      RELEASE_TAG: v0.1
     steps:
     - name: Checkout the code
       uses: actions/checkout@v2
@@ -24,7 +22,7 @@ jobs:
       id: prepare
       run: |
         echo ::set-output name=docker_image::${DOCKER_IMAGE}
-        echo ::set-output name=release_tag::${RELEASE_TAG}
+        echo ::set-output name=release_tag::${{ github.event.release.tag_name }}
     - name: Docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
