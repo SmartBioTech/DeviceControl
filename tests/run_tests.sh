@@ -20,3 +20,4 @@ export USERNAME=" "
 export PASSWORD=" "
 export FLASK_APP=main.py
 flask test "$test_case"
+exit $?
