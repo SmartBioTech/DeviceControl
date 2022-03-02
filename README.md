@@ -34,7 +34,7 @@ This decision was made in order to make data more persistent and prone to uninte
 5. Download docker and start the `docker`:
 
     ```
-    docker run -d --privileged -v /dev/serial/by-port/:/dev/serial/by-port/ -p 0.0.0.0:5000:5000 --restart unless-stopped --add-host="database:$DATABASE" --env-file DB_CONFIG --name "devicecontrol" bioarineo/devicecontrol:<platform>
+    docker run -d --privileged -v /dev/serial/by-port/:/dev/serial/by-port/ -p 0.0.0.0:5000:5000 --restart unless-stopped --add-host="database:$DATABASE" --env-file DB_CONFIG --name "devicecontrol" bioarineo/devicecontrol:latest-<platform>
     ```
 
     where `<platform>` is either `amd` or `arm`. The `by-port` is mapped to `docker` file system to access devices connected to I/O ports.
