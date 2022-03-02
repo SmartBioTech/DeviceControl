@@ -40,7 +40,8 @@ This decision was made in order to make data more persistent and prone to uninte
     where `<platform>` is either `amd` or `arm`. The `by-port` is mapped to `docker` file system to access devices connected to I/O ports.
 
 `DeviceControl` is running and ready to be used.
-Execute `scripts/example_run.py` to see demonstration of tool's usability on a simulated device.
+
+Inspect and execute `scripts/example_run.py` to see demonstration of tool's usability on a simulated device.
 
 ---
 
