@@ -58,14 +58,14 @@ class DataManagerTestCases(unittest.TestCase):
         self.assertEqual(self.DM.load_variables(), [])
 
         # filled
-        self.DM.store_permanent()
+        self.DM._store_permanent()
         IDs = set([value[0] for value in VARIABLES])
         self.assertEqual(set(self.DM.load_variables()), IDs)
 
     def test_save_value(self):
         device = Device(id='dev_id_23', device_class='PSI', device_type='PBR')
         self.DM.insert(device, Device)
-        self.DM.store_permanent()
+        self.DM._store_permanent()
 
         # empty
         exists = Value.query.filter_by(id='dev_id_23').first()
@@ -164,14 +164,14 @@ class DataManagerTestCases(unittest.TestCase):
 
         correct_result = {obj.id: {'time': time_to_string(obj.time), 'data': obj.data} for obj in query_results}
 
-        result = self.DM.post_process(query_results, 'values', None)
+        result = self.DM._post_process(query_results, 'values', None)
         self.assertEqual(correct_result, result)
 
     def test_get_data(self):
         # preparations
         device = Device(id='dev_id_23', device_class='PSI', device_type='PBR')
         self.DM.insert(device, Device)
-        self.DM.store_permanent()
+        self.DM._store_permanent()
         # store some values
         values = [Value(id=1, time=now(), value=23.0, dev_id='dev_id_23', var_id='od', attribute=1, note=None),
                   Value(id=2, time=now(), value=24.0, dev_id='dev_id_23', var_id='od', attribute=1, note=None),
@@ -198,7 +198,7 @@ class DataManagerTestCases(unittest.TestCase):
         # preparations
         device = Device(id='dev_id_23', device_class='PSI', device_type='PBR')
         self.DM.insert(device, Device)
-        self.DM.store_permanent()
+        self.DM._store_permanent()
         # store some values
         values = [Value(id=1, time=now(), value=23.0, dev_id='dev_id_23', var_id='od', attribute=1, note=None),
                   Value(id=2, time=now(), value=24.0, dev_id='dev_id_23', var_id='od', attribute=1, note=None),

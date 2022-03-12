@@ -16,7 +16,7 @@ class AppManagerTestCases(unittest.TestCase):
         
         self.AM = AppManager()
         self.AM.init_app()
-        self.AM.dataManager.store_permanent()
+        self.AM.dataManager._store_permanent()
 
     def tearDown(self):
         db.session.remove()

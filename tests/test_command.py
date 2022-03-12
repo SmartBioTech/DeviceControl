@@ -15,7 +15,7 @@ class CommandTestCases(unittest.TestCase):
         db.create_all()
 
         dev_config = {"device_class": 'test', "device_type": 'PBR', "device_id": '2', 'address': "home"}
-        app_manager.dataManager.store_permanent()
+        app_manager.dataManager._store_permanent()
         app_manager.register_device(dev_config)
 
     def tearDown(self):

@@ -14,7 +14,7 @@ class IntegrationTestCases(unittest.TestCase):
         db.create_all()
 
         self.client = self.app.test_client()
-        app_manager.dataManager.store_permanent()
+        app_manager.dataManager._store_permanent()
         app_manager.dataManager.last_seen_id = {'values': {}, 'events': {}}
 
     def tearDown(self):
