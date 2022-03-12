@@ -70,7 +70,7 @@ class AppManagerTestCases(unittest.TestCase):
         result = Response(True, None, None)
         command = mock.Mock()
         command.save_command_to_db = mock.Mock()
-        self.AM.create_command = mock.Mock(return_value=device)
+        self.AM._create_command = mock.Mock(return_value=device)
         self.assertEqual(self.AM.command(config), result)
 
         # exception in progress
