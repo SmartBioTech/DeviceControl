@@ -5,6 +5,12 @@ from ..libs.Connection import Connection
 class TH_IB2(Connector):
     """
     On-wall temperature + humidity sensor.
+
+    Commands:
+
+    - "1": self.get_temperature,
+    - "2": self.get_humidity,
+    - "3": self.measure_all
     """
     def __init__(self, config: dict):
         super(TH_IB2, self).__init__(config)

@@ -31,6 +31,9 @@ class GASMeasureAll(BaseTask):
         }
 
     def start(self):
+        """
+        Start the task.
+        """
         t = Thread(target=self._run)
         t.start()
 
@@ -54,4 +57,7 @@ class GASMeasureAll(BaseTask):
             sleep(self.sleep_period)
 
     def end(self):
+        """
+        End the task.
+        """
         self.is_active = False

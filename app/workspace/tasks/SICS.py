@@ -10,8 +10,9 @@ class MeasureWeight(BaseTask):
     Measures weight and saves it to database.
 
     Extra parameters:
-    'device_id': str - ID of target device,
-    'sleep_period': float - measurement period
+
+    - 'device_id': str - ID of target device,
+    - 'sleep_period': float - measurement period
     """
     def __init__(self, config):
         self.__dict__.update(config)
@@ -23,6 +24,9 @@ class MeasureWeight(BaseTask):
         super(MeasureWeight, self).__init__(config)
 
     def start(self):
+        """
+        Start the task.
+        """
         t = Thread(target=self._run)
         t.start()
 
@@ -35,4 +39,7 @@ class MeasureWeight(BaseTask):
             sleep(int(self.sleep_period))
 
     def end(self):
+        """
+        End the task.
+        """
         self.is_active = False

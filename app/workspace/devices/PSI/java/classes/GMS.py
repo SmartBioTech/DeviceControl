@@ -5,6 +5,18 @@ class GMS(JavaDevice):
     """
     Gas Mixing System GMS 150 can produce precise mixtures of up to 4 different gases. The ﬂows of the individual
     input gases are measured by thermal mass ﬂow meters and adjusted by integrated mass ﬂow controllers.
+
+    Commands:
+
+    - "1": self.get_info,
+    - "9": self.measure_all,
+    - "10": self.get_valve_info,
+    - "11": self.get_valve_flow,
+    - "12": self.set_valve_flow,
+    - "13": self.get_device_type,
+    - "14": self.get_device_id,
+    - "15": self.get_serial_nr,
+    - "16": self.get_fw_ver
     """
     def __init__(self, config: dict):
         super(GMS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GMS.config")

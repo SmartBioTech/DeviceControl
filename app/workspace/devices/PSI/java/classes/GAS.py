@@ -6,6 +6,18 @@ class GAS(JavaDevice):
     The MS GAS is a compact benchtop gas analyzer with mass spectrometry detection designed for complex analysis of
     gases and volatiles including isotopes, solvents and volatile organics. Modular inlet, highly sensitive mass
     spectrometer and primarily unique freezing system allows continuous weeks-long operation.
+
+    Commands:
+
+    - "1": self.get_flow,
+    - "2": self.get_flow_target,
+    - "3": self.set_flow_target,
+    - "4": self.get_flow_max,
+    - "5": self.get_pressure,
+    - "6": self.measure_all,
+    - "7": self.get_co2_air,
+    - "8": self.get_small_valves,
+    - "9": self.set_small_valves,
     """
     def __init__(self, config: dict):
         super(GAS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GAS.config")

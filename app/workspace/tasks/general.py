@@ -11,13 +11,14 @@ class MeasureAllDesync(BaseTask):
     """
     Asynchronous periodical measurement of chosen variables.
 
-    It is necessary to provide a dictionary, where for each time period particular variables are given
-      'frequency_to_commands': {time_period_1: {"variable_X": command_X, "variable_Y": command_Y, ...},
-                                time_period_2: {"variable_Z": command_Z, "variable_W": command_W, ...},
-                                ...}
+    It is necessary to provide a dictionary, where for each time period particular variables are given:
 
-    Additional extra parameters:
-    'device_id': str - ID of target device
+    .. highlight:: python
+    .. code-block:: python
+
+        {time_period_1: {"variable_X": command_X, "variable_Y": command_Y, ...},
+         time_period_2: {"variable_Z": command_Z, "variable_W": command_W, ...},
+         ...}
     """
     def __init__(self, config):
         self.frequency_to_commands = {}
@@ -33,6 +34,9 @@ class MeasureAllDesync(BaseTask):
         self.counters_to_commands, self.sleep_time = self.find_gcd_counters(self.frequency_to_commands)
 
     def start(self):
+        """
+        Start the task.
+        """
         t = Thread(target=self._run)
         t.start()
 
@@ -46,12 +50,24 @@ class MeasureAllDesync(BaseTask):
             current_time += self.sleep_time
 
     def find_gcd_counters(self, frequency_to_commands):
+        """
+        Find greatest common divisor to find optimal frequency to execute periodical commands.
+
+        :param frequency_to_commands: mapping of required frequencies
+        :return: optimal frequency
+        """
         value = reduce(gcd, list(map(int, frequency_to_commands.keys())))
         frequency_to_commands = {int(frequency)//value: frequency_to_commands[frequency]
                                  for frequency in frequency_to_commands.keys()}
         return frequency_to_commands, value
 
     def execute_commands(self, commands):
+        """
+        Execute given command.
+
+        :param commands: given Command
+        :return: response
+        """
         executed_commands = []
         for _name, _command in commands.items():
             command = Command(self.device_id,
@@ -67,6 +83,9 @@ class MeasureAllDesync(BaseTask):
             command.save_data_to_db()
 
     def end(self):
+        """
+        End the task.
+        """
         self.active = False
 
 
@@ -75,14 +94,21 @@ class PeriodicRegime(BaseTask):
     Periodically call specified commands to change a regime.
 
     Fully customisable by two parameters:
-    1. intervals - specifies periods when next set of commands should be called
-        e.g. 'intervals': [8, 16],  # change regime after 8 hours and then after 16 hours
-    2. commands  - list of commands for each regime change which should be executed
-        e.g. 'commands': [[{'id': '10', 'args': [0, 20]}, {'id': '10', 'args': [1, 20]}],   # night
-                         [{'id': '10', 'args': [0, 200]}, {'id': '10', 'args': [1, 200]}]]  # day
 
-    Additional extra parameters:
-    'device_id': str - ID of target device
+    1. intervals - specifies periods when next set of commands should be called e.g.
+
+    .. highlight:: python
+    .. code-block:: python
+
+        'intervals': [8, 16],  # change regime after 8 hours and then after 16 hours
+
+    2. commands  - list of commands for each regime change which should be executed, e.g.
+
+    .. highlight:: python
+    .. code-block:: python
+
+        'commands': [[{'id': '10', 'args': [0, 20]}, {'id': '10', 'args': [1, 20]}],   # night
+                    [{'id': '10', 'args': [0, 200]}, {'id': '10', 'args': [1, 200]}]]  # day
     """
     def __init__(self, config):
         self.intervals = []
@@ -96,6 +122,9 @@ class PeriodicRegime(BaseTask):
         self.waiting = Event()
 
     def start(self):
+        """
+        Start the task.
+        """
         t = Thread(target=self._run)
         t.start()
 
@@ -107,6 +136,12 @@ class PeriodicRegime(BaseTask):
             phase = (phase + 1) % len(self.intervals)
 
     def execute_commands(self, commands):
+        """
+        Execute given command.
+
+        :param commands: given Command
+        :return: response
+        """
         executed_commands = []
         for item in commands:
             command = Command(self.device_id,
@@ -122,4 +157,7 @@ class PeriodicRegime(BaseTask):
             command.save_command_to_db()
 
     def end(self):
+        """
+        End the task.
+        """
         self.waiting.set()
