@@ -3,6 +3,12 @@ from math import log10
 
 
 class PBR(JavaDevice):
+    """
+    Photobioreactors FMT 150 feature a combination of the bench-top cultivator and computer-controlled monitoring
+    device. The product line comprises three instruments that differ in the cultivation vessel capacity - 400 ml,
+    1 and 3 l. All Photobioreactor models may be supplied with a number of useful accessories that facilitate to meet
+    wide range of special experimental conditions.
+    """
     def __init__(self, config: dict):
         super(PBR, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_PBR.config")
         self.interpreter = {

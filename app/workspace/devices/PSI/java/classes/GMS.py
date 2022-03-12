@@ -2,6 +2,10 @@ from ..abstract.java_device import JavaDevice
 
 
 class GMS(JavaDevice):
+    """
+    Gas Mixing System GMS 150 can produce precise mixtures of up to 4 different gases. The ﬂows of the individual
+    input gases are measured by thermal mass ﬂow meters and adjusted by integrated mass ﬂow controllers.
+    """
     def __init__(self, config: dict):
         super(GMS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GMS.config")
         self.interpreter = {

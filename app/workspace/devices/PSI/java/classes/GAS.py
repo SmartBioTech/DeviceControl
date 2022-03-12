@@ -2,6 +2,11 @@ from ..abstract.java_device import JavaDevice
 
 
 class GAS(JavaDevice):
+    """
+    The MS GAS is a compact benchtop gas analyzer with mass spectrometry detection designed for complex analysis of
+    gases and volatiles including isotopes, solvents and volatile organics. Modular inlet, highly sensitive mass
+    spectrometer and primarily unique freezing system allows continuous weeks-long operation.
+    """
     def __init__(self, config: dict):
         super(GAS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GAS.config")
         self.interpreter = {
