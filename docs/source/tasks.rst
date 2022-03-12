@@ -1,5 +1,8 @@
+Tasks
+=====
+
 Available tasks
-===============
+---------------
 
 List of supported tasks.
 
@@ -56,5 +59,15 @@ General tasks
 
 .. automodule:: app.workspace.tasks.general
    :members:
+   :undoc-members:
+   :show-inheritance:
+
+Abstract task
+-------------
+
+Serves as a template for tasks.
+
+.. automodule:: app.src.utils.abstract_task
+   :members: BaseTask
    :undoc-members:
    :show-inheritance:
