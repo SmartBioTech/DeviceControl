@@ -15,7 +15,14 @@ def validate_attributes(required, attributes, class_name):
 
 
 class AppManager:
+    """
+    Defines entry points to the application.
+    """
+
     def init_app(self):
+        """
+        Initializes the application.
+        """
         from app.src.task_manager import TaskManager
         from app.src.data_manager import DataManager
         from app.src.device_manager import DeviceManager
@@ -26,6 +33,13 @@ class AppManager:
 
     @log_initialise('device')
     def register_device(self, config: dict) -> Response:
+        """
+        Register a new device (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#device-initiation>`__).
+
+        :param config: A dictionary with pre-defined keys
+        :return: Response object
+        """
         try:
             validate_attributes(['device_id', 'device_class', 'device_type', 'address'], config, 'Connector')
             device = self.deviceManager.new_device(config)
@@ -38,6 +52,12 @@ class AppManager:
 
     @log_terminate
     def end_device(self, device_id: str) -> Response:
+        """
+        Terminates an existing device.
+
+        :param device_id: ID of an existing device
+        :return: Response object
+        """
         try:
             self.deviceManager.remove_device(device_id)
             self.dataManager.event_device_end(device_id)
@@ -51,7 +71,14 @@ class AppManager:
             Log.error(exc)
             return Response(False, None, exc)
 
-    def command(self, config) -> Response:
+    def command(self, config: dict) -> Response:
+        """
+        Run a specific command (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#command>`__).
+
+        :param config: A dictionary with pre-defined keys
+        :return: Response object
+        """
         try:
             validate_attributes(['device_id', 'command_id'], config, 'Command')
 
@@ -61,7 +88,7 @@ class AppManager:
             source = config.get('source', 'external')
             await_result = config.get('await', False)
 
-            cmd = self.create_command(device_id, command_id, args, source)
+            cmd = self._create_command(device_id, command_id, args, source)
             if await_result:
                 self.deviceManager.get_device(device_id).post_command(cmd)
                 cmd.await_cmd()
@@ -74,7 +101,14 @@ class AppManager:
             return Response(False, None, e)
 
     @log_initialise('task')
-    def register_task(self, config) -> Response:
+    def register_task(self, config: dict) -> Response:
+        """
+        Register a new task (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#task-initiation>`__).
+
+        :param config: A dictionary with pre-defined keys
+        :return: Response object
+        """
         try:
             validate_attributes(['task_id', 'task_class', 'task_type'], config, 'Task')
             task = self.taskManager.create_task(config)
@@ -87,6 +121,12 @@ class AppManager:
 
     @log_terminate
     def end_task(self, task_id) -> Response:
+        """
+        Terminate an existing task.
+
+        :param task_id: ID of an existing task
+        :return: Response object
+        """
         try:
             device_id = self.taskManager.remove_task(task_id)
             self.dataManager.event_task_end(device_id, task_id)
@@ -97,12 +137,25 @@ class AppManager:
             return Response(False, None, exc)
 
     def ping(self) -> Response:
+        """
+        Get status information about the running devices and tasks (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#ping>`__).
+
+        :return: Response object
+        """
         return Response(True, {
             'devices': self.deviceManager.ping(),
             'tasks': self.taskManager.ping()
         }, None)
 
-    def get_data(self, config) -> Response:
+    def get_data(self, config: dict) -> Response:
+        """
+        Retrieves data in supported format (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#get-data>`__).
+
+        :param config: A dictionary with pre-defined keys
+        :return: Response object
+        """
         try:
             validate_attributes(['device_id', 'type'], config, 'GetData')
             
@@ -120,6 +173,12 @@ class AppManager:
             return Response(False, None, e)
 
     def get_latest_data(self, config) -> Response:
+        """
+        Retrieves the last data entry for specified Device ID and Data Type.
+
+        :param config: A dictionary which specifies the "device_id": string and "type": string
+        :return: Response object
+        """
         try:
             validate_attributes(['device_id', 'type'], config, 'GetData')
             device_id = config.get('device_id')
@@ -130,18 +189,24 @@ class AppManager:
             Log.error(e)
             return Response(False, None, e)
 
-    @staticmethod
-    def create_command(device_id, command_id, args, source):
-        from ..command import Command
-        return Command(device_id, command_id, eval(args), source)
-
     @log_terminate_all
     def end(self) -> Response:
+        """
+        Ends the application (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#end>`__).
+
+        :return: Response object
+        """
         self.taskManager.end()
         self.deviceManager.end()
         return Response(True, None, None)
 
-    def restore_session(self):
+    @staticmethod
+    def _create_command(device_id, command_id, args, source):
+        from ..command import Command
+        return Command(device_id, command_id, eval(args), source)
+
+    def _restore_session(self):
         # first start devices
         tasks = []
         for log in self.dataManager.load_log():

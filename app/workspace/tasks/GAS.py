@@ -9,6 +9,7 @@ class GASMeasureAll(BaseTask):
     Measures all measurable values and saves them to database.
 
     Extra parameters:
+
     'device_id': str - ID of target device,
     'sleep_period': float - measurement period
     """
@@ -31,6 +32,9 @@ class GASMeasureAll(BaseTask):
         }
 
     def start(self):
+        """
+        Start the task.
+        """
         t = Thread(target=self._run)
         t.start()
 
@@ -54,4 +58,7 @@ class GASMeasureAll(BaseTask):
             sleep(self.sleep_period)
 
     def end(self):
+        """
+        End the task.
+        """
         self.is_active = False

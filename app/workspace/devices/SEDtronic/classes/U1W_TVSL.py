@@ -3,6 +3,18 @@ from ..libs.Connection import Connection
 
 
 class U1W_TVSL(Connector):
+    """
+    UNICA 1-wire module TVSL is a device which is able to measure physical quantities such as temperature, humidity,
+    illuminance. Using 1-wire bus it is possible to read these values with superior device and use it for other
+    purposes (e.g. heating, lights, pumps, etc.).
+
+    Commands:
+
+    - "1": self.get_temperature,
+    - "2": self.get_humidity,
+    - "3": self.get_illuminance,
+    - "4": self.measure_all
+    """
     def __init__(self, config: dict):
         super(U1W_TVSL, self).__init__(config)
         self.connection = Connection(self.address, "8080", self.device_id)
@@ -16,6 +28,7 @@ class U1W_TVSL(Connector):
     def get_temperature(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius).
+
         :param temp_unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
         :return: Current temperature value in selected unit.
         """
@@ -33,6 +46,7 @@ class U1W_TVSL(Connector):
     def get_humidity(self):
         """
         Get sensor humidity (relative humidity in %).
+
         :return: Current humidity value.
         """
         sensor, codes = self.connection.read_sensor()
@@ -44,6 +58,7 @@ class U1W_TVSL(Connector):
     def get_illuminance(self):
         """
         Get sensor illuminance (illuminance in lux).
+
         :return: Current illuminance value.
         """
         sensor, codes = self.connection.read_sensor()
@@ -55,6 +70,7 @@ class U1W_TVSL(Connector):
     def measure_all(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius), humidity in % and illuminance in lux.
+
         :param temp_unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
         :return: Current temperature and humidity values in selected unit.
         """

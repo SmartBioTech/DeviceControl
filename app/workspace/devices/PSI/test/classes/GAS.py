@@ -2,6 +2,19 @@ from .. import Connector
 
 
 class GAS(Connector):
+    """
+    Commands:
+
+    - "1": self.get_flow,
+    - "2": self.get_flow_target,
+    - "3": self.set_flow_target,
+    - "4": self.get_flow_max,
+    - "5": self.get_pressure,
+    - "6": self.measure_all,
+    - "7": self.get_co2_air,
+    - "8": self.get_small_valves,
+    - "9": self.set_small_valves,
+    """
     def __init__(self, config):
         super(GAS, self).__init__(config)
 

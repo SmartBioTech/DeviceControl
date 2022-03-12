@@ -2,6 +2,10 @@ from flask import jsonify
 
 
 class Response:
+    """
+    Represents a response class containing information about the success/failure and returned data of the conducted
+    action.
+    """
     def __init__(self, success, data, cause):
         self.cause = cause
         self.data = data

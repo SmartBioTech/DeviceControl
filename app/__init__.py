@@ -31,7 +31,7 @@ def create_app(config_name):
 
     if config_name != 'testing':
         scheduler.init_app(app)
-        scheduler.add_job(func=app_manager.restore_session, id='load_session',
+        scheduler.add_job(func=app_manager._restore_session, id='load_session',
                           run_date=datetime.now() + timedelta(seconds=30))
         scheduler.start()
 
@@ -47,4 +47,4 @@ def setup_app_manager(app):
     db.create_all()
 
     app_manager.init_app()
-    app_manager.dataManager.store_permanent()
+    app_manager.dataManager._store_permanent()

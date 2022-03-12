@@ -3,6 +3,14 @@ from ..libs.Connection import Connection
 
 
 class SICS(Connector):
+    """
+    Mettler Toledo Standard Interface Command Set
+
+    Commands:
+
+    - '1': self.get_weight,
+    - '2': self.get_info
+    """
     def __init__(self, config: dict):
         super(SICS, self).__init__(config)
         self.connection = Connection(self.address, self.device_id)
@@ -25,7 +33,7 @@ class SICS(Connector):
         try:
             return {'weight': result['value'] * units[result['unit']], 'attribute': int(result['stable'])}
         except KeyError:
-            self.raise_error(self.whoami(), "Unknown unit {}".format(result['unit']))
+            self._raise_error(self.whoami(), "Unknown unit {}".format(result['unit']))
 
     def get_info(self):
         """

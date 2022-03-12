@@ -2,6 +2,23 @@ from ..abstract.java_device import JavaDevice
 
 
 class GAS(JavaDevice):
+    """
+    The MS GAS is a compact benchtop gas analyzer with mass spectrometry detection designed for complex analysis of
+    gases and volatiles including isotopes, solvents and volatile organics. Modular inlet, highly sensitive mass
+    spectrometer and primarily unique freezing system allows continuous weeks-long operation.
+
+    Commands:
+
+    - "1": self.get_flow,
+    - "2": self.get_flow_target,
+    - "3": self.set_flow_target,
+    - "4": self.get_flow_max,
+    - "5": self.get_pressure,
+    - "6": self.measure_all,
+    - "7": self.get_co2_air,
+    - "8": self.get_small_valves,
+    - "9": self.set_small_valves,
+    """
     def __init__(self, config: dict):
         super(GAS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GAS.config")
         self.interpreter = {
@@ -19,26 +36,26 @@ class GAS(JavaDevice):
     def get_co2_air(self):
         """
         Measures CO2 in air.
+
         :return: measured CO2 in air
         """
         msg = self.device.send("get-co2-air")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'co2-air': msg.getParam(0)}
 
     def get_small_valves(self):
         """
         Obtain settings of individual vents of GAS device.
-        Represented as one byte, where first 6 bits represent
-        vents indexed as in a picture scheme available here:
-        https://i.imgur.com/jSeFFaO.jpg
+        Represented as one byte, where first 6 bits represent vents.
+
         :return: byte representation of vents settings.
         """
 
         msg = self.device.send("get-small-valves")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'small-valves': msg.getParam(0)}
 
@@ -46,12 +63,13 @@ class GAS(JavaDevice):
         """
         Changes settings of individual vents of GAS device.
         Can be set by one byte (converted to int), where first 6
-        bits represent vents indexed as in a picture scheme
-        available here: https://i.imgur.com/jSeFFaO.jpg
-        Mode 0 - normal mode, output from GMS goes to PBR (255)
-        Mode 1 - reset mode, N2 (nitrogen) goes to PBR (239)
-        Mode 2 - no gas input to PBR (249)
-        Mode 3 - output of PBR goes to input of PBR (246)
+        bits represent vents.
+
+        - Mode 0 - normal mode, output from GMS goes to PBR (255)
+        - Mode 1 - reset mode, N2 (nitrogen) goes to PBR (239)
+        - Mode 2 - no gas input to PBR (249)
+        - Mode 3 - output of PBR goes to input of PBR (246)
+
         :param mode: chosen mode (0 to 3)
         :return: True if was successful, False otherwise.
         """
@@ -61,29 +79,32 @@ class GAS(JavaDevice):
     def get_flow(self, repeats=5):
         """
         Actual flow being channeled from GAS to PBR.
+
         :param repeats: the number of measurements to be averaged
         :return: Current flow in L/min.
         """
         msg = self.device.send("get-flow", repeats)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'flow': msg.getDoubleParam(0)}
 
     def get_flow_target(self):
         """
         Actual desired flow.
+
         :return: The desired flow in L/min.
         """
         msg = self.device.send("get-flow-target")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'flow-target': msg.getDoubleParam(0)}
 
     def set_flow_target(self, flow):
         """
         Set flow we want to achieve.
+
         :param flow: flow in L/min we want to achieve (max given by get_flow_max)
         :return: True if was successful, False otherwise.
         """
@@ -93,24 +114,26 @@ class GAS(JavaDevice):
     def get_flow_max(self):
         """
         Maximal allowed flow.
+
         :return: The maximal flow in L/min
         """
         msg = self.device.send("get-flow-max")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'flow-max': msg.getDoubleParam(0)}
 
     def get_pressure(self, repeats=5, wait=0):
         """
         Current pressure.
+
         :param repeats: the number of measurement repeats
         :param wait: waiting time between individual repeats
         :return: Current pressure in ???
         """
         msg = self.device.send("get-pressure", repeats, wait)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'pressure': msg.getDoubleParam(0)}
 

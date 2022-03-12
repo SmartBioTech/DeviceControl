@@ -1,10 +1,12 @@
 [![Python Package](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml)
 [![Docker](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml)
+[![docs](https://readthedocs.org/projects/devicecontrol/badge/?version=latest)](https://devicecontrol.readthedocs.io/en/latest/)
 
 # DeviceControl
 
 `DeviceControl` is a tool to provide unified interface to control and measure data in specific cultivation device.
-We recommend reading [wiki](https://github.com/SmartBioTech/DeviceControl/wiki) to get started with the tool.
+We recommend reading [wiki](https://github.com/SmartBioTech/DeviceControl/wiki) to get started with the tool 
+and [documentation](http://devicecontrol.readthedocs.io/) to get more details about the implementation. 
 
 ## Installation
 

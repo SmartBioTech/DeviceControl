@@ -8,6 +8,12 @@ from .AbstractClass import abstractattribute, Interface
 
 
 class Connector(metaclass=Interface):
+    """
+    An interface which every implemented Device must implement.
+    For additional information, see Wiki_.
+
+    .. _Wiki: https://github.com/SmartBioTech/DeviceControl/wiki/New-device
+    """
     def __init__(self, config: dict):
         self.setup = {}
         self.scheduler = WorkflowProvider().scheduler
@@ -29,6 +35,9 @@ class Connector(metaclass=Interface):
 
     @abstractattribute
     def interpreter(self) -> dict:
+        """
+        A dictionary with the defined commands {command_id: command_reference}
+        """
         pass
 
     def __str__(self):
@@ -39,19 +48,36 @@ class Connector(metaclass=Interface):
 
     @abstractmethod
     def disconnect(self) -> None:
+        """
+        Terminate the connection between the application and physical device.
+        """
         pass
 
     @abstractmethod
     def test_connection(self) -> bool:
+        """
+        Test the connection between the application and physical device.
+        """
         pass
 
     def get_command_reference(self, cmd_id):
+        """
+        Get the command reference by its ID.
+
+        :param cmd_id: ID of the command
+        :return: command reference
+        """
         command_reference = self.interpreter.get(cmd_id)
         if command_reference is None:
             raise AttributeError("Requested command ID is not defined in the device's Interpreter")
         return command_reference
 
-    def get_capabilities(self):
+    def get_capabilities(self) -> dict:
+        """
+        Retrieves information about the commands that the implemented device can execute.
+
+        :return: dictionary {command_id: (function_name, arguments)}
+        """
         result = {}
         for key, func in self.interpreter.items():
             arguments = list(func.__code__.co_varnames)
@@ -65,6 +91,13 @@ class Connector(metaclass=Interface):
         self.scheduler.schedule_job(job)
 
     def post_command(self, cmd, priority=2):
+        """
+        Queues a command for execution.
+
+        :param cmd:
+        :param priority: Priority in which the orders will execute.
+                         Commands with same priority will exeute in the order they were queued for execution.
+        """
         cmd.device_id = self.device_id
         self._queue.put(cmd, priority)
         if not self._is_queue_check_running:
@@ -72,6 +105,12 @@ class Connector(metaclass=Interface):
             t.start()
 
     def post_manual_command(self, cmd, priority=0):
+        """
+        Queues a command for execution and waits until it has been executed.
+
+        :param cmd: command object
+        :param priority: priority the command should take over other commands
+        """
         cmd.device_id = self.device_id
         self._queue.put(cmd, priority)
         if not self._is_queue_check_running:
@@ -102,6 +141,9 @@ class Connector(metaclass=Interface):
         return command
 
     def end(self):
+        """
+        Terminates the device.
+        """
         self.scheduler.is_active = False
         self.is_alive = False
         self.disconnect()
@@ -114,20 +156,31 @@ class Connector(metaclass=Interface):
         """
         return sys._getframe(1).f_code.co_name
 
-    def raise_error(self, function, message):
+    def _raise_error(self, function, message):
         raise Exception(function + ": " + str(message))
 
 
 class PriorityQueue:
-
+    """
+    A queue in which items are processed on an order based on their priority.
+    """
     def __init__(self):
         self._items = []
 
     def put(self, command, priority: int):
+        """
+        Put a command into the queue.
+
+        :param command: command object
+        :param priority: priority the command should take over other commands
+        """
         self._items.append((priority, command))
         self._items.sort(key=self._sort_by_priority)
 
     def get(self):
+        """
+        Gets an element from the front of the queue.
+        """
         return self._items.pop(0)[1]
 
     @staticmethod
@@ -135,6 +188,11 @@ class PriorityQueue:
         return elem[0]
 
     def has_items(self):
+        """
+        Checks if the queue is empty or not.
+
+        :return: False if empty, true if not.
+        """
         return len(self._items) != 0
 
     def __eq__(self, other):

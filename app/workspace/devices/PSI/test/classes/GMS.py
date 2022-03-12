@@ -2,6 +2,13 @@ from .. import Connector
 
 
 class GMS(Connector):
+    """
+    Commands:
+
+    - "1": self.get_info,
+    - "2": self.get_valve_flow,
+    - "3": self.set_valve_flow,
+    """
     def __init__(self, config):
         super(GMS, self).__init__(config)
         self._GAS_TYPES = ["CO2", "Air", "N2"]

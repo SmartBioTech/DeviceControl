@@ -28,23 +28,23 @@ class DeviceManagerTestCases(unittest.TestCase):
         device_type = 'PBR'
 
         expected_class = test.PBR
-        result = self.DM.load_class(device_class, device_type)
+        result = self.DM._load_class(device_class, device_type)
         self.assertEqual(expected_class, result)
 
         # unknown class
         device_class = 'Magic'
         device_type = 'PBR'
-        self.assertRaises(KeyError, self.DM.load_class, device_class, device_type)
+        self.assertRaises(KeyError, self.DM._load_class, device_class, device_type)
 
         # unknown type
         device_class = 'PSI'
         device_type = 'Magic'
-        self.assertRaises(KeyError, self.DM.load_class, device_class, device_type)
+        self.assertRaises(KeyError, self.DM._load_class, device_class, device_type)
 
     def test_new_device(self):
         config = {"device_class": 'PSI', "device_type": 'PBR', "device_id": 'my_id_23'}
         correct_device = test.PBR(config)
-        self.DM.load_class = mock.Mock(return_value=test.PBR)
+        self.DM._load_class = mock.Mock(return_value=test.PBR)
         device = self.DM.new_device(config)
         self.assertEqual(correct_device, device)
 
