@@ -1,0 +1,43 @@
+name: Docker Build and Publish Image
+on:
+  release:
+    types: [published]
+    paths:
+      - 'boot.sh'
+      - 'Dockerfile'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: bioarineo/devicecontrol
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+    - name: Set up Docker Buildx
+      uses: crazy-max/ghaction-docker-buildx@v1
+      with:
+        buildx-version: latest
+    - name: Prepare
+      id: prepare
+      run: |
+        echo ::set-output name=docker_image::${DOCKER_IMAGE}
+        echo ::set-output name=release_tag::${{ github.event.release.tag_name }}
+    - name: Docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Build Docker image - AMD platform
+      run: |
+        docker buildx build --platform linux/amd64 \
+        --tag ${{ steps.prepare.outputs.docker_image }}:latest-amd \
+        --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.release_tag }}-amd \
+        --push .
+    - name: Build Docker image - ARM platform
+      run: |
+        docker buildx build --platform linux/arm/v7 \
+        --tag ${{ steps.prepare.outputs.docker_image }}:latest-arm \
+        --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.release_tag }}-arm \
+        --push .

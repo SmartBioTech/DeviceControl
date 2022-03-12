@@ -366,7 +366,7 @@ class IntegrationTestCases(unittest.TestCase):
                   light_data[len(light_data) // 2]['value'],
                   light_data[len(light_data) // 2 + 1]['value']]
 
-        self.assertEqual(light_data[0]['value'], 20)
+        self.assertEqual(light_data[0]['value'], 100)
         self.assertIn(200, middle)
         self.assertEqual(light_data[-1]['value'], 20)
 

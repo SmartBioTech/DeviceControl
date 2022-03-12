@@ -1,45 +1,74 @@
-## Runner
+[![Python Package](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml)
+[![Docker](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml)
 
-Runner is a machine where `DeviceControl` will run in `docker` container. This machine first needs to be prepared for this task. It includes:
+# DeviceControl
 
-1.  run runner installation script (which prepares local database):
+`DeviceControl` is a tool to provide unified interface to control and measure data in specific cultivation device.
+We recommend reading [wiki](https://github.com/SmartBioTech/DeviceControl/wiki) to get started with the tool.
 
-`sudo -E env "PATH=$PATH" scripts/setup_runner.sh "<username>" "<password>"`
+## Installation
 
-2. enable connections to your mySQL database from outside of localhost (might even require to open firewall for port 3306)
+`DeviceControl` runs in a [`Docker` container](https://hub.docker.com/r/bioarineo/devicecontrol) with locally installed database.
+The reason for installation of database locally is to make data more persistent and prone to unintentional deletion.
 
-3. start docker image:
+1. Before we start, it is necessary to install `mySQL` database and `docker`:
 
-`cd scripts/ && ./redeploy.sh`
+    ```
+    sudo scripts/install_dependencies.sh
+   ```
 
-> Optionally install package `requests` for your local `python` installation to try the API locally. 
+2. Then we need to set up the database:
+
+    ```
+    sudo scripts/setup_database.sh "<username>" "<password>"
+    ```
+
+3. Set environment variable to DATABASE to your local IP address - this is used by `docker` to access the database
+
+   ```
+   DATABASE=$(/sbin/ifconfig <interface> | sed -En -e 's/.*inet ([0-9.]+).*/\1/p')
+   ```
+
+4. Enable connections to your `mySQL` database from outside of `localhost` (might even require opening firewall for port 3306)
+
+5. Download docker and start the `docker`:
+
+    ```
+    docker run -d --privileged -v /dev/serial/by-port/:/dev/serial/by-port/ -p 0.0.0.0:5000:5000 --restart unless-stopped --add-host="database:$DATABASE" --env-file DB_CONFIG --name "devicecontrol" bioarineo/devicecontrol:latest-<platform>
+    ```
+
+    where `<platform>` is either `amd` or `arm`. The `by-port` is mapped to `docker` file system to access devices connected to I/O ports.
+
+`DeviceControl` is running and ready to be used.
+
+Inspect and execute `scripts/example_run.py` to see demonstration of tool's usability on a simulated device.
 
 ---
 
-## Builder
+## Quick start
 
-### Install builder
-`sudo -E env "PATH=$PATH" scripts/install_docker.sh`
+Assuming `DeviceControl` is properly installed and running, follow these steps to quickly setup a device and execute a measurement:
 
-### Build new docker image
-`scripts/rebuild.sh`
+```python
+import requests
 
----
+# device configuration
+test_PBR_device = {
+    'device_id': PBR_id,
+    'device_class': 'test',
+    'device_type': 'PBR',
+    'address': 'null',
+}
 
-## DEVELOPERS only
+# register the device
+requests.post('http://localhost:5000/device', json=test_PBR_device)
 
-### Run in devel mode
-`./run.sh -h '<host>' -p <port>`
+# configuration of a command for measurement of temperature
+cmd = {'device_id': PBR_id,
+       'command_id': '2',
+       'await': True
+      }
 
-with given optional `host` (default localhost) and `port` (default 5000).
-Note that first you need to locally install requirements:
-
-`python3 -m pip install -r requirements.txt`
-
-### to run tests all tests (including integration tests):
-`tests/run_tests.sh`
-#### to run a single test case
-`tests/run_tests.sh tests.<file name without .py>`
-
-### to migrate database
-`migrations/migrate.sh`
+response = requests.post('http://localhost:5000/command', json=cmd)
+print("The current temperature is", response.json()['data']['temp'])
+```

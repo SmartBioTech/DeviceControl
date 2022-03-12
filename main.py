@@ -1,4 +1,5 @@
 import os
+import sys
 import click
 from flask_migrate import Migrate
 from app import create_app, db, setup_app_manager
@@ -18,7 +19,8 @@ def test(test_names):
         tests = unittest.TestLoader().loadTestsFromNames(test_names)
     else:
         tests = unittest.TestLoader().discover('tests')
-    unittest.TextTestRunner(verbosity=2).run(tests)
+    result = unittest.TextTestRunner(verbosity=2).run(tests)
+    sys.exit(len(result.failures))
 
 
 @app.cli.command()

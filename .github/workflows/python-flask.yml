@@ -1,0 +1,35 @@
+name: Python package
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Shutdown Ubuntu MySQL (SUDO)
+      run: sudo service mysql stop
+    - name: Set up MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql database: 'device_control_test'
+        mysql user: 'TestUser'
+        mysql password: 'pass'
+    - name: Install libmysqlclient-dev
+      run: sudo apt-get install -y libmysqlclient-dev
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Run tests
+      run: |
+        tests/run_tests.sh --host "127.0.0.1"
