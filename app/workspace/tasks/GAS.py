@@ -9,6 +9,7 @@ class GASMeasureAll(BaseTask):
     Measures all measurable values and saves them to database.
 
     Extra parameters:
+
     'device_id': str - ID of target device,
     'sleep_period': float - measurement period
     """
