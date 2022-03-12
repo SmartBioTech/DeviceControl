@@ -18,7 +18,7 @@ class DeviceManager:
 
         Extra parameters:
 
-        - 'device_id': string - ID of the device,
+        - 'device_id': string - unique ID of the device,
         - 'device_class': string - Class of the device,
         - 'device_type': string - Type of the device,
         - 'address': string - Address on which the connection to the device can be established,
