@@ -1,5 +1,6 @@
 [![Python Package](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/python-flask.yml)
 [![Docker](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml/badge.svg)](https://github.com/SmartBioTech/DeviceControl/actions/workflows/docker.yml)
+[![docs](https://readthedocs.org/projects/devicecontrol/badge/?version=latest)](https://devicecontrol.readthedocs.io/en/latest/)
 
 # DeviceControl
 
