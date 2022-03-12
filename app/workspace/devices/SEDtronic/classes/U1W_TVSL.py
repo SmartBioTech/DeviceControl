@@ -6,7 +6,7 @@ class U1W_TVSL(Connector):
     """
     UNICA 1-wire module TVSL is a device which is able to measure physical quantities such as temperature, humidity,
     illuminance. Using 1-wire bus it is possible to read these values with superior device and use it for other
-    purposes (e.g. heating, lights, pumps, etc.). 
+    purposes (e.g. heating, lights, pumps, etc.).
     """
     def __init__(self, config: dict):
         super(U1W_TVSL, self).__init__(config)
