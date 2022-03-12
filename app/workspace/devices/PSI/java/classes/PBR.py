@@ -8,6 +8,31 @@ class PBR(JavaDevice):
     device. The product line comprises three instruments that differ in the cultivation vessel capacity - 400 ml,
     1 and 3 l. All Photobioreactor models may be supplied with a number of useful accessories that facilitate to meet
     wide range of special experimental conditions.
+
+    Commands:
+
+    - "1": self.get_temp_settings,
+    - "2": self.get_temp,
+    - "3": self.set_temp,
+    - "4": self.get_ph,
+    - "5": self.measure_od,
+    - "6": self.get_pump_params,
+    - "7": self.set_pump_params,
+    - "8": self.set_pump_state,
+    - "9": self.get_light_intensity,
+    - "10": self.set_light_intensity,
+    - "11": self.turn_on_light,
+    - "12": self.get_pwm_settings,
+    - "13": self.set_pwm,
+    - "14": self.get_o2,
+    - "15": self.set_thermoregulator_state,
+    - "16": self.measure_ft,
+    - "17": self.get_co2,
+    - "18": self.measure_all,
+    - "19": self.measure_AUX,
+    - "20": self.flash_LED,
+    - "21": self.get_hardware_address,
+    - "22": self.get_cluster_name
     """
     def __init__(self, config: dict):
         super(PBR, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_PBR.config")
@@ -302,6 +327,7 @@ class PBR(JavaDevice):
 
         :param attribute: {int} -- measuring light attribute
         :return:
+
         - qy {real} -- quantum yield calculated as (fm-ft)/fm
         - ft-flash {int} -- steady-state terminal fluorescence
         - ft-background {int} -- steady-state terminal fluorescence background signal
