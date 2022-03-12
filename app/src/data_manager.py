@@ -156,7 +156,7 @@ class DataManager:
 
         :param log_id: ID of the log item to retrieve. Is ignored if the last_time parameter is not None.
         :param last_time: The timestamp in format <YYYYmmddHHMMSSfff>. Data from before this time will be excluded
-        from the response. If it's not None, the log_id parameter is ignored.
+                          from the response. If it's not None, the log_id parameter is ignored.
         :param device_id: device ID of the device
         :param data_type: defines the type of data to retrieve, defaults to 'values'
         :return: a dictionary with the data from persistent storage
