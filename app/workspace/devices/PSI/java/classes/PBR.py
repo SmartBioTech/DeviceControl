@@ -71,7 +71,7 @@ class PBR(JavaDevice):
 
         msg = self.device.send("get-tr-settings")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {
             "temp": msg.getDoubleParam(0),
@@ -88,7 +88,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("get-tr-temp")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'temp': msg.getDoubleParam(0)}
 
@@ -112,7 +112,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("get-ph", repeats, wait)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'pH': msg.getDoubleParam(0)}
 
@@ -126,7 +126,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("measure-od", attribute, repeats)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         # get photon intensity for measuring light and background light
         pi = msg.getDoubleParam(0), msg.getDoubleParam(1)
@@ -149,7 +149,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("get-pump-info", pump)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {
             "pump_direction": msg.getIntParam(0),
@@ -198,7 +198,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("get-actinic-light-settings", attribute)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {
             "light_intensity": msg.getDoubleParam(0),
@@ -256,7 +256,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("get-pwm-settings")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {
             "pwm_pulse": msg.getIntParam(0),
@@ -289,7 +289,7 @@ class PBR(JavaDevice):
 
         msg = self.device.send("get-o2/h2", repeats, wait, raw)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'o2': msg.getDoubleParam(0)}
 
@@ -312,7 +312,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("measure-ft", attribute)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {
             "ft_flash": msg.getIntParam(0),
@@ -337,7 +337,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("measure-qy", attribute)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {
             # TODO: implement check for extreme / noisy measures that could possibly lead to crazy results in qy calculations
@@ -361,7 +361,7 @@ class PBR(JavaDevice):
         """
         msg = self.device.send("get-co2", repeats, raw)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return {'co2': msg.getDoubleParam(0)}
 

@@ -38,28 +38,28 @@ class GMS(JavaDevice):
         """
         msg = self.device.send("who")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         info = {}
         info['model'] = msg.getParam(0)
         msg = self.device.send("get-hw-config")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         info['model-type'] = msg.getParam(0)
         msg = self.device.send("get-serial-nr")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         info['sn'] = msg.getIntParam(0)
         msg = self.device.send("get-fw-version")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         info['fw'] = msg.getParam(0)
         msg = self.device.send("get-build-nr")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         info['fw-build'] = msg.getIntParam(0)
         msg = self.device.send("get-device-id")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         info['id'] = msg.getIntParam(0)
         return True, info
 
@@ -69,7 +69,7 @@ class GMS(JavaDevice):
         """
         msg = self.device.send("who")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return True, {
             "type": msg.getParam(0)
@@ -81,7 +81,7 @@ class GMS(JavaDevice):
         """
         msg = self.device.send("get-device-id")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return True, {
             "sn": msg.getIntParam(0)
@@ -90,7 +90,7 @@ class GMS(JavaDevice):
     def get_serial_nr(self):
         msg = self.device.send("get-serial-nr")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return True, {
             "sn": msg.getIntParam(0)
@@ -99,7 +99,7 @@ class GMS(JavaDevice):
     def get_fw_ver(self):
         msg = self.device.send("get-fw-version")
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return True, {
             "fw": msg.getParam(0)
@@ -115,7 +115,7 @@ class GMS(JavaDevice):
 
         msg = self.device.send("get-valve-flow", valve)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return True, {
             "valve_flow_current": msg.getDoubleParam(0),
@@ -145,7 +145,7 @@ class GMS(JavaDevice):
 
         msg = self.device.send("get-valve-info", valve)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
 
         return True, {
             "valve_max_flow": msg.getDoubleParam(0),
@@ -162,12 +162,12 @@ class GMS(JavaDevice):
         """
         msg = self.device.send("get-valve-flow", 0)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         data = {}
         data['valve-flow-0'] = msg.getDoubleParam(0)
         msg = self.device.send("get-valve-flow", 1)
         if msg.isError():
-            self.raise_error(self.whoami(), msg.getError())
+            self._raise_error(self.whoami(), msg.getError())
         data['valve-flow-1'] = msg.getDoubleParam(0)
 
         return True, data

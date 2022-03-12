@@ -33,7 +33,7 @@ class SICS(Connector):
         try:
             return {'weight': result['value'] * units[result['unit']], 'attribute': int(result['stable'])}
         except KeyError:
-            self.raise_error(self.whoami(), "Unknown unit {}".format(result['unit']))
+            self._raise_error(self.whoami(), "Unknown unit {}".format(result['unit']))
 
     def get_info(self):
         """
