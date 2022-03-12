@@ -34,6 +34,7 @@ class PBR(JavaDevice):
         """
         Get information about currently set temperature, maximal and
         minimal allowed temperature.
+
         :return: The current settings structured in a dictionary.
         """
 
@@ -51,6 +52,7 @@ class PBR(JavaDevice):
     def get_temp(self):
         """
         Get current temperature in Celsius degree.
+
         :return: The current temperature.
         """
         msg = self.device.send("get-tr-temp")
@@ -62,6 +64,7 @@ class PBR(JavaDevice):
     def set_temp(self, temp):
         """
         Set desired temperature in Celsius degree.
+
         :param temp: The temperature.
         :return: True if was successful, False otherwise.
         """
@@ -71,6 +74,7 @@ class PBR(JavaDevice):
     def get_ph(self, repeats=5, wait=0):
         """
         Get current pH (dimensionless.)
+
         :param repeats: The number of measurement repeats
         :param wait: Waiting time between individual repeats
         :return: The current pH.
@@ -84,6 +88,7 @@ class PBR(JavaDevice):
     def measure_od(self, attribute=0, repeats=5):
         """
         Measure current Optical Density (OD, dimensionless).
+
         :param attribute: Optical path to be measured ()
         :param repeats: The number of measurement repeats
         :return: Measured OD
@@ -107,6 +112,7 @@ class PBR(JavaDevice):
     def get_pump_params(self, pump):
         """
         Get parameters for given pump.
+
         :param pump: Given pump
         :return: The current settings structured in a dictionary.
         """
@@ -126,6 +132,7 @@ class PBR(JavaDevice):
     def set_pump_params(self, pump, direction, flow):
         """
         Set up the rotation direction and flow for given pump.
+
         :param pump: Given pump
         :param direction: Rotation direction (1 right, -1 left)
         :param flow: Desired flow rate
@@ -137,6 +144,7 @@ class PBR(JavaDevice):
     def set_pump_state(self, pump, on):
         """
         Turns on/off given pump.
+
         :param pump: ID of a pump
         :param on: True to turn on, False to turn off
         :return: True if was successful, False otherwise.
@@ -147,9 +155,13 @@ class PBR(JavaDevice):
     def get_light_intensity(self, attribute=0):
         """
         Checks for current (max?) light intensity.
-        Items: "intensity": current light intensity (float) in μE,
-               "max": maximal intensity (float) in μE,
-               "on": True if light is turned on (bool)
+
+        Items:
+
+        - "intensity": current light intensity (float) in μE,
+        - "max": maximal intensity (float) in μE,
+        - "on": True if light is turned on (bool)
+
         :param attribute: Given attribute ID
         :return: The current settings structured in a dictionary.
         """
@@ -167,6 +179,7 @@ class PBR(JavaDevice):
     def set_light_intensity(self, attribute, intensity):
         """
         Control LED panel on photobioreactor.
+
         :param attribute: Given attribute (0 for red light, 1 for blue light)
         :param intensity: Desired intensity
         :return: True if was successful, False otherwise.
@@ -177,6 +190,7 @@ class PBR(JavaDevice):
     def set_ratio_light_intensity(self, intensity, ratio=0.5):
         """
         Set target light intensity as a sum of red and blue lights, mixed according to given ratio.
+
         :param intensity: target light intensity
         :param ratio: (red/ratio) == (blue/(1-ratio))
         :return: True if both were successful, False otherwise.
@@ -188,6 +202,7 @@ class PBR(JavaDevice):
     def turn_on_light(self, attribute=0, on=True):
         """
         Turn on/off photobioreactor LED panel.
+
         :param attribute: Given attribute
         :param on: True turns on, False turns off
         :return: True if was successful, False otherwise.
@@ -198,10 +213,14 @@ class PBR(JavaDevice):
     def get_pwm_settings(self):
         """
         Checks for current stirring settings.
-        Items: "pulse": current stirring in %,
-               "min": minimal stirring in %,
-               "max": maximal stirring in %,
-               "on": True if stirring is turned on (bool)
+
+        Items:
+
+        - "pulse": current stirring in %,
+        - "min": minimal stirring in %,
+        - "max": maximal stirring in %,
+        - "on": True if stirring is turned on (bool)
+
         :return: The current settings structured in a dictionary.
         """
         msg = self.device.send("get-pwm-settings")
@@ -246,6 +265,7 @@ class PBR(JavaDevice):
     def set_thermoregulator_state(self, on=0):
         """
         Set state of thermoregulator.
+
         :param on: 0 - off, 1 - on, 2 - freeze
         :return: True if was successful, False otherwise.
         """
@@ -255,6 +275,7 @@ class PBR(JavaDevice):
     def measure_ft(self, attribute=0):
         """
         Measure steady-state terminal fluorescence.
+
         :param attribute: 0 -> blue (455 nm) measuring LEDs, 1 -> red (627 nm) measuring LEDs
         :return: fluorescence value in arbitrary units
         """
@@ -269,18 +290,18 @@ class PBR(JavaDevice):
         }
 
     def measure_qy(self, attribute=0):
-        """ Measure steady-state terminal and maximal fluorescence and calculate quantum yield
+        """
+        Measure steady-state terminal and maximal fluorescence and calculate quantum yield
         !This measure NOT to be included with measure_all
 
-        Arguments:
-            attribute {int} -- measuring light attribute
-        Returns:
-            qy {real} -- quantum yield calculated as (fm-ft)/fm
-            ft-flash {int} -- steady-state terminal fluorescence
-            ft-background {int} -- steady-state terminal fluorescence background signal
-            fm-flash{int} -- maximal fluorescence
-            fm-background {int} -- maximal fluorescence background signal
-            sp-delay-cycles {int} -- ?number of cycles before reaching stable signal?
+        :param attribute: {int} -- measuring light attribute
+        :return:
+        - qy {real} -- quantum yield calculated as (fm-ft)/fm
+        - ft-flash {int} -- steady-state terminal fluorescence
+        - ft-background {int} -- steady-state terminal fluorescence background signal
+        - fm-flash{int} -- maximal fluorescence
+        - fm-background {int} -- maximal fluorescence background signal
+        - sp-delay-cycles {int} -- ?number of cycles before reaching stable signal?
         """
         msg = self.device.send("measure-qy", attribute)
         if msg.isError():
@@ -301,6 +322,7 @@ class PBR(JavaDevice):
     def get_co2(self, raw=True, repeats=5):
         """
         Measure dissolved CO2 concentration.
+
         :param raw: True for raw data, False for calibrated data
         :param repeats: the number of measurement repeats
         :return: averaged CO2 concentration
@@ -314,7 +336,7 @@ class PBR(JavaDevice):
     def measure_all(self, pump_id=5):
         """
         Measures all basic measurable values.
-        :param ft_attribute: attribute for ft_measure
+
         :param pump_id: id of particular pump
         :return: dictionary of all measured values
         """
@@ -384,6 +406,7 @@ class PBR(JavaDevice):
     def measure_AUX(self, attribute):
         """
         Values of AUX auxiliary input voltage.
+
         :param attribute: ???
         :return: ???
         """
@@ -392,6 +415,7 @@ class PBR(JavaDevice):
     def flash_LED(self):
         """
         Triggers a flashing sequence and is used to physically identify the PBR.
+
         :return: True if was successful, False otherwise
         """
         raise NotImplementedError("The method not implemented")
@@ -399,6 +423,7 @@ class PBR(JavaDevice):
     def get_hardware_address(self):
         """
         Get the MAC address of the PBR.
+
         :return: the MAC address
         """
         raise NotImplementedError("The method not implemented")
@@ -406,6 +431,7 @@ class PBR(JavaDevice):
     def get_cluster_name(self):
         """
         The name of the bioreactor array / cluster.
+
         :return: the cluster name
         """
         raise NotImplementedError("The method not implemented")

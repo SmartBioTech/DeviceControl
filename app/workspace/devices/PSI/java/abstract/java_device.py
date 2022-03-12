@@ -7,6 +7,9 @@ from ..utils import controller
 
 
 class JavaDevice(Connector):
+    """
+    Class to connect to Java-based devices and communicate with them.
+    """
     def __init__(self, config, java_config_path):
         super(JavaDevice, self).__init__(config)
         self.controller = controller
@@ -14,6 +17,9 @@ class JavaDevice(Connector):
         self.interpreter = {}
 
     def connect(self, java_config_path):
+        """
+        Connect to CommanderConnector in JVM
+        """
         if not self.controller.is_started:
             self.controller.start_controller()
 
@@ -42,6 +48,12 @@ class JavaDevice(Connector):
         return super(JavaDevice, self).get_command_reference(cmd_id)
 
     def _execute_command(self, command: Command):
+        """
+        Method to execute given Command
+
+        :param command: a Command to be executed
+        :return: response from the command
+        """
         try:
             validity = True
             response = self.controller.execute_command(self.get_command_reference(command.command_id), command.args)
