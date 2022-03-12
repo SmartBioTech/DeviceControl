@@ -34,8 +34,8 @@ class AppManager:
     @log_initialise('device')
     def register_device(self, config: dict) -> Response:
         """
-        Register a new device.
-        For reference, see https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#device-initiation
+        Register a new device (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#device-initiation>`__).
 
         :param config: A dictionary with pre-defined keys
         :return: Response object
@@ -73,8 +73,8 @@ class AppManager:
 
     def command(self, config: dict) -> Response:
         """
-        Run a specific command.
-        For reference, see https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#command
+        Run a specific command (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#command>`__).
 
         :param config: A dictionary with pre-defined keys
         :return: Response object
@@ -103,8 +103,8 @@ class AppManager:
     @log_initialise('task')
     def register_task(self, config: dict) -> Response:
         """
-        Register a new task.
-        For reference, see https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#task-initiation
+        Register a new task (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#task-initiation>`__).
 
         :param config: A dictionary with pre-defined keys
         :return: Response object
@@ -138,7 +138,8 @@ class AppManager:
 
     def ping(self) -> Response:
         """
-        Test the application responsiveness.
+        Get status information about the running devices and tasks (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#ping>`__).
 
         :return: Response object
         """
@@ -149,7 +150,8 @@ class AppManager:
 
     def get_data(self, config: dict) -> Response:
         """
-        Retrieves data in supported format as specified at https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#get-data
+        Retrieves data in supported format (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#get-data>`__).
 
         :param config: A dictionary with pre-defined keys
         :return: Response object
@@ -190,7 +192,8 @@ class AppManager:
     @log_terminate_all
     def end(self) -> Response:
         """
-        Ends the application. For reference, see https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#end
+        Ends the application (see
+        `details <https://github.com/SmartBioTech/DeviceControl/wiki/End-Points#end>`__).
 
         :return: Response object
         """
