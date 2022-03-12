@@ -1,4 +1,5 @@
 import logging
+from functools import wraps
 
 
 class Logger:
@@ -12,7 +13,9 @@ class Logger:
 
 
 def log_initialise(init_type):
+    @wraps(init_type)
     def wrapper(func):
+        @wraps(func)
         def wrapped_f(self, config):
             result = func(self, config)
             from ... import app_manager
@@ -24,6 +27,7 @@ def log_initialise(init_type):
 
 
 def log_terminate(func):
+    @wraps(func)
     def wrapper(self, id):
         result = func(self, id)
         from ... import app_manager
@@ -34,6 +38,7 @@ def log_terminate(func):
 
 
 def log_terminate_all(func):
+    @wraps(func)
     def wrapper(self):
         result = func(self)
         from ... import app_manager
