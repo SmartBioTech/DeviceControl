@@ -4,7 +4,8 @@
 # DeviceControl
 
 `DeviceControl` is a tool to provide unified interface to control and measure data in specific cultivation device.
-We recommend reading [wiki](https://github.com/SmartBioTech/DeviceControl/wiki) to get started with the tool.
+We recommend reading [wiki](https://github.com/SmartBioTech/DeviceControl/wiki) to get started with the tool 
+and [documentation](http://devicecontrol.readthedocs.io/) to get more details about the implementation. 
 
 ## Installation
 
