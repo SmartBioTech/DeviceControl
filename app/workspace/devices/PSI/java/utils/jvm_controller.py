@@ -9,7 +9,9 @@ from .. import Scheduler, Job
 
 
 class Controller:
-
+    """
+    Wrapper to control Java classes.
+    """
     def __init__(self):
         self.lock = Lock()
         self.commander_connector = None
@@ -17,12 +19,18 @@ class Controller:
         self.is_started = False
 
     def start_controller(self):
+        """
+        Starts controller including JVM.
+        """
         self.scheduler = Scheduler()
         self.scheduler.start()
         self.execute_command(self.start_jvm, [])
         self.is_started = True
 
     def start_jvm(self):
+        """
+        Start Java virtual machine.
+        """
         self.lock.acquire()
         if not self.is_jvm_started():
             jpype.addClassPath('app/workspace/devices/PSI/java/lib/jar/bioreactor-commander-0.8.7.jar')
@@ -32,6 +40,9 @@ class Controller:
         self.lock.release()
 
     def load_plugins(self):
+        """
+        Load plugins to control PSI devices.
+        """
         if not self.plugins_loaded:
             server_plugin_manager = jpype.JClass("psi.bioreactor.server.plugin.ServerPluginManager")
             sleep(10)

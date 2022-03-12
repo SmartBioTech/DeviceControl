@@ -3,6 +3,9 @@ from ..libs.Connection import Connection
 
 
 class TH_IB2(Connector):
+    """
+    On-wall temperature + humidity sensor.
+    """
     def __init__(self, config: dict):
         super(TH_IB2, self).__init__(config)
         self.connection = Connection(self.address, "8080", self.device_id)
@@ -15,7 +18,8 @@ class TH_IB2(Connector):
     def get_temperature(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius).
-        :param unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
+
+        :param temp_unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
         :return: Current temperature value in selected unit.
         """
         sensor, codes = self.connection.read_sensor()
@@ -32,6 +36,7 @@ class TH_IB2(Connector):
     def get_humidity(self):
         """
         Get sensor humidity (relative humidity in %).
+
         :return: Current humidity value.
         """
         sensor, codes = self.connection.read_sensor()
@@ -43,6 +48,7 @@ class TH_IB2(Connector):
     def measure_all(self, temp_unit="C"):
         """
         Get sensor temperature in specified units (default is degrees of Celsius) and humidity in %.
+
         :param unit: Temperature unit ("C" for Celsius, "F" for Farenheit)
         :return: Current temperature and humidity values in selected unit.
      

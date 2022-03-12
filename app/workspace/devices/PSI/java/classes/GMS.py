@@ -2,6 +2,10 @@ from ..abstract.java_device import JavaDevice
 
 
 class GMS(JavaDevice):
+    """
+    Gas Mixing System GMS 150 can produce precise mixtures of up to 4 different gases. The ﬂows of the individual
+    input gases are measured by thermal mass ﬂow meters and adjusted by integrated mass ﬂow controllers.
+    """
     def __init__(self, config: dict):
         super(GMS, self).__init__(config, "app/workspace/devices/PSI/java/lib/config/device_GMS.config")
         self.interpreter = {
@@ -17,6 +21,9 @@ class GMS(JavaDevice):
         }
 
     def get_info(self):
+        """
+        Get general information about the device.
+        """
         msg = self.device.send("who")
         if msg.isError():
             self.raise_error(self.whoami(), msg.getError())
@@ -45,6 +52,9 @@ class GMS(JavaDevice):
         return True, info
 
     def get_device_type(self):
+        """
+        Get type of device.
+        """
         msg = self.device.send("who")
         if msg.isError():
             self.raise_error(self.whoami(), msg.getError())
@@ -54,6 +64,9 @@ class GMS(JavaDevice):
         }
 
     def get_device_id(self):
+        """
+        Get device ID.
+        """
         msg = self.device.send("get-device-id")
         if msg.isError():
             self.raise_error(self.whoami(), msg.getError())
@@ -83,6 +96,7 @@ class GMS(JavaDevice):
     def get_valve_flow(self, valve=0):
         """
         Get value (L/min) of current flow in the given valve.
+
         :param valve: ID of the valve (0 for CO2, 1 for Air)
         :return: The current settings of the valve flow and actual value, both in (L/min).
         """
@@ -101,6 +115,7 @@ class GMS(JavaDevice):
     def set_valve_flow(self, valve, value):
         """
         Set value (L/min) of current flow in the given valve.
+
         :param valve: ID of the valve (0 for CO2, 1 for Air)
         :param value: desired value for valve flow in (L/min).
         :return: True if was successful, False otherwise.
@@ -111,6 +126,7 @@ class GMS(JavaDevice):
     def get_valve_info(self, valve=0):
         """
         Gives information about the valve
+
         :param valve: ID of the valve (0 for CO2, 1 for Air)
         :return: A dictionary with gas type and maximal allowed flow.
         """
@@ -128,7 +144,9 @@ class GMS(JavaDevice):
 
     def measure_all(self):
         """
-        TBA
+        Measures all basic measurable values.
+
+        :return: dictionary of all measured values
         """
         msg = self.device.send("get-valve-flow", 0)
         if msg.isError():
