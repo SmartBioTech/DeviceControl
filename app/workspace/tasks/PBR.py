@@ -15,13 +15,14 @@ class PBRMeasureAll(BaseTask):
     Automatically detects outliers for optical density.
 
     Extra parameters:
-    'device_id': str - ID of target device,
-    'sleep_period': float - measurement period,
-    'max_outliers': int - maximum number of outliers on row,
-    'pump_id': int - control pump ID,
-    'lower_tol': int - lower outlier tolerance,
-    'upper_tol': int - upper outlier tolerance,
-    'od_attribute': int - OD channel to be used
+
+    - 'device_id': str - ID of target device,
+    - 'sleep_period': float - measurement period,
+    - 'max_outliers': int - maximum number of outliers on row,
+    - 'pump_id': int - control pump ID,
+    - 'lower_tol': int - lower outlier tolerance,
+    - 'upper_tol': int - upper outlier tolerance,
+    - 'od_attribute': int - OD channel to be used
     """
     def __init__(self, config):
         self.__dict__.update(config)
@@ -85,6 +86,11 @@ class PBRMeasureAll(BaseTask):
         }
 
     def get_od_for_init(self):
+        """
+        Measure sample value of OD.
+
+        :return: obtained value
+        """
         cmd = Command(self.device_id, "5",
                       [self.od_attribute],
                       self.task_id,
@@ -96,8 +102,13 @@ class PBRMeasureAll(BaseTask):
             return cmd.response
 
     def measure_initial_od_average(self):
+        """
+        Collect the OD value from 5 measurements and
+        calculate the average OD from the measured data.
+
+        :return: measured value
+        """
         data = []
-        # collect the OD value from 5 measurements
         while len(data) < 5:
             od = self.get_od_for_init()
             if od is not None:
@@ -107,7 +118,6 @@ class PBRMeasureAll(BaseTask):
         computed = False
         average = 0
 
-        # calculate the average OD from the measured data
         while not computed:
             mean_value = mean(data)
             median_value = median(data)
@@ -130,11 +140,12 @@ class PBRMeasureAll(BaseTask):
     def handle_outlier(self, measured_od) -> bool:
         """
         Decides whether the measured OD value is an outlier or not.
+
         :param measured_od: optical density value
         :return: True if it is an outlier, False otherwise
         """
-        lower_tol = self.calculate_tolerance(-self.lower_tol)
-        upper_tol = self.calculate_tolerance(self.upper_tol)
+        lower_tol = self._calculate_tolerance(-self.lower_tol)
+        upper_tol = self._calculate_tolerance(self.upper_tol)
 
         if lower_tol <= measured_od <= upper_tol:
             self.outliers = 0
@@ -149,12 +160,13 @@ class PBRMeasureAll(BaseTask):
             else:
                 return True
 
-    def calculate_tolerance(self, value):
+    def _calculate_tolerance(self, value):
         return ((100 + value) / 100) * self.average_od
 
     def calculate_average(self):
         """
         Helper method which calculates the average of a list while removing the elements from the objects deque.
+
         :return: The average of the deque
         """
         my_list = []
@@ -164,6 +176,9 @@ class PBRMeasureAll(BaseTask):
         return sum(my_list) / len(my_list)
 
     def start(self):
+        """
+        Start the task.
+        """
         t = Thread(target=self._run)
         t.start()
 
@@ -197,6 +212,9 @@ class PBRMeasureAll(BaseTask):
             sleep(self.sleep_period)
 
     def end(self):
+        """
+        End the task.
+        """
         self.is_active = False
 
 
@@ -235,12 +253,13 @@ class PBRGeneralPump(BaseTask, Observer):
     Turns on/off (by specifying command for that) when OD reaches max_od/min_od value.
 
     Extra parameters:
-    'min_od': int - lowed OD bound,
-    'max_od': int - upper OD bound,
-    'device_id': str - ID of target device,
-    'measure_all_task_id': str - associated measurement task,
-    'pump_on_command': dict- command to turn on pump,
-    'pump_off_command': dict - command to turn off pump
+
+    - 'min_od': int - lowed OD bound,
+    - 'max_od': int - upper OD bound,
+    - 'device_id': str - ID of target device,
+    - 'measure_all_task_id': str - associated measurement task,
+    - 'pump_on_command': dict- command to turn on pump,
+    - 'pump_off_command': dict - command to turn off pump
     """
     def __init__(self, config):
         self.__dict__.update(config)
@@ -260,6 +279,12 @@ class PBRGeneralPump(BaseTask, Observer):
         super(PBRGeneralPump, self).__init__(config)
 
     def get_pump_command(self, state: bool) -> Command:
+        """
+        Create command to change pump state.
+
+        :param state: desired pump state
+        :return: create Command
+        """
         if state:
             return Command(self.device_id, self.pump_on_command.get("command_id"),
                            eval(self.pump_on_command.get("arguments", "[]")), self.task_id)
@@ -271,9 +296,15 @@ class PBRGeneralPump(BaseTask, Observer):
         self.stabilize(observable.value)
 
     def start(self):
+        """
+        Start the task.
+        """
         pass
 
     def end(self):
+        """
+        End the task.
+        """
         pass
 
     def is_od_value_too_high(self, od):
@@ -289,6 +320,11 @@ class PBRGeneralPump(BaseTask, Observer):
         self.change_pump_state(False)
 
     def change_pump_state(self, state: bool):
+        """
+        Switch state of the pump.
+
+        :param state: target state
+        """
         for try_n in range(5):
             command = self.get_pump_command(state)
             self.device.post_command(command, 1)
@@ -301,6 +337,11 @@ class PBRGeneralPump(BaseTask, Observer):
         raise ConnectionError
 
     def stabilize(self, od):
+        """
+        Update state of pump if OD is out of allowed bounds
+
+        :param od: current OD
+        """
         if self.is_od_value_too_high(od):
             if not self.is_pump_on:
                 self.turn_pump_on()
