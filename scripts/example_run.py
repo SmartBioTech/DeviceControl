@@ -15,7 +15,7 @@ test_PBR_device = {
     'address': 'null',
 }
 
-response = requests.post('http://localhost:5000/device', json=test_PBR_device)
+response = requests.post(ADDRESS + 'device', json=test_PBR_device)
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
@@ -37,7 +37,7 @@ measure_all_task = {
     'od_attribute': 1
 }
 
-response = requests.post('http://localhost:5000/task', json=measure_all_task)
+response = requests.post(ADDRESS + 'task', json=measure_all_task)
 print(f'{"was successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
@@ -58,7 +58,7 @@ turbidostat_task = {
     'pump_off_command': {'command_id': '8', 'arguments': '[5, False]'}
 }
 
-response = requests.post('http://localhost:5000/task', json=turbidostat_task)
+response = requests.post(ADDRESS + 'task', json=turbidostat_task)
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
@@ -73,7 +73,7 @@ cmd = {'device_id': PBR_id,
        'command_id': '3',
        'arguments': '[30]'
        }
-response = requests.post('http://localhost:5000/command', json=cmd)
+response = requests.post(ADDRESS + 'command', json=cmd)
 print(f'{"successful" if response.json()["success"] and response.json()["data"] is None else "failed"}')
 assert response.json()["success"] and response.json()["data"] is None
 
@@ -85,7 +85,7 @@ cmd = {'device_id': PBR_id,
        'await': True
        }
 
-response = requests.post('http://localhost:5000/command', json=cmd)
+response = requests.post(ADDRESS + 'command', json=cmd)
 if response.json()["success"]:
     print(response.json()["data"])
 else:
@@ -97,7 +97,7 @@ assert response.json()["data"] == {'temp': 25}
 print('Get all measured values... ', end="")
 
 # ask for all values
-response = requests.get('http://localhost:5000/data?device_id={}&type=values'.format(PBR_id))
+response = requests.get(ADDRESS + 'data?device_id={}&type=values'.format(PBR_id))
 print(f'{"successful" if response.json()["success"] and len(response.json()["data"]) != 0 else "failed"}')
 assert response.json()["success"] and len(response.json()["data"]) != 0
 
@@ -113,7 +113,7 @@ print('Check all events... ', end="")
 # ask for all events
 all_events = {'device_id': PBR_id,
               'type': 'events'}
-response = requests.get('http://localhost:5000/data?device_id={}&type=events'.format(PBR_id))
+response = requests.get(ADDRESS + 'data?device_id={}&type=events'.format(PBR_id))
 print(f'{"successful" if response.json()["success"] and len(response.json()["data"]) != 0 else "failed"}')
 assert response.json()["success"] and len(response.json()["data"]) != 0
 
@@ -122,7 +122,7 @@ print('Get all unseen measured values... ', end="")
 
 # ask again with new log_id to check if got only new ones
 last = max(values_keys_first)
-URL = 'http://localhost:5000/data?device_id={}&type=values&log_id={}'
+URL = ADDRESS + 'data?device_id={}&type=values&log_id={}'
 response = requests.get(URL.format(PBR_id, last))
 print(f'{"successful" if response.json()["success"] and len(response.json()["data"]) != 0 else "failed"}')
 assert response.json()["success"] and len(response.json()["data"]) != 0
@@ -144,7 +144,7 @@ print('Get data from a time point... ', end="")
 from_time = datetime.utcnow().strftime("%Y%m%d%H%M%S%f")
 print('*Sleep for 15 seconds.*')
 time.sleep(15)
-URL = 'http://localhost:5000/data?device_id={}&type=values&time={}'
+URL = ADDRESS + 'data?device_id={}&type=values&time={}'
 response = requests.get(URL.format(PBR_id, from_time))
 print(f'{"successful" if response.json()["success"] and len(response.json()["data"]) != 0 else "failed"}')
 
@@ -158,7 +158,7 @@ print('Starting a test device... ', end="")
 PBR_id_2 = 'PBR-PSI-test02'
 test_PBR_device['device_id'] = PBR_id_2
 
-response = requests.post('http://localhost:5000/device', json=test_PBR_device)
+response = requests.post(ADDRESS + 'device', json=test_PBR_device)
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
@@ -170,7 +170,7 @@ measure_all_task_id_2 = 'task-measure-PBR-test-02'
 measure_all_task['task_id'] = measure_all_task_id_2
 measure_all_task['device_id'] = PBR_id_2
 
-response = requests.post('http://localhost:5000/task', json=measure_all_task)
+response = requests.post(ADDRESS + 'task', json=measure_all_task)
 print(f'{"was successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
@@ -182,7 +182,7 @@ turbidostat_task['task_id'] = pump_task_id_2
 turbidostat_task['device_id'] = PBR_id_2
 turbidostat_task['measure_all_task_id'] = measure_all_task_id_2
 
-response = requests.post('http://localhost:5000/task', json=turbidostat_task)
+response = requests.post(ADDRESS + 'task', json=turbidostat_task)
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
@@ -196,14 +196,14 @@ print('\nEnding second experiment.\n')
 ###################################################
 print('Ending turbidostat... ', end="")
 
-response = requests.post('http://localhost:5000/end', json={'type': 'task', 'target_id': pump_task_id_2})
+response = requests.post(ADDRESS + 'end', json={'type': 'task', 'target_id': pump_task_id_2})
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
 ###################################################
 print('Ending measurement task... ', end="")
 
-response = requests.post('http://localhost:5000/end',
+response = requests.post(ADDRESS + 'end',
                          json={'type': 'task', 'target_id': measure_all_task_id_2})
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
@@ -211,7 +211,7 @@ assert response.json()["success"]
 ###################################################
 print('Ending device... ', end="")
 
-response = requests.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id_2})
+response = requests.post(ADDRESS + 'end', json={'type': 'device', 'target_id': PBR_id_2})
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
@@ -226,14 +226,14 @@ print('\nEnding first experiment.\n')
 ###################################################
 print('Ending turbidostat... ', end="")
 
-response = requests.post('http://localhost:5000/end', json={'type': 'task', 'target_id': pump_task_id})
+response = requests.post(ADDRESS + 'end', json={'type': 'task', 'target_id': pump_task_id})
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
 ###################################################
 print('Ending measurement task... ', end="")
 
-response = requests.post('http://localhost:5000/end',
+response = requests.post(ADDRESS + 'end',
                          json={'type': 'task', 'target_id': measure_all_task_id})
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
@@ -241,7 +241,7 @@ assert response.json()["success"]
 ###################################################
 print('Ending device... ', end="")
 
-response = requests.post('http://localhost:5000/end', json={'type': 'device', 'target_id': PBR_id})
+response = requests.post(ADDRESS + 'end', json={'type': 'device', 'target_id': PBR_id})
 print(f'{"successful" if response.json()["success"] else "failed"}')
 assert response.json()["success"]
 
